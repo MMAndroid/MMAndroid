@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, MMUnBActivity!</string>
+    <string name="app_name">MMUnB</string>
+    
+    <string name="btn_media">Media</string>
+    <string name="btn_media_list">Listar Videos</string>
+    <string name="btn_exit">Sair</string>
+
+    <string name="lb_select_media">Selecione Video</string>
+    <string name="lb_instruction">Selecione um vídeo para executar</string>
+
+</resources>
