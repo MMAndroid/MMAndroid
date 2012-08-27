@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import br.unb.projetopositivo.mm.view.playlist.PlayListActivity;
 import br.unb.projetopositivo.mm.view.video.VideoListActivity;
 
 public class MMUnBActivity extends Activity {
@@ -24,6 +25,14 @@ public class MMUnBActivity extends Activity {
     	((Button)findViewById(R.id.btn_media_list)).setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				Intent startActivtyIntent = new Intent(getApplicationContext(), VideoListActivity.class);
+				startActivity(startActivtyIntent);
+			}
+		});
+    	
+    	//botao que exibe as playlists
+    	((Button)findViewById(R.id.btn_play_list)).setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				Intent startActivtyIntent = new Intent(getApplicationContext(), PlayListActivity.class);
 				startActivity(startActivtyIntent);
 			}
 		});

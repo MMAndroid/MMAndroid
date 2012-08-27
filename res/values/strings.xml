@@ -3,12 +3,14 @@
 
     <string name="hello">Hello World, MMUnBActivity!</string>
     <string name="app_name">MMUnB</string>
-    
     <string name="btn_media">Media</string>
     <string name="btn_media_list">Listar Videos</string>
     <string name="btn_exit">Sair</string>
-
     <string name="lb_select_media">Selecione Video</string>
     <string name="lb_instruction">Selecione um vídeo para executar</string>
+    <string name="btn_play_list">Playlist</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_play_list">PlayListActivity</string>
 
 </resources>
