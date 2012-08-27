@@ -3,6 +3,14 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/btn_play_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/video"
+        android:text="@string/btn_play_list" />
+
     <Button
         android:id="@+id/btn_media_list"
         android:layout_width="match_parent"
