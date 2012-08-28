@@ -19,27 +19,29 @@ import br.unb.projetopositivo.mm.util.MMConstants;
 
 public class VideoListActivity extends ListActivity {
 
-		
+
 	public static final String FILE_OBJ_PARAMETER = "FILE_OBJECT_PARAMETER";
 	private List<File> fileList;
-	
-	 @Override
-     protected void onCreate(Bundle savedInstanceState){
-         super.onCreate(savedInstanceState);
-         setContentView(R.layout.video_list_activity);
-         List<File> values = new ArrayList<File>();
-		 ListAdapter adapter = new VideoFileArrayAdapter(getApplicationContext(), values);
-         setListAdapter(adapter);
-         
-         
-         this.configureUI();
-     }
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.video_list_activity);
+		List<File> values = new ArrayList<File>();
+		ListAdapter adapter = new VideoFileArrayAdapter(getApplicationContext(), values);
+		setListAdapter(adapter);
+
+
+		this.configureUI();
+	}
 
 	private void configureUI() {
 		fileList = FileUtility.listFiles(new File(Environment.getExternalStorageDirectory().getPath() + "/DCIM/Camera/"), ".mp4");
+		
+		for(fileList.)
 		((VideoFileArrayAdapter)getListAdapter()).addAll(fileList);
 		((VideoFileArrayAdapter)getListAdapter()).notifyDataSetChanged();
-		
+
 		ListView lv = getListView();
 		lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
@@ -50,8 +52,8 @@ public class VideoListActivity extends ListActivity {
 				Log.i(MMConstants.TAG,"Arquivo selecionado: "+file.getPath());
 			}
 		});
-		
+
 	}
 
-	
+
 }

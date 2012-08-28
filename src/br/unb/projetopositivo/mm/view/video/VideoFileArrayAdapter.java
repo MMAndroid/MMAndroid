@@ -17,7 +17,7 @@ public class VideoFileArrayAdapter extends ArrayAdapter<File> {
 	public VideoFileArrayAdapter(Context context, List<File> values) {
 		super(context, R.layout.video_row_layout);
 		this.context = context;
-		this.addAll(values);
+//		this.addAll(values);
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class VideoFileArrayAdapter extends ArrayAdapter<File> {
 
 		File file = getItem(position);
 		textView.setText(file.getName() + "");
-		sizeView.setText(file.getTotalSpace() + " bytes");
+//		sizeView.setText(file.getTotalSpace() + " bytes");
 
 		return rowView;
 	}
