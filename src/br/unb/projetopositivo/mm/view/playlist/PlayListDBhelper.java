@@ -18,11 +18,13 @@ public class PlayListDBhelper extends SQLiteOpenHelper {
 	public PlayListDBhelper(Context context, String name,
 			CursorFactory factory, int version) {
 		super(context, name, factory, version);
+		
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		try{
+			
 			db.execSQL(CREATE_TABLE);
 		}
 		catch (SQLiteException e) {Log.v("create table exception!!!", e.getLocalizedMessage());}

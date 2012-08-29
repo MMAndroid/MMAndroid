@@ -19,10 +19,11 @@ public class PlayListManager {
 	private SQLiteDatabase db;
 	private PlayListDBhelper dBhelper;
 	
-	private static final String QUERY = "SELECT NAME, DESCRIPTION FROM PLAYLIST;";
+	private static final String QUERY = "SELECT NAME, DESCRIPTION FROM PLAYLIST";
 	
 	public void open() {
 		try {
+			
 			db = dBhelper.getWritableDatabase();
 		}
 		catch(SQLiteException e) {
@@ -33,6 +34,7 @@ public class PlayListManager {
 	
 	public PlayListManager(Context c){
 		context = c;
+		
 		dBhelper = new PlayListDBhelper(c, MMConstants.DATABASE_NAME, null, MMConstants.DATABASE_VERSION);
 	}
 
@@ -46,6 +48,7 @@ public class PlayListManager {
 		try {
 			db.insert("PLAYLIST", null, values);
 			db.setTransactionSuccessful();
+		
 		}
 		catch(SQLiteException e) {
 			Log.v("Fail to insert a playlist", e.getMessage());
@@ -56,16 +59,57 @@ public class PlayListManager {
 		}
 	}
 	
+	
+	public void deletePlayList(String playlistName) {
+		
+		String[] playlistNameArray = new String[1];
+		playlistNameArray[0] = playlistName;
+		
+		db.beginTransaction();
+		try {
+			db.delete("PLAYLIST", "NAME=?", playlistNameArray);
+			db.setTransactionSuccessful();
+			
+		}
+		catch(SQLiteException e) {
+			Log.v("Fail to delete a playlist", e.getMessage());
+		}
+		finally {
+			db.endTransaction();
+	
+		}
+	}
+	
+public void deleteAllPlayLists() {
+		
+		db.beginTransaction();
+		try {
+			db.delete("PLAYLIST", null, null);
+			db.setTransactionSuccessful();
+			
+		}
+		catch(SQLiteException e) {
+			Log.v("Fail to delete all playlists", e.getMessage());
+		}
+		finally {
+			db.endTransaction();
+	
+		}
+	}
+	
 	public List<PlayList> listAll() {
 		Cursor cursor = db.rawQuery(QUERY, null);
-		cursor.moveToFirst();
+		
 		List<PlayList> playLists = new ArrayList<PlayList>();
 		
-		while(cursor.moveToNext()) {
-			String name = cursor.getString(cursor.getColumnIndex("NAME"));
-			String description = cursor.getString(cursor.getColumnIndex("DESCRIPTION"));
-		
-			playLists.add(new PlayList(name, description));
+		if(cursor.moveToFirst()){
+			//playLists = new ArrayList<PlayList>();
+			do {
+				String name = cursor.getString(cursor.getColumnIndex("NAME"));
+				String description = cursor.getString(cursor.getColumnIndex("DESCRIPTION"));
+			
+				playLists.add(new PlayList(name, description));
+			} while(cursor.moveToNext());
 		}
 		return playLists;
 	}
