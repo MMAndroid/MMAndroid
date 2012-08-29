@@ -1,7 +1,14 @@
 package br.unb.projetopositivo.mm;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import br.unb.projetopositivo.mm.view.playlist.PlayListActivity;
 import br.unb.projetopositivo.mm.view.video.VideoListActivity;
+// teste de push
 
 public class MMUnBActivity extends Activity {
 	
