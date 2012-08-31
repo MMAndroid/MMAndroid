@@ -1,4 +1,4 @@
-package br.unb.projetopositivo.mm.playlist;
+package br.unb.projetopositivo.mm.view.playlist;
 
 public class PlayList {
 	
