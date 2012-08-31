@@ -1,4 +1,4 @@
-package br.unb.projetopositivo.mm.view.playlist;
+package br.unb.projetopositivo.mm.playlist;
 
 import java.util.List;
 
