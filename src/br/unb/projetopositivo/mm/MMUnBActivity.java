@@ -6,7 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import br.unb.projetopositivo.mm.view.playlist.PlayListActivity;
+import br.unb.projetopositivo.mm.playlist.PlayListActivity;
+import br.unb.projetopositivo.mm.socialnetwork.ShareButtonActivity;
 import br.unb.projetopositivo.mm.view.video.VideoListActivity;
 // teste de push
 
@@ -38,7 +39,15 @@ public class MMUnBActivity extends Activity {
 			}
 		});
     	
-    	//botao que fecha aplica��o
+    	//social network button
+    	((Button)findViewById(R.id.btn_share)).setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				Intent startActivtyIntent = new Intent(getApplicationContext(), ShareButtonActivity.class);
+				startActivity(startActivtyIntent);
+			}
+		});
+    	
+    	//botao que fecha aplicao
     	((Button)findViewById(R.id.btn_exit)).setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				MMUnBActivity.this.finish();
