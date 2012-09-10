@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="br.unb.projetopositivo.mm"
+    package="br.unb.mobileMedia"
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-sdk android:minSdkVersion="15" />
+    <uses-sdk android:minSdkVersion="16" />
 
     <!-- Indicam que a aplicação tem acesso ao envio e leitura de SMS -->
     <uses-permission android:name="android.permission.SEND_SMS" />
@@ -28,13 +28,20 @@
         <activity android:name=".view.video.VideoListActivity" >
         </activity>
         <activity
-            android:name=".view.playlist.PlayListActivity"
+            android:name=".playlist.PlayListActivity"
             android:label="@string/title_activity_play_list" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        </activity>
+        <activity
+            android:name=".core.view.AuthorListActivity"
+            android:label="@string/title_activity_author_list" >
+        </activity>
+        <activity
+            android:name=".core.view.AudioExpandableListActivity"
+            android:label="@string/title_activity_audio_table" >
+        </activity>
+        <activity
+            android:name=".core.view.AudioPlayerActivity"
+            android:label="@string/title_activity_audio_player" >
         </activity>
     </application>
 

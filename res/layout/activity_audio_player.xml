@@ -1,0 +1,45 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <ImageButton
+                android:id="@+id/img_bt_play_pause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/start" />
+
+            <ImageButton
+                android:id="@+id/img_btn_stop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/stop" />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/list_audio_player"
+            android:layout_width="320dp"
+            android:layout_height="347dp" 
+            android:choiceMode="singleChoice" 
+            android:listSelector="@android:color/background_light">
+        </ListView>
+
+        <ImageButton
+            android:id="@+id/img_btn_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_home" />
+    </LinearLayout>
+
+</RelativeLayout>
