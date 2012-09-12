@@ -16,7 +16,7 @@ import android.os.Parcelable;
  */
 public class Audio extends MultimediaContent implements Parcelable {
 
-	private static final long serialVersionUID = 1L;
+	public static final long serialVersionUID = 1L;
 
 	/* the name of the album */
 	private String album;
@@ -83,6 +83,7 @@ public class Audio extends MultimediaContent implements Parcelable {
 	}
 
 	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeInt(primaryKey);
 		dest.writeInt(id);
 		dest.writeString(title);
 		dest.writeSerializable(uri);
@@ -92,13 +93,13 @@ public class Audio extends MultimediaContent implements Parcelable {
 	 public static final Parcelable.Creator<Audio> CREATOR = new Parcelable.Creator<Audio>() {
 
 		public Audio createFromParcel(Parcel source) {
+			int pk = source.readInt();
 			int id = source.readInt(); 
 			String title = source.readString();
 			URI uri = (URI)source.readSerializable();
 			String album = source.readString();
 			
-			Audio audio = new Audio(id, title, uri);
-			audio.setAlbum(album);
+			Audio audio = new Audio(pk, id, title, uri, album);
 			
 			return audio;
 		}

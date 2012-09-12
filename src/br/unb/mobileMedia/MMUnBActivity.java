@@ -3,6 +3,7 @@ package br.unb.mobileMedia;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.manager.Manager;
 import br.unb.mobileMedia.core.view.AuthorListActivity;
+import br.unb.mobileMedia.mm.socialnetwork.Twitter;
 import br.unb.mobileMedia.mm.view.video.VideoListActivity;
 import br.unb.mobileMedia.playlist.PlayListActivity;
 import android.app.Activity;
@@ -67,13 +68,13 @@ public class MMUnBActivity extends Activity {
 			}
 		});
     	
-//    	//social network button
-//    	((Button)findViewById(R.id.btn_share)).setOnClickListener(new OnClickListener() {
-//			public void onClick(View v) {
-//				Intent startActivtyIntent = new Intent(getApplicationContext(), ShareButtonActivity.class);
-//				startActivity(startActivtyIntent);
-//			}
-//		});
+    	//social network button
+    	((Button)findViewById(R.id.btn_share)).setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				Twitter twiter = new Twitter(getApplicationContext());
+				twiter.publishTopArtistsOfTheWeek();
+			}
+		});
     	
     	((Button)findViewById(R.id.btn_exit)).setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {

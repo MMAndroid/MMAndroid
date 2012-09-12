@@ -92,6 +92,7 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	public void onCompletion(MediaPlayer mp) {
 		//TODO: this is a poor example of exception handling.
 		try {
+			Log.v(AudioPlayerList.class.getCanonicalName(), "PK: " + audioList.get(current).getPrimaryKey());
 			Manager.instance().registerExecution(context, audioList.get(current));
 		}
 		catch(DBException e) {

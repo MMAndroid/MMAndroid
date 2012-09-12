@@ -13,6 +13,6 @@ public interface SocialNetwork {
 	 * Make available the top artists of the last 
 	 * week.
 	 */
-	public void publishTopArtistisOfTheWeek();
+	public void publishTopArtistsOfTheWeek();
 	
 }

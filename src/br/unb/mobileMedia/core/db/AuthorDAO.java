@@ -70,7 +70,7 @@ public interface AuthorDAO {
 	 * specific audio and the values entry is a list with the date time of 
 	 * in which the audio was executed
 	 */
-	public abstract Map<Audio, List<Date>> executionHistory(Date start, Date end) throws DBException;
+	public abstract Map<Author, Map<Audio, List<Date>>> executionHistory(Date start, Date end) throws DBException;
 
 	/**
 	 * Register (or save) the execution of an audio

@@ -4,11 +4,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Map;
 
 import android.content.Context;
+import android.util.Log;
 import br.unb.mobileMedia.core.db.DBException;
-import br.unb.mobileMedia.core.domain.Audio;
+import br.unb.mobileMedia.core.domain.Author;
 import br.unb.mobileMedia.core.manager.Manager;
 
 /**
@@ -29,7 +29,7 @@ public class Twitter implements SocialNetwork {
 	/*@
 	 * @see br.unb.mobileMedia.mm.socialnetwork.SocialNetwork#publishTopArtistisOfTheWeek()
 	 */
-	public void publishTopArtistisOfTheWeek() {
+	public void publishTopArtistsOfTheWeek() {
 		Date today = Calendar.getInstance().getTime();
 		
 		GregorianCalendar calendar = new GregorianCalendar();
@@ -39,14 +39,19 @@ public class Twitter implements SocialNetwork {
 		Date lastWeek = calendar.getTime();
 	
 	    try {
-	    	Map<Audio, List<Date>> executionHistory = Manager.instance().recently(context, lastWeek);
+	    	List<Author> topArtists = Manager.instance().topArtistsFromPeriod(context, lastWeek, today, 5);
+	    	
+	    	//TODO: Kamylla, pleas, write here the code to share the top artists 
+	    	//using the Twitter API.
+	    	
+	    	for(Author a: topArtists) {
+	    		Log.v(Twitter.class.getCanonicalName(), a.getName());
+	    	}
+
 	    }
 	    catch(DBException e) {
 	    	e.printStackTrace();
 	    }
-		
-		
-		
 		
 //		SocialAuthAdapter adapter = new SocialAuthAdapter(new DialogListener() {
 //			public void onError(SocialAuthError arg0) {
@@ -60,7 +65,5 @@ public class Twitter implements SocialNetwork {
 //		});
 //		// Add providers
 //		adapter.addProvider(Provider.TWITTER, R.drawable.twitter);
-	}
-
-	
+	}	
 }

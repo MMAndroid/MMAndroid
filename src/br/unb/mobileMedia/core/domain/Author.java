@@ -88,4 +88,11 @@ public class Author {
 	public void setKey(Integer key) {
 		this.key = key;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		return (o instanceof Author) && ((Author)o).getKey().equals(this.getKey());
+	}
+	
+	
 }

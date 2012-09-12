@@ -59,7 +59,6 @@ public class DefaultAudioExtractor implements MediaExtractor {
 		
 		Cursor cursor = context.getContentResolver().query(uri, PROJECTION, null, null, null);
 		
-		
 		int i = 0;
 		
 		if(cursor.getCount() > 0 && cursor.moveToFirst()) {
