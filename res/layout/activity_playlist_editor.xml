@@ -1,0 +1,33 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <Button
+        android:id="@+id/btn_addMusiclist"
+        style="@android:style/Theme.Panel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/btn_playPlaylist"
+        android:text="@string/btn_addMusiclist" />
+	
+    <Button
+        android:id="@+id/btn_playPlaylist"
+        style="@android:style/Theme.Panel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="@string/btn_PlayPlaylist" />
+    
+    <ListView
+        android:id="@+id/list_musiclist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/btn_addMusiclist" >
+
+    </ListView>
+
+</RelativeLayout>
