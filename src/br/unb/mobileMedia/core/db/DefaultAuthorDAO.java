@@ -338,9 +338,10 @@ public class DefaultAuthorDAO implements AuthorDAO {
 	}
 
 	/*
-	 * Converts a cursor into an Author.
+	 * Converts a cursor into an Audio.
+	 * Its public and static because DefaultPlaylist uses this method! Needs Refactoring!!!!!!
 	 */
-	private Audio cursorToAudio(Cursor cursor) {
+	public static Audio cursorToAudio(Cursor cursor) {
 		Integer pk = cursor.getInt(cursor
 				.getColumnIndex(DBConstants.AUDIO_KEY_COLUMN));
 		Integer id = cursor.getInt(cursor

@@ -17,4 +17,9 @@ public class DefaultDBFactory extends DBFactory {
 		return new DefaultAuthorDAO(context);
 	}
 
+	@Override
+	public PlaylistDAO createPlaylistDAO() {
+		return new DefaultPlaylistDAO(context);
+	}
+
 }

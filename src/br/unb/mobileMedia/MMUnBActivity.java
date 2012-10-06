@@ -1,11 +1,5 @@
 package br.unb.mobileMedia;
 
-import br.unb.mobileMedia.core.db.DBException;
-import br.unb.mobileMedia.core.manager.Manager;
-import br.unb.mobileMedia.core.view.AuthorListActivity;
-import br.unb.mobileMedia.mm.view.video.VideoListActivity;
-import br.unb.mobileMedia.playlist.PlayListActivity;
-import br.unb.mobileMedia.socialnetwork.Twitter;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +7,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
+import br.unb.mobileMedia.core.db.DBException;
+import br.unb.mobileMedia.core.manager.Manager;
+import br.unb.mobileMedia.core.view.AuthorListActivity;
+import br.unb.mobileMedia.mm.view.video.VideoListActivity;
+import br.unb.mobileMedia.playlist.MainPlaylistListActivity;
+import br.unb.mobileMedia.socialnetwork.Twitter;
 
 /**
  * The main activity of the MMUnB project.
@@ -51,7 +51,7 @@ public class MMUnBActivity extends Activity {
     	
     	((Button)findViewById(R.id.btn_play_list)).setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				Intent startActivtyIntent = new Intent(getApplicationContext(), PlayListActivity.class);
+				Intent startActivtyIntent = new Intent(getApplicationContext(), MainPlaylistListActivity.class);
 				startActivity(startActivtyIntent);
 			}
 		});

@@ -12,13 +12,16 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_play_list">PlayListActivity</string>
+    <string name="btn_addMusiclist">Inserir Musica</string>
     <string name="btn_addPlaylist">Add a new playlist</string>
     <string name="btn_share">Share</string>
     <string name="btn_synchronize">Synchronize</string>
     <string name="title_activity_author_list">AuthorListActivity</string>
     <string name="title_activity_audio_table">AudioTableActivity</string>
     <string name="title_activity_audio_player">AudioPlayerActivity</string>
-    
     <string name="message_synchronization_finished">The database content has been synchronized</string>
+    <string name="title_activity_playlist_editor">PlaylistEditorActivity</string>
+    <string name="title_activity_music_select">MusicSelectActivity</string>
+    <string name="btn_PlayPlaylist">Tocar Playlist</string>
 
 </resources>

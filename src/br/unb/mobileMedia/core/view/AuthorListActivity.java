@@ -49,6 +49,7 @@ public class AuthorListActivity extends ListActivity {
 	 * the user selects on artist. 
 	 * @see android.app.ListActivity#onListItemClick(android.widget.ListView, android.view.View, int, long)
 	 */
+	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		Author item = (Author) getListAdapter().getItem(position);
 		Intent intent = new Intent(getApplicationContext(), AudioExpandableListActivity.class);

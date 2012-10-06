@@ -3,6 +3,7 @@ package br.unb.mobileMedia.core.audioPlayer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import android.content.Context;
 import android.media.MediaPlayer;
@@ -17,8 +18,8 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	private MediaPlayer player;
 	private List<Audio> audioList;
 	private int current;
-	private boolean repeat;
-	
+	private boolean repeat = false;
+	private boolean shuffle = false;
 	
 	/**
 	 * Default constructor expecting just the application context.
@@ -100,19 +101,30 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 		}
 		
 		mp.reset();
-		if(current >= 0 && current < audioList.size()) {
-			current++;
-			play();
-		}
-		else {
-			current = 0;
-			if(repeat) {
+		//if Shuffle off:
+		if(!shuffle){
+			if(current >= 0 && current < audioList.size()) {
+				current++;
 				play();
 			}
-			else{
-				mp.release();
-				Log.v(AudioPlayerList.class.getCanonicalName(), " done !");
+			else {
+				current = 0;
+				if(repeat) {
+					play();
+				}
+				else{
+					mp.release();
+					Log.v(AudioPlayerList.class.getCanonicalName(), " done !");
+				}
 			}
+		}
+		//if Shuffle on:
+		else{
+			
+			Random rand = new Random();
+            current = rand.nextInt(audioList.size());
+            play();
+			
 		}
 	}
 
@@ -125,4 +137,15 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	public void setRepeat(boolean repeat) {
 		this.repeat = repeat;
 	}
+	
+
+	public boolean isShuffle() {
+		return shuffle;
+	}
+
+
+	public void setShuffle(boolean Shuffle) {
+		this.shuffle = Shuffle;
+	}
+	
 }

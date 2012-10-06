@@ -28,7 +28,7 @@
         <activity android:name=".view.video.VideoListActivity" >
         </activity>
         <activity
-            android:name=".playlist.PlayListActivity"
+            android:name=".playlist.MainPlaylistListActivity"
             android:label="@string/title_activity_play_list" >
         </activity>
         <activity
@@ -42,6 +42,24 @@
         <activity
             android:name=".core.view.AudioPlayerActivity"
             android:label="@string/title_activity_audio_player" >
+        </activity>
+        <activity
+            android:name=".playlist.PlayListEditorActivity"
+            android:label="@string/title_activity_playlist_editor" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".playlist.MusicSelectActivity"
+            android:label="@string/title_activity_music_select" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

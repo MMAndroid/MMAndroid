@@ -27,6 +27,12 @@ public abstract class DBFactory {
 	 * @return an instance of AuthorDAO.
 	 */
 	public abstract AuthorDAO createAuthorDAO();
+	
+	/**
+	 * Returns an instance of PlaylistDAO.
+	 * @return an instance of PlaylistDAO.
+	 */
+	public abstract PlaylistDAO createPlaylistDAO();
 
 	
 }
