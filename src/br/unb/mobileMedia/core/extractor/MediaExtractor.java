@@ -20,6 +20,6 @@ public interface MediaExtractor {
 	 * @param audioFiles input files used to obtain audio data
 	 * @return a list of audio data obtained from <i>audioFiles</i>.
 	 */
-	public List<Author> processFiles(List<File> audioFiles);
+	public List<Author> processFiles(List<File> audioFiles) throws ExtractorException; 
 
 }

@@ -62,7 +62,7 @@ public class Manager {
 	 * 
 	 * @param context the application context.
 	 */
-	public void synchronizeMedia(Context context) throws DBException {
+	public void synchronizeMedia(Context context) throws SynchronizationException {
 		final List<File> allMusics = new ArrayList<File>();
 
 		for(AudioFormats format : AudioFormats.values()) {
@@ -73,26 +73,32 @@ public class Manager {
 
 		MediaExtractor extractor = new DefaultAudioExtractor(context);
 
-		List<Author> authors = extractor.processFiles(allMusics);
+		try {
+			List<Author> authors = extractor.processFiles(allMusics);
+		
 
-		for(Author author: authors) {
-			AuthorDAO dao = DBFactory.factory(context).createAuthorDAO();
-
-			dao.saveAuthor(author);
-
-			// TODO: we must generalize this code, since it only works for 
-			// MP3 and M4A files.
-
-			List<Audio> production = new ArrayList<Audio>();
-
-			for(int i = 0; i < author.sizeOfProduction(); i++) {
-				MultimediaContent c = author.getContentAt(i);
-
-				if (c instanceof Audio) {
-					production.add((Audio) c);
+			for(Author author: authors) {
+				AuthorDAO dao = DBFactory.factory(context).createAuthorDAO();
+	
+				dao.saveAuthor(author);
+	
+				// TODO: we must generalize this code, since it only works for 
+				// MP3 and M4A files.
+	
+				List<Audio> production = new ArrayList<Audio>();
+	
+				for(int i = 0; i < author.sizeOfProduction(); i++) {
+					MultimediaContent c = author.getContentAt(i);
+	
+					if (c instanceof Audio) {
+						production.add((Audio) c);
+					}
 				}
+				dao.saveAuthorProduction(author, production);
 			}
-			dao.saveAuthorProduction(author, production);
+		}
+		catch(Throwable t) {
+			throw new SynchronizationException(t);
 		}
 	}
 

@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.Toast;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.manager.Manager;
+import br.unb.mobileMedia.core.manager.SynchronizationException;
 import br.unb.mobileMedia.core.view.AuthorListActivity;
 import br.unb.mobileMedia.mm.view.video.VideoListActivity;
 import br.unb.mobileMedia.playlist.MainPlaylistListActivity;
@@ -62,8 +63,9 @@ public class MMUnBActivity extends Activity {
 					Manager.instance().synchronizeMedia(getApplicationContext());
 					Toast.makeText(getApplicationContext(), R.string.message_synchronization_finished, Toast.LENGTH_LONG).show();
 				}
-				catch(DBException e) {
-					Toast.makeText(getApplicationContext(),  e.getMessage(), Toast.LENGTH_LONG).show();
+				catch(SynchronizationException e) {
+					//Wrong way to deal with exceptions: Toast.makeText(getApplicationContext(),  e.getMessage(), Toast.LENGTH_LONG).show();
+					
 				}
 			}
 		});
