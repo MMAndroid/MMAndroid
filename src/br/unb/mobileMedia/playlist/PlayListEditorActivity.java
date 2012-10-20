@@ -6,11 +6,10 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -66,7 +65,18 @@ public class PlayListEditorActivity extends Activity {
     	((Button)findViewById(R.id.btn_playPlaylist)).setOnClickListener(new View.OnClickListener(){     
 			
     		public void onClick(View v) {
-    			//startActivity(createIntentForMusicPlayer());
+    			
+    			//when button is clicked, the list of music is send to the player.
+    			
+    			List<Audio> listTmp = musicList;
+				Audio[] executionList = new Audio[listTmp.size()]; 
+				
+				listTmp.toArray(executionList);
+			
+				Intent startActivtyIntent = new Intent(getApplicationContext(), AudioPlayerActivity.class);
+				startActivtyIntent.putExtra(AudioPlayerActivity.EXECUTION_LIST, executionList);
+				startActivity(startActivtyIntent);		    				
+		    		
     			}
 			
     	});
