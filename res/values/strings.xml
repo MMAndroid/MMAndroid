@@ -23,5 +23,10 @@
     <string name="title_activity_playlist_editor">PlaylistEditorActivity</string>
     <string name="title_activity_music_select">MusicSelectActivity</string>
     <string name="btn_PlayPlaylist">Tocar Playlist</string>
+    
+    <string name="btn_top_artists">Top Artists</string>
+    <string name="btn_top_songs">Top Songs</string>
+    <string name="btn_share_app">Share App</string>
+    <string name="title_activity_share_list">Share</string>
 
 </resources>

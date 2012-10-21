@@ -40,34 +40,37 @@ public final class R {
     public static final class id {
         public static final int btn_addMusiclist=0x7f070007;
         public static final int btn_addPlaylist=0x7f070005;
-        public static final int btn_exit=0x7f070013;
-        public static final int btn_list_authors=0x7f07000e;
-        public static final int btn_media_list=0x7f070010;
-        public static final int btn_pause=0x7f070018;
+        public static final int btn_exit=0x7f070016;
+        public static final int btn_list_authors=0x7f070011;
+        public static final int btn_media_list=0x7f070013;
+        public static final int btn_pause=0x7f07001b;
         public static final int btn_playPlaylist=0x7f070008;
-        public static final int btn_play_list=0x7f07000f;
-        public static final int btn_share=0x7f070011;
-        public static final int btn_start=0x7f070017;
-        public static final int btn_stop=0x7f070019;
-        public static final int btn_synchronize=0x7f070012;
-        public static final int childname=0x7f07000b;
+        public static final int btn_play_list=0x7f070012;
+        public static final int btn_share=0x7f070014;
+        public static final int btn_share_app=0x7f07000d;
+        public static final int btn_start=0x7f07001a;
+        public static final int btn_stop=0x7f07001c;
+        public static final int btn_synchronize=0x7f070015;
+        public static final int btn_top_artists=0x7f07000b;
+        public static final int btn_top_songs=0x7f07000c;
+        public static final int childname=0x7f07000e;
         public static final int expandableListView1=0x7f070004;
-        public static final int groupname=0x7f07000d;
+        public static final int groupname=0x7f070010;
         public static final int img_bt_play_pause=0x7f070000;
         public static final int img_btn_home=0x7f070003;
         public static final int img_btn_stop=0x7f070001;
-        public static final int linearLayout1=0x7f070016;
+        public static final int linearLayout1=0x7f070019;
         public static final int list_audio_player=0x7f070002;
         public static final int list_musiclist=0x7f070009;
         public static final int list_musiclistselect=0x7f07000a;
         public static final int list_playlist=0x7f070006;
-        public static final int menu_settings=0x7f07001d;
-        public static final int rgb=0x7f07000c;
-        public static final int textView1=0x7f070015;
-        public static final int txt_instruction=0x7f070014;
-        public static final int txt_name=0x7f07001b;
-        public static final int txt_size=0x7f07001c;
-        public static final int vv_video=0x7f07001a;
+        public static final int menu_settings=0x7f070020;
+        public static final int rgb=0x7f07000f;
+        public static final int textView1=0x7f070018;
+        public static final int txt_instruction=0x7f070017;
+        public static final int txt_name=0x7f07001e;
+        public static final int txt_size=0x7f07001f;
+        public static final int vv_video=0x7f07001d;
     }
     public static final class layout {
         public static final int activity_audio_player=0x7f030000;
@@ -76,12 +79,13 @@ public final class R {
         public static final int activity_play_list=0x7f030003;
         public static final int activity_playlist_editor=0x7f030004;
         public static final int activity_playlist_music_select=0x7f030005;
-        public static final int child_row=0x7f030006;
-        public static final int group_row=0x7f030007;
-        public static final int main=0x7f030008;
-        public static final int video_list_activity=0x7f030009;
-        public static final int video_player_activity=0x7f03000a;
-        public static final int video_row_layout=0x7f03000b;
+        public static final int activity_share_list=0x7f030006;
+        public static final int child_row=0x7f030007;
+        public static final int group_row=0x7f030008;
+        public static final int main=0x7f030009;
+        public static final int video_list_activity=0x7f03000a;
+        public static final int video_player_activity=0x7f03000b;
+        public static final int video_row_layout=0x7f03000c;
     }
     public static final class menu {
         public static final int activity_audio_player=0x7f060000;
@@ -102,7 +106,10 @@ public final class R {
         public static final int btn_media_list=0x7f050004;
         public static final int btn_play_list=0x7f050008;
         public static final int btn_share=0x7f05000e;
+        public static final int btn_share_app=0x7f050019;
         public static final int btn_synchronize=0x7f05000f;
+        public static final int btn_top_artists=0x7f050017;
+        public static final int btn_top_songs=0x7f050018;
         public static final int hello=0x7f050000;
         public static final int hello_world=0x7f050009;
         public static final int lb_instruction=0x7f050007;
@@ -115,5 +122,6 @@ public final class R {
         public static final int title_activity_music_select=0x7f050015;
         public static final int title_activity_play_list=0x7f05000b;
         public static final int title_activity_playlist_editor=0x7f050014;
+        public static final int title_activity_share_list=0x7f05001a;
     }
 }
