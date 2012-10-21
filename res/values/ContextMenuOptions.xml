@@ -4,4 +4,6 @@
         <item name = "edit_playlist">Edit Playlist</item>
         <item name="remove_playlist">Remove Playlist</item>
     </array>
+    <string name="menu_remove_media">Remove Music</string>
+ 
 </resources>
