@@ -129,7 +129,7 @@ public class PlayListEditorActivity extends Activity {
 		if (v.getId()==R.id.list_musiclist) {
 
 			menu.setHeaderTitle("Menu:");
-			String[] menuItems = getResources().getStringArray(R.array.menu_playlist);
+			String[] menuItems = getResources().getStringArray(R.array.menu_music);
 			for (int i = 0; i<menuItems.length; i++) {
 				menu.add(Menu.NONE, i, i, menuItems[i]);
 			}
@@ -161,28 +161,8 @@ public class PlayListEditorActivity extends Activity {
 		 */
 
 
-		//Option - EDIT
-		if(menuItemIndex == 0 ){
-			/*
-			// TODO Get newName
-			String newName = "";
-
-			// TODO set the playlist id
-			// playlist with new values
-			Playlist editedPlaylist = new Playlist(newName);
-
-			try {
-				Manager.instance().editPlaylist(this, editedPlaylist);
-			} catch (DBException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			 */
-			refreshListMusicLists ();
-
-		}
 		//Option - REMOVE
-		if(menuItemIndex == 1){
+		if(menuItemIndex == 0){
 			
 			
 			
