@@ -137,7 +137,8 @@ public class PlayListEditorActivity extends Activity {
 			ContextMenuInfo menuInfo) {
 		if (v.getId()==R.id.list_musiclist) {
 
-			menu.setHeaderTitle("Menu:"); 
+
+			menu.setHeaderTitle("Menu:");
 			String[] menuItems = getResources().getStringArray(R.array.menu_music);
 			for (int i = 0; i<menuItems.length; i++) {
 				menu.add(Menu.NONE, i, i, menuItems[i]);
@@ -158,6 +159,9 @@ public class PlayListEditorActivity extends Activity {
 
 		//Option - REMOVE
 		if(menuItemIndex == 0){
+			
+			
+			
 			try {
 				Manager.instance().removeMediaFromPlaylist(this, playListId ,song );
 			} catch (DBException e) {

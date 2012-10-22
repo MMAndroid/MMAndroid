@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -133,7 +134,7 @@ public class MainPlaylistListActivity extends Activity {
 		 */
 
 		//Retrieve the playlist name that we will be working on...
-		String listItemName = names[info.position];
+		final String listItemName = names[info.position];
 
 		/*
 		 * 
@@ -145,21 +146,55 @@ public class MainPlaylistListActivity extends Activity {
 		//Option - EDIT
 		if(menuItemIndex == 0 ){
 
-			// TODO Get newName
-			String newName = "";
+		
 
-			// TODO set the playlist id
-			// playlist with new values
-			Playlist editedPlaylist = new Playlist(newName);
+			
+			//GET NEW NAME
+			
+			//Dialog (Alert) to get the information of the new playlist
+			AlertDialog.Builder alert = new AlertDialog.Builder(MainPlaylistListActivity.this);
 
-			try {
-				Manager.instance().editPlaylist(this, editedPlaylist);
-			} catch (DBException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			alert.setTitle("Edit Playlist");
+			alert.setMessage("New Name:");
 
-			refreshListPlayLists ();
+			// Set an EditText view to get user input 
+			final EditText input = new EditText(MainPlaylistListActivity.this);
+			alert.setView(input);
+			//Ok button
+			alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+
+				public void onClick(DialogInterface dialog, int whichButton) {
+
+					String newName = input.getText().toString();
+		
+					
+					Playlist editedPlaylist = null;
+					
+					try {
+						editedPlaylist = Manager.instance().getSimplePlaylist(MainPlaylistListActivity.this, listItemName);
+						// playlist with new values
+						editedPlaylist.setName(newName);
+						
+						Manager.instance().editPlaylist(MainPlaylistListActivity.this, editedPlaylist);
+						
+					} catch (DBException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+					
+					refreshListPlayLists ();
+				}
+			});
+			//Cancel button
+			alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+					// Canceled.
+				}
+			});
+
+			alert.show();  
+	
 
 		}
 		//Option - REMOVE
