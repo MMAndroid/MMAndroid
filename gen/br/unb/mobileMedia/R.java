@@ -9,6 +9,7 @@ package br.unb.mobileMedia;
 
 public final class R {
     public static final class array {
+        public static final int menu_music=0x7f040001;
         public static final int menu_playlist=0x7f040000;
     }
     public static final class attr {

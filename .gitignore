@@ -1,7 +1,0 @@
-# Diretorio BIN pode ser ignorado
-./bin
-
-# Java byte code
-
-*.class
-

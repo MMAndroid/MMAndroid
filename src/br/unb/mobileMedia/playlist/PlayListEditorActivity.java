@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -136,8 +137,11 @@ public class PlayListEditorActivity extends Activity {
 			ContextMenuInfo menuInfo) {
 		if (v.getId()==R.id.list_musiclist) {
 
-			menu.setHeaderTitle("Menu:");
-			menu.add(0, v.getId(), 0, R.string.menu_remove_media);  
+			menu.setHeaderTitle("Menu:"); 
+			String[] menuItems = getResources().getStringArray(R.array.menu_music);
+			for (int i = 0; i<menuItems.length; i++) {
+				menu.add(Menu.NONE, i, i, menuItems[i]);
+			}
 		}
 	}
 
@@ -145,21 +149,23 @@ public class PlayListEditorActivity extends Activity {
 	public boolean onContextItemSelected(MenuItem item) {
 
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+		//Index number of the selected option from the context menu
+		int menuItemIndex = item.getItemId();
 
 		List<Integer> song = new ArrayList<Integer>();		
 		song.add(musicList.get(info.position).getId());
 
-		refreshListMusicLists ();
 
 		//Option - REMOVE
-		try {
-			Manager.instance().removeMediaFromPlaylist(this, playListId ,song );
-		} catch (DBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(menuItemIndex == 0){
+			try {
+				Manager.instance().removeMediaFromPlaylist(this, playListId ,song );
+			} catch (DBException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			refreshListMusicLists ();
 		}
-		refreshListMusicLists ();
-
 		return true;
 	}
 
