@@ -145,10 +145,7 @@ public class MainPlaylistListActivity extends Activity {
 
 		//Option - EDIT
 		if(menuItemIndex == 0 ){
-
 		
-
-			
 			//GET NEW NAME
 			
 			//Dialog (Alert) to get the information of the new playlist
@@ -166,7 +163,6 @@ public class MainPlaylistListActivity extends Activity {
 				public void onClick(DialogInterface dialog, int whichButton) {
 
 					String newName = input.getText().toString();
-		
 					
 					Playlist editedPlaylist = null;
 					
@@ -207,6 +203,26 @@ public class MainPlaylistListActivity extends Activity {
 			}
 			refreshListPlayLists ();
 		}
+		
+		//Add geographical position
+		if(menuItemIndex == 2 ){
+			
+			
+			Playlist playlist = null;
+			StubGPS location = new StubGPS();
+			
+			try {
+				playlist = Manager.instance().getSimplePlaylist(MainPlaylistListActivity.this, listItemName);
+				// playlist with new values
+				
+				Manager.instance().addPositionPlaylist(this, playlist, location.getLatitude(), location.getLongitude());
+			} catch (DBException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			refreshListPlayLists ();
+		}
+		
 		return true;
 	}
 
