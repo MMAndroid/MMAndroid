@@ -265,6 +265,42 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
 		
 	}
 	
+	public void addPositionPlaylist(Playlist Playlist, double latitude, double longitude) throws DBException {
+		
+		try {
+			db = dbHelper.getWritableDatabase();
+
+			Cursor cursor = db.rawQuery(DBConstants.SELECT_SIMPLE_PLAYLIST_BY_ID,
+					new String[] { "" + (Playlist.getId()) });
+
+			if (cursor.getCount() != 0) {
+				//Add a geographical position in PLAYLIST_LOCATION_TABLE
+				ContentValues values = new ContentValues();
+
+				values.put(DBConstants.PLAYLIST_LOCATION_FK_PLAYLIST, Playlist.getId());
+				values.put(DBConstants.PLAYLIST_LOCATION_LATITUDE, latitude);
+				values.put(DBConstants.PLAYLIST_LOCATION_LONGITUDE, longitude);
+				
+				db.beginTransaction();
+				db.insert(DBConstants.PLAYLIST_LOCATION_TABLE, null, values);
+				db.setTransactionSuccessful();
+			}
+
+		} catch (SQLiteException e) {
+			e.printStackTrace();
+			Log.e(DefaultPlaylistDAO.class.getCanonicalName(),
+					e.getLocalizedMessage());
+			throw new DBException();
+		} finally {
+			if (db.inTransaction()) {
+				db.endTransaction();
+			}
+			db.close();
+			dbHelper.close();
+		}
+		
+	}
+	
 	public void removeMedias(int idPlaylist, List<Integer> mediaList) throws DBException {
 		
 		try {

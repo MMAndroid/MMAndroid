@@ -236,6 +236,19 @@ public class Manager {
 	}
 	
 	/**
+	 * Add a geographical position to playlist
+	 * 
+	 * @param context the application context
+	 * @param name from the playlist to be removed
+	 * @throws DBException
+	 */
+	public void addPositionPlaylist(Context context, Playlist playlist, double latitude, double longitude) throws DBException {
+		DBFactory factory = DBFactory.factory(context);
+		final PlaylistDAO playlistDAO = factory.createPlaylistDAO();
+		playlistDAO.addPositionPlaylist(playlist,latitude,longitude);
+	}
+	
+	/**
 	 * Return a playlists identified by its id. The playlist returned do not have any media
 	 * 
 	 * @param context the application context
