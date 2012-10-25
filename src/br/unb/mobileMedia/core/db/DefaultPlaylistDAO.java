@@ -274,6 +274,32 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
 					new String[] { "" + (Playlist.getId()) });
 
 			if (cursor.getCount() != 0) {
+				//Delete a geographical position in PLAYLIST_LOCATION_TABLE			
+				db.beginTransaction();
+				db.delete(DBConstants.PLAYLIST_LOCATION_TABLE, DBConstants.PLAYLIST_LOCATION_FK_PLAYLIST + "=?", new String[] { "" + Playlist.getId() });
+				db.setTransactionSuccessful();
+			}
+
+		} catch (SQLiteException e) {
+			e.printStackTrace();
+			Log.e(DefaultPlaylistDAO.class.getCanonicalName(),
+					e.getLocalizedMessage());
+			throw new DBException();
+		} finally {
+			if (db.inTransaction()) {
+				db.endTransaction();
+			}
+			db.close();
+			dbHelper.close();
+		}
+		
+		try {
+			db = dbHelper.getWritableDatabase();
+
+			Cursor cursor = db.rawQuery(DBConstants.SELECT_SIMPLE_PLAYLIST_BY_ID,
+					new String[] { "" + (Playlist.getId()) });
+
+			if (cursor.getCount() != 0) {
 				//Add a geographical position in PLAYLIST_LOCATION_TABLE
 				ContentValues values = new ContentValues();
 

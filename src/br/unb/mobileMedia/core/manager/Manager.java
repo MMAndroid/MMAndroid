@@ -239,7 +239,9 @@ public class Manager {
 	 * Add a geographical position to playlist
 	 * 
 	 * @param context the application context
-	 * @param name from the playlist to be removed
+	 * @param playlist
+	 * @param latitude
+	 * @param longitude
 	 * @throws DBException
 	 */
 	public void addPositionPlaylist(Context context, Playlist playlist, double latitude, double longitude) throws DBException {

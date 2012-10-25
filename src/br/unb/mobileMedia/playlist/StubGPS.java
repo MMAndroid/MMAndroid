@@ -8,7 +8,7 @@ public class StubGPS {
 	}
 	
 	public double getLatitude() {
-		return -122.084095;
+		return -12.084095;
 
 	}
 
