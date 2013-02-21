@@ -133,7 +133,7 @@ public class MainPlaylistListActivity extends Activity {
 		 */
 
 		//Retrieve the playlist name that we will be working on...
-		String listItemName = names[info.position];
+		final String listItemName = names[info.position];
 
 		/*
 		 * 
@@ -144,22 +144,52 @@ public class MainPlaylistListActivity extends Activity {
 
 		//Option - EDIT
 		if(menuItemIndex == 0 ){
+		
+			//GET NEW NAME
+			
+			//Dialog (Alert) to get the information of the new playlist
+			AlertDialog.Builder alert = new AlertDialog.Builder(MainPlaylistListActivity.this);
 
-			// TODO Get newName
-			String newName = "";
+			alert.setTitle("Edit Playlist");
+			alert.setMessage("New Name:");
 
-			// TODO set the playlist id
-			// playlist with new values
-			Playlist editedPlaylist = new Playlist(newName);
+			// Set an EditText view to get user input 
+			final EditText input = new EditText(MainPlaylistListActivity.this);
+			alert.setView(input);
+			//Ok button
+			alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 
-			try {
-				Manager.instance().editPlaylist(this, editedPlaylist);
-			} catch (DBException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+				public void onClick(DialogInterface dialog, int whichButton) {
 
-			refreshListPlayLists ();
+					String newName = input.getText().toString();
+					
+					Playlist editedPlaylist = null;
+					
+					try {
+						editedPlaylist = Manager.instance().getSimplePlaylist(MainPlaylistListActivity.this, listItemName);
+						// playlist with new values
+						editedPlaylist.setName(newName);
+						
+						Manager.instance().editPlaylist(MainPlaylistListActivity.this, editedPlaylist);
+						
+					} catch (DBException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+					
+					refreshListPlayLists ();
+				}
+			});
+			//Cancel button
+			alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+					// Canceled.
+				}
+			});
+
+			alert.show();  
+	
 
 		}
 		//Option - REMOVE
@@ -172,6 +202,26 @@ public class MainPlaylistListActivity extends Activity {
 			}
 			refreshListPlayLists ();
 		}
+		
+		//Add geographical position
+		if(menuItemIndex == 2 ){
+			
+			
+			Playlist playlist = null;
+			StubGPS location = new StubGPS();
+			
+			try {
+				playlist = Manager.instance().getSimplePlaylist(MainPlaylistListActivity.this, listItemName);
+				// playlist with new values
+				
+				Manager.instance().addPositionPlaylist(this, playlist, location.getLatitude(), location.getLongitude());
+			} catch (DBException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			refreshListPlayLists ();
+		}
+		
 		return true;
 	}
 

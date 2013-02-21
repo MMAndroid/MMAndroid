@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
- <array name="menu_playlist">
+ 	<array name="menu_playlist">
         <item name = "edit_playlist">Edit Playlist</item>
         <item name="remove_playlist">Remove Playlist</item>
+        <item name="add_position">Add Geographical Position</item>
+    </array>
+    <array name="menu_music">
+        <item name="remove_playlist">Remove this music from this playlist</item>
     </array>
 </resources>

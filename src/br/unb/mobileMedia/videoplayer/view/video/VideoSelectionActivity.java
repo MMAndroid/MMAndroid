@@ -1,4 +1,4 @@
-package br.unb.mobileMedia.mm.view.video;
+package br.unb.mobileMedia.videoplayer.view.video;
 
 import java.io.File;
 
@@ -48,7 +48,7 @@ public class VideoSelectionActivity extends Activity {
 	}
 
 	/**
-	 * Para fazer uma exibição de vídeo em background
+	 * Para fazer uma exibiï¿½ï¿½o de vï¿½deo em background
 	 */
 	private void configureService() {
 		this.connection = new ServiceConnection() {
@@ -77,7 +77,7 @@ public class VideoSelectionActivity extends Activity {
 				MediaController mediaController = new MediaController(VideoSelectionActivity.this);
 				mediaController.setAnchorView(videoView);
 
-//				Recupera um vídeo local da aplicação
+//				Recupera um vï¿½deo local da aplicaï¿½ï¿½o
 //				Colocar um arquivo video.mp4, por exemplo, na pasta raw
 //				videoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() +"/"+R.raw.video));
 				
@@ -89,14 +89,14 @@ public class VideoSelectionActivity extends Activity {
 						videoView.start();
 						Log.i(MMConstants.TAG,file.getPath());
 					}else{
-						Toast.makeText(getApplicationContext(), "Vídeo não existe", Toast.LENGTH_LONG);
+						Toast.makeText(getApplicationContext(), "Vï¿½deo nï¿½o existe", Toast.LENGTH_LONG);
 					}
 				}else{
-					Toast.makeText(getApplicationContext(), "Arquivo selecionado não é válido.", Toast.LENGTH_LONG);
+					Toast.makeText(getApplicationContext(), "Arquivo selecionado nï¿½o ï¿½ vï¿½lido.", Toast.LENGTH_LONG);
 				}
 
 //				Exemplo de toast
-//				Toast toast = Toast.makeText(VideoSelectionActivity.this.getApplicationContext(), "Você apertou botão de iniciar vídeo", Toast.LENGTH_LONG);
+//				Toast toast = Toast.makeText(VideoSelectionActivity.this.getApplicationContext(), "Vocï¿½ apertou botï¿½o de iniciar vï¿½deo", Toast.LENGTH_LONG);
 //				toast.show();
 			}
 		});
@@ -110,7 +110,7 @@ public class VideoSelectionActivity extends Activity {
 				}
 				
 //				Exemplo de tosast
-//				Toast toast = Toast.makeText(VideoSelectionActivity.this.getApplicationContext(), "Você apertou botão de parar vídeo", Toast.LENGTH_LONG);
+//				Toast toast = Toast.makeText(VideoSelectionActivity.this.getApplicationContext(), "Vocï¿½ apertou botï¿½o de parar vï¿½deo", Toast.LENGTH_LONG);
 //				toast.show();
 			}
 		});
@@ -125,7 +125,7 @@ public class VideoSelectionActivity extends Activity {
 
 				
 //				Exemplo de toast
-//				Toast toast = Toast.makeText(VideoSelectionActivity.this.getApplicationContext(), "Você apertou botão de pausar vídeo", Toast.LENGTH_LONG);
+//				Toast toast = Toast.makeText(VideoSelectionActivity.this.getApplicationContext(), "Vocï¿½ apertou botï¿½o de pausar vï¿½deo", Toast.LENGTH_LONG);
 //				toast.show();
 			}
 		});
@@ -141,7 +141,7 @@ public class VideoSelectionActivity extends Activity {
 			try{
 				this.unbindService(connection);
 			}catch (Exception e) {
-				Log.e(MMConstants.TAG, "Não foi possível desconectar a aplicação");
+				Log.e(MMConstants.TAG, "Nï¿½o foi possï¿½vel desconectar a aplicaï¿½ï¿½o");
 			}
 		}
 	}

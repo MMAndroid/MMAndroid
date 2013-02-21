@@ -14,6 +14,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
+            <Button
+                android:id="@+id/btn_re"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/re" />
+
             <ImageButton
                 android:id="@+id/img_bt_play_pause"
                 android:layout_width="wrap_content"
@@ -25,21 +31,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/stop" />
+
+            <Button
+                android:id="@+id/btn_ff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ff" />
+
         </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_add_a_music"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_a_music" />
 
         <ListView
             android:id="@+id/list_audio_player"
             android:layout_width="320dp"
-            android:layout_height="347dp" 
-            android:choiceMode="singleChoice" 
-            android:listSelector="@android:color/background_light">
-        </ListView>
-
-        <ImageButton
-            android:id="@+id/img_btn_home"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_home" />
+            android:choiceMode="singleChoice"
+            android:listSelector="@android:color/background_light" >
+
+        </ListView>
     </LinearLayout>
 
 </RelativeLayout>

@@ -1,4 +1,4 @@
-package br.unb.mobileMedia.mm.core.video;
+package br.unb.mobileMedia.videoplayer.core.video;
 
 import android.app.Service;
 import android.content.Intent;
@@ -10,9 +10,9 @@ public class VideoPlayerService extends Service {
 	public static final String BINDER_NAME = "PlayerServiceBinder";
 	
 	/**
-	 * Executa quando alguma outra classe faz o bind do serviço.
-	 * Inicia o serviço e faz o link com o serviço. A comunicação entre o cliente e a classe
-	 * de serviço é feita via interface IBinder.
+	 * Executa quando alguma outra classe faz o bind do serviï¿½o.
+	 * Inicia o serviï¿½o e faz o link com o serviï¿½o. A comunicaï¿½ï¿½o entre o cliente e a classe
+	 * de serviï¿½o ï¿½ feita via interface IBinder.
 	 */
 	@Override
 	public IBinder onBind(Intent arg0) {

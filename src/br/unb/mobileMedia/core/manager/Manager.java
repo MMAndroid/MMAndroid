@@ -73,7 +73,7 @@ public class Manager {
 
 		MediaExtractor extractor = new DefaultAudioExtractor(context);
 
-		List<Author> authors = extractor.processFiles(allMusics);
+		List<Author> authors = (List<Author>) extractor.processFiles(allMusics);
 
 		for(Author author: authors) {
 			AuthorDAO dao = DBFactory.factory(context).createAuthorDAO();
@@ -233,6 +233,21 @@ public class Manager {
 		DBFactory factory = DBFactory.factory(context);
 		final PlaylistDAO playlistDAO = factory.createPlaylistDAO();
 		playlistDAO.deletePlaylist(namePlaylist);
+	}
+	
+	/**
+	 * Add a geographical position to playlist
+	 * 
+	 * @param context the application context
+	 * @param playlist
+	 * @param latitude
+	 * @param longitude
+	 * @throws DBException
+	 */
+	public void addPositionPlaylist(Context context, Playlist playlist, double latitude, double longitude) throws DBException {
+		DBFactory factory = DBFactory.factory(context);
+		final PlaylistDAO playlistDAO = factory.createPlaylistDAO();
+		playlistDAO.addPositionPlaylist(playlist,latitude,longitude);
 	}
 	
 	/**

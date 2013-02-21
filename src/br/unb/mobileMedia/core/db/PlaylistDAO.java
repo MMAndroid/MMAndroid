@@ -92,6 +92,15 @@ public interface PlaylistDAO {
 	public void editPlaylist(Playlist editedPlaylist) throws DBException;
 	
 	/**
+	 * Add a geographical position a plalist.
+	 * @param Playlist  - a Playlist object containing the id from the playlist
+	 * @param latitude
+	 * @param longitude
+	 * @throws DBException if anything goes wrong with the database query
+	 */
+	public void addPositionPlaylist(Playlist Playlist, double latitude, double longitude) throws DBException;
+	
+	/**
 	 * Remove a list of medias from a playlist
 	 * @param idPlaylist - the id from the playlist which will be returned 
 	 * @param mediaList - list of medias to be removed

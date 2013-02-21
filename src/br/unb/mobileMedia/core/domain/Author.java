@@ -9,7 +9,7 @@ import java.util.List;
  * 
  * @author rbonifacio
  */
-public class Author {
+public class Author implements MultimediaRelated {
 
 	private Integer key; // this will be the database id
 	private Integer id;  // this is a <i>business</i> author id

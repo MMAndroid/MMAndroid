@@ -8,7 +8,7 @@ import java.net.URI;
  * 
  * @author rbonifacio
  */
-public abstract class MultimediaContent {
+public abstract class MultimediaContent implements MultimediaRelated {
 
 	protected Integer primaryKey; //this is the database id
 	protected Integer id;  //this is the <i>business</i> id 

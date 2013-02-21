@@ -1,5 +1,6 @@
 package br.unb.mobileMedia.core.view;
 
+import java.util.Iterator;
 import java.util.List;
 
 import br.unb.mobileMedia.R;
@@ -18,7 +19,10 @@ public class AuthorArrayAdapter extends ArrayAdapter<Author> {
 	public AuthorArrayAdapter(Context context, List<Author> authors) {
 		super(context, R.layout.video_row_layout);
 		this.context = context;
-		this.addAll(authors);
+		Iterator<Author> iterator = authors.iterator();
+		while (iterator.hasNext()) {
+			this.add(iterator.next());
+		}
 	}
 
 	@Override

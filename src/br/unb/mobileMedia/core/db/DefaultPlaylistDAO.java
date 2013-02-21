@@ -10,7 +10,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 import br.unb.mobileMedia.core.domain.Audio;
-import br.unb.mobileMedia.core.domain.Author;
 import br.unb.mobileMedia.core.domain.Playlist;
 
 /**
@@ -222,12 +221,113 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
 	}
 
 	public void editPlaylist(Playlist editedPlaylist) throws DBException {
-		// TODO Auto-generated method stub
+		
+		try {
+			db = dbHelper.getWritableDatabase();
+
+			Cursor cursor = db.rawQuery(DBConstants.SELECT_SIMPLE_PLAYLIST_BY_ID,
+					new String[] { "" + (editedPlaylist.getId()) });
+
+			if (cursor.getCount() != 0) {
+				// here we must save the new playlist name, since it exists.
+				//Update a Row in DBConstants.PLAYLIST_TABLE
+				ContentValues values = new ContentValues();
+				
+
+				values.put(DBConstants.PLAYLIST_NAME_COLUMN, editedPlaylist.getName());
+				values.put(DBConstants.PLAYLIST_ID_COLUMN, editedPlaylist.getId());
+
+				db.beginTransaction();
+				db.update(DBConstants.PLAYLIST_TABLE, values, DBConstants.PLAYLIST_ID_COLUMN + "=" + editedPlaylist.getId(), null);
+				db.setTransactionSuccessful();
+				
+				//Create a Row in DBConstants.TB_MEDIA_FROM_PLAYLIST
+				/*
+				 * 
+				 */
+			}
+//			else
+//				 TODO externalize the string to the xml file
+//				throw new Exception("Playlist already exists");
+		} catch (SQLiteException e) {
+			e.printStackTrace();
+			Log.e(DefaultPlaylistDAO.class.getCanonicalName(),
+					e.getLocalizedMessage());
+			throw new DBException();
+		} finally {
+			if (db.inTransaction()) {
+				db.endTransaction();
+			}
+			db.close();
+			dbHelper.close();
+		}
+		
+	}
+	
+	public void addPositionPlaylist(Playlist Playlist, double latitude, double longitude) throws DBException {
+		
+		try {
+			db = dbHelper.getWritableDatabase();
+
+			Cursor cursor = db.rawQuery(DBConstants.SELECT_SIMPLE_PLAYLIST_BY_ID,
+					new String[] { "" + (Playlist.getId()) });
+
+			if (cursor.getCount() != 0) {
+				//Delete a geographical position in PLAYLIST_LOCATION_TABLE			
+				db.beginTransaction();
+				db.delete(DBConstants.PLAYLIST_LOCATION_TABLE, DBConstants.PLAYLIST_LOCATION_FK_PLAYLIST + "=?", new String[] { "" + Playlist.getId() });
+				db.setTransactionSuccessful();
+			}
+
+		} catch (SQLiteException e) {
+			e.printStackTrace();
+			Log.e(DefaultPlaylistDAO.class.getCanonicalName(),
+					e.getLocalizedMessage());
+			throw new DBException();
+		} finally {
+			if (db.inTransaction()) {
+				db.endTransaction();
+			}
+			db.close();
+			dbHelper.close();
+		}
+		
+		try {
+			db = dbHelper.getWritableDatabase();
+
+			Cursor cursor = db.rawQuery(DBConstants.SELECT_SIMPLE_PLAYLIST_BY_ID,
+					new String[] { "" + (Playlist.getId()) });
+
+			if (cursor.getCount() != 0) {
+				//Add a geographical position in PLAYLIST_LOCATION_TABLE
+				ContentValues values = new ContentValues();
+
+				values.put(DBConstants.PLAYLIST_LOCATION_FK_PLAYLIST, Playlist.getId());
+				values.put(DBConstants.PLAYLIST_LOCATION_LATITUDE, latitude);
+				values.put(DBConstants.PLAYLIST_LOCATION_LONGITUDE, longitude);
+				
+				db.beginTransaction();
+				db.insert(DBConstants.PLAYLIST_LOCATION_TABLE, null, values);
+				db.setTransactionSuccessful();
+			}
+
+		} catch (SQLiteException e) {
+			e.printStackTrace();
+			Log.e(DefaultPlaylistDAO.class.getCanonicalName(),
+					e.getLocalizedMessage());
+			throw new DBException();
+		} finally {
+			if (db.inTransaction()) {
+				db.endTransaction();
+			}
+			db.close();
+			dbHelper.close();
+		}
 		
 	}
 	
 	public void removeMedias(int idPlaylist, List<Integer> mediaList) throws DBException {
-		// TODO Auto-generated method stub
+		
 		try {
 			db = dbHelper.getWritableDatabase();
 
@@ -239,7 +339,6 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
 			
 				stringIdPlaylist = String.valueOf(idPlaylist);
 				stringMusicId =  String.valueOf(musicID);
-				
 				db.beginTransaction();
 				db.delete(DBConstants.MEDIA_FROM_PLAYLIST_TABLE, DBConstants.MEDIA_FROM_PLAYLIST_FK_PLAYLIST + "=" +
 						stringIdPlaylist + " AND " + DBConstants.MEDIA_FROM_PLAYLIST_FK_MEDIA + "=" +

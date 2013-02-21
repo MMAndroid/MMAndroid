@@ -1,6 +1,7 @@
-package br.unb.mobileMedia.mm.view.video;
+package br.unb.mobileMedia.videoplayer.view.video;
 
 import java.io.File;
+import java.util.Iterator;
 import java.util.List;
 
 import br.unb.mobileMedia.R;
@@ -18,7 +19,10 @@ public class VideoFileArrayAdapter extends ArrayAdapter<File> {
 	public VideoFileArrayAdapter(Context context, List<File> values) {
 		super(context, R.layout.video_row_layout);
 		this.context = context;
-		this.addAll(values);
+		Iterator<File> iterator = values.iterator(); 
+		while (iterator.hasNext()) {
+			this.add(iterator.next());
+		}
 	}
 
 	@Override
@@ -27,11 +31,11 @@ public class VideoFileArrayAdapter extends ArrayAdapter<File> {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View rowView = inflater.inflate(R.layout.video_row_layout, parent,false);
 		TextView textView = (TextView) rowView.findViewById(R.id.txt_name);
-		TextView sizeView = (TextView) rowView.findViewById(R.id.txt_size);
+//		TextView sizeView = (TextView) rowView.findViewById(R.id.txt_size);
 
 		File file = getItem(position);
 		textView.setText(file.getName() + "");
-		sizeView.setText(file.getTotalSpace() + " bytes");
+//		sizeView.setText(file.getTotalSpace() + " bytes");
 
 		return rowView;
 	}

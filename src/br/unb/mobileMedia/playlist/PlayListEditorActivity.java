@@ -6,11 +6,10 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -66,7 +65,18 @@ public class PlayListEditorActivity extends Activity {
     	((Button)findViewById(R.id.btn_playPlaylist)).setOnClickListener(new View.OnClickListener(){     
 			
     		public void onClick(View v) {
-    			//startActivity(createIntentForMusicPlayer());
+    			
+    			//when button is clicked, the music list is send to player.
+    			
+    			List<Audio> listTmp = musicList;
+				Audio[] executionList = new Audio[listTmp.size()]; 
+				
+				listTmp.toArray(executionList);
+			
+				Intent startActivtyIntent = new Intent(getApplicationContext(), AudioPlayerActivity.class);
+				startActivtyIntent.putExtra(AudioPlayerActivity.EXECUTION_LIST, executionList);
+				startActivity(startActivtyIntent);		    				
+		    		
     			}
 			
     	});
@@ -75,7 +85,6 @@ public class PlayListEditorActivity extends Activity {
     	refreshListMusicLists();
 	}
 
-    
     private void refreshListMusicLists(){
 
 		//Update the List View
@@ -128,15 +137,15 @@ public class PlayListEditorActivity extends Activity {
 			ContextMenuInfo menuInfo) {
 		if (v.getId()==R.id.list_musiclist) {
 
+
 			menu.setHeaderTitle("Menu:");
-			String[] menuItems = getResources().getStringArray(R.array.menu_playlist);
+			String[] menuItems = getResources().getStringArray(R.array.menu_music);
 			for (int i = 0; i<menuItems.length; i++) {
 				menu.add(Menu.NONE, i, i, menuItems[i]);
 			}
 		}
 	}
 
-	
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 
@@ -144,45 +153,12 @@ public class PlayListEditorActivity extends Activity {
 		//Index number of the selected option from the context menu
 		int menuItemIndex = item.getItemId();
 
-		//Retrieve the name of all of the options from the context menu
-		/*
-      		String[] menuItems = getResources().getStringArray(R.array.menu_playlist);
-      		String menuItemName = menuItems[menuItemIndex];
-		 */
-
-		//Retrieve the playlist name that we will be working on...
-			//String listItemName = names[info.position];
 		List<Integer> song = new ArrayList<Integer>();		
 		song.add(musicList.get(info.position).getId());
-		/*
-		 * 
-		 * NEEDS REFACTORING!!!
-		 * 
-		 */
 
 
-		//Option - EDIT
-		if(menuItemIndex == 0 ){
-			/*
-			// TODO Get newName
-			String newName = "";
-
-			// TODO set the playlist id
-			// playlist with new values
-			Playlist editedPlaylist = new Playlist(newName);
-
-			try {
-				Manager.instance().editPlaylist(this, editedPlaylist);
-			} catch (DBException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			 */
-			refreshListMusicLists ();
-
-		}
 		//Option - REMOVE
-		if(menuItemIndex == 1){
+		if(menuItemIndex == 0){
 			
 			
 			

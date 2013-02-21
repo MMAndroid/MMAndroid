@@ -53,7 +53,7 @@ public class AuthorListActivity extends ListActivity {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		Author item = (Author) getListAdapter().getItem(position);
 		Intent intent = new Intent(getApplicationContext(), AudioExpandableListActivity.class);
-		intent.putExtra(AudioExpandableListActivity.SELECTED_ARTIST_ID, item.getKey()); //this makes available the primary key of the author
+		intent.putExtra(AudioExpandableListActivity.SELECTED_ARTIST_ID, item.getId()); //this makes available the primary key of the author
 		intent.putExtra(AudioExpandableListActivity.SELECTED_ARTIST_NAME, item.getName());
 		startActivity(intent);	
 	}
