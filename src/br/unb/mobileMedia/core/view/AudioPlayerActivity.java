@@ -82,18 +82,20 @@ public class AudioPlayerActivity extends Activity {
 
 	private Audio[] refreshAudioList() {
 		Parcelable[] ps = getIntent().getParcelableArrayExtra(EXECUTION_LIST);
+		if (ps != null){
+			Audio[] executionList = new Audio[ps.length];
 
-		Audio[] executionList = new Audio[ps.length];
+			for (int i = 0; i < ps.length; i++) {
+				executionList[i] = (Audio) ps[i];
+			}
 
-		for (int i = 0; i < ps.length; i++) {
-			executionList[i] = (Audio) ps[i];
+			ListView listView = (ListView) findViewById(R.id.list_audio_player);
+
+			listView.setAdapter(new AudioPlayerArrayAdapter(getApplicationContext(), executionList));
+			listView.setItemChecked(0, true);
+			return executionList;
 		}
-
-		ListView listView = (ListView) findViewById(R.id.list_audio_player);
-
-		listView.setAdapter(new AudioPlayerArrayAdapter(getApplicationContext(), executionList));
-		listView.setItemChecked(0, true);
-		return executionList;
+		return new Audio[0];
 	}
 
 	@Override

@@ -7,8 +7,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
+import br.unb.mobileMedia.core.audioPlayer.AudioPlayerList;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.manager.Manager;
+import br.unb.mobileMedia.core.view.AudioPlayerActivity;
 import br.unb.mobileMedia.core.view.AuthorListActivity;
 import br.unb.mobileMedia.core.view.ShareListActivity;
 import br.unb.mobileMedia.playlist.MainPlaylistListActivity;
@@ -42,12 +44,12 @@ public class MMUnBActivity extends Activity {
 			}
 		});
     	
-//    	((Button)findViewById(R.id.btn_media_list)).setOnClickListener(new OnClickListener() {
-//			public void onClick(View v) {
-//				Intent startActivtyIntent = new Intent(getApplicationContext(), VideoListActivity.class);
-//				startActivity(startActivtyIntent);
-//			}
-//		});
+    	((Button)findViewById(R.id.btn_media_list)).setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				Intent startActivtyIntent = new Intent(getApplicationContext(), AudioPlayerActivity.class);
+				startActivity(startActivtyIntent);
+			}
+		});
     	
     	((Button)findViewById(R.id.btn_play_list)).setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {

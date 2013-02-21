@@ -44,6 +44,10 @@
             android:label="@string/title_activity_audio_player" >
         </activity>
         <activity
+            android:name=".core.view.AudioSelectActivity"
+            android:label="@string/title_activity_select_activity" >
+        </activity>
+        <activity
             android:name=".playlist.PlayListEditorActivity"
             android:label="@string/title_activity_playlist_editor" >
             <intent-filter>
