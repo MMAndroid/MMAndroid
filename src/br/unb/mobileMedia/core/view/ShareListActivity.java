@@ -94,6 +94,11 @@ public class ShareListActivity extends Activity{
 			// TODO Auto-generated method stub
 			
 		}
+
+		public void onBack() {
+			// TODO Auto-generated method stub
+			
+		}
 		
 	}
 	
