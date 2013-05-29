@@ -19,7 +19,7 @@ public interface PlaylistDAO {
 	 * @param playlist - the playlist that will be persisted. 
 	 * @throws DBException if anything goes wrong with the database query
 	 */
-	public void newPlaylist(Playlist playlist) throws DBException;
+	void newPlaylist(Playlist playlist) throws DBException;
 	
 	/**
 	 * Add a list of medias to a playlist
@@ -27,21 +27,21 @@ public interface PlaylistDAO {
 	 * @param mediaList - list of id's from the medias that will be added to the playlist
 	 * @throws DBException if anything goes wrong with the database query
 	 */
-	public void addToPlaylist(int playlistId, List<Integer> mediaList) throws DBException; 
+	void addToPlaylist(int playlistId, List<Integer> mediaList) throws DBException; 
 	
 	/**
 	 * List all playlists from the MMUnB database.
 	 * @return list of playlists.
 	 * @throws DBException if anything goes wrong with the database query
 	 */
-	public List<Playlist> listPlaylists() throws DBException;
+	List<Playlist> listPlaylists() throws DBException;
 	
 	/**
 	 * List all playlists from the MMUnB database. The playlist returned do not have any media
 	 * @return list of playlists.
 	 * @throws DBException if anything goes wrong with the database query
 	 */
-	public List<Playlist> listSimplePlaylists() throws DBException;
+	List<Playlist> listSimplePlaylists() throws DBException;
 	
 	/**
 	 * Get a playlist by id. The playlist returned do not have any media 
@@ -49,7 +49,7 @@ public interface PlaylistDAO {
 	 * @return a playlist.
 	 * @throws DBException if anything goes wrong with the database query
 	 */
-	public Playlist getSimplePlaylist(int idPlaylist) throws DBException;
+	Playlist getSimplePlaylist(int idPlaylist) throws DBException;
 	
 	/**
 	 * Get a playlist by name. The playlist returned do not have any media
@@ -57,7 +57,7 @@ public interface PlaylistDAO {
 	 * @return a playlist.
 	 * @throws DBException if anything goes wrong with the database query
 	 */
-	public Playlist getSimplePlaylist(String name) throws DBException;
+	Playlist getSimplePlaylist(String name) throws DBException;
 	
 	/**
 	 * Get a playlist by id. 
@@ -65,7 +65,7 @@ public interface PlaylistDAO {
 	 * @return a playlist.
 	 * @throws DBException if anything goes wrong with the database query
 	 */
-	public Playlist getPlaylist(int idPlaylist) throws DBException;
+	Playlist getPlaylist(int idPlaylist) throws DBException;
 	
 	/**
 	 * Get a playlist by name.
@@ -73,7 +73,7 @@ public interface PlaylistDAO {
 	 * @return a playlist.
 	 * @throws DBException if anything goes wrong with the database query
 	 */
-	public Playlist getPlaylist(String name) throws DBException;
+	Playlist getPlaylist(String name) throws DBException;
 
 	
 	/**
@@ -81,7 +81,7 @@ public interface PlaylistDAO {
 	 * @param namePlaylist - the name from the playlist which will be deleted 
 	 * @throws DBException if anything goes wrong with the database query
 	 */
-	public void deletePlaylist(String namePlaylist) throws DBException;
+	void deletePlaylist(String namePlaylist) throws DBException;
 	
 	/**
 	 * Edit a playlist by id.
@@ -89,7 +89,7 @@ public interface PlaylistDAO {
 	 * to be edited and the other fields with the new values
 	 * @throws DBException if anything goes wrong with the database query
 	 */
-	public void editPlaylist(Playlist editedPlaylist) throws DBException;
+	void editPlaylist(Playlist editedPlaylist) throws DBException;
 	
 	/**
 	 * Add a geographical position a plalist.
@@ -98,7 +98,7 @@ public interface PlaylistDAO {
 	 * @param longitude
 	 * @throws DBException if anything goes wrong with the database query
 	 */
-	public void addPositionPlaylist(Playlist Playlist, double latitude, double longitude) throws DBException;
+	void addPositionPlaylist(Playlist playlist, double latitude, double longitude) throws DBException;
 	
 	/**
 	 * Remove a list of medias from a playlist
@@ -106,7 +106,7 @@ public interface PlaylistDAO {
 	 * @param mediaList - list of medias to be removed
 	 * @throws DBException if anything goes wrong with the database query
 	 */
-	public void removeMedias(int idPlaylist, List<Integer> mediaList) throws DBException;
+	void removeMedias(int idPlaylist, List<Integer> mediaList) throws DBException;
 	
 	
 	/**
@@ -114,5 +114,5 @@ public interface PlaylistDAO {
 	 * @param idPlaylist - the id from the playlist which contains the list of musics
 	 * @throws DBException if anything goes wrong with the database query
 	 */
-	public List<Audio> getMusicFromPlaylist(int idPlaylist) throws DBException;
+	List<Audio> getMusicFromPlaylist(int idPlaylist) throws DBException;
 }
