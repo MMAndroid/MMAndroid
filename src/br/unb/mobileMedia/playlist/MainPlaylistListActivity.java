@@ -4,9 +4,15 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -17,19 +23,61 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.domain.Playlist;
 import br.unb.mobileMedia.core.manager.Manager;
 
+import android.app.DialogFragment;
+
 /**
  * The main activity of the playlist feature.
- * 
+ 
  * @author willian
+ * <remarks>
+/// | Procedimento: onContextItemSelected(MenuItem item)
+/// | Funcionalidade: Add geographical position - adiciona coordenada geografica.
+/// 
+/// | Criada em: 
+/// | Criada por: willian
+/// | 
+/// | Alterada em: 21/05/2013
+/// | Alterada por: Rogério - MPCA/UNB
+/// | Motivo da Alteracao: 1º Classe StubGPS retorna coordenadas fixas./2º Criação de método de alerta para refatoração/ 3º Criação de metódos de verificação de ativação do GPS
+/// </remarks>
  */
+
+/// <summary>
+/// Activity Playlist.
+/// </summary>
+
+/// <remarks>
+/// | Procedimento: onContextItemSelected(MenuItem item)
+/// | Funcionalidade: Add geographical position - adiciona coordenada geografica.
+/// 
+/// | Criada em: 
+/// | Criada por: willian
+/// | 
+/// | Alterada em: 21/05/2013
+/// | Alterada por: Rogério
+/// | Motivo da Alteracao: 1º Classe StubGPS retorna coordenadas fixas./ Criação de método de alerta para refatoração
+/// </remarks>
+/// 
+///<param name=''></param>
+/// <returns>
+/// </returns>
 
 // TODO change the extends from MainPlaylistListActivity from Activity to ListActivity
 public class MainPlaylistListActivity extends Activity {
+	
+	//Rogério
+	
+	 private Double Latitude;
+	 private Double Longitude;
+	
+	
 
 	//Store the Playlists names to display in the ListView
 	private String names[];
@@ -135,6 +183,7 @@ public class MainPlaylistListActivity extends Activity {
 		//Retrieve the playlist name that we will be working on...
 		final String listItemName = names[info.position];
 
+		
 		/*
 		 * 
 		 * NEEDS REFACTORING!!!
@@ -206,15 +255,36 @@ public class MainPlaylistListActivity extends Activity {
 		//Add geographical position
 		if(menuItemIndex == 2 ){
 			
-			
 			Playlist playlist = null;
-			StubGPS location = new StubGPS();
 			
 			try {
 				playlist = Manager.instance().getSimplePlaylist(MainPlaylistListActivity.this, listItemName);
 				// playlist with new values
-				
-				Manager.instance().addPositionPlaylist(this, playlist, location.getLatitude(), location.getLongitude());
+				/*
+				 * Método substituído.
+				 * Para recuperar a coordenada ele acessava o método location da classe StubGPS.
+				 * Esse método retornava valores estáticos para as coordenadas Latitude e Logitude
+				 Manager.instance().addPositionPlaylist(this, playlist, location.getLatitude(), location.getLongitude());
+				*/
+				/*
+				 * Agora com a nova implemntação ele chama antes o método CapturaCoordenada(),
+				 * que captura as coordenadas do smartphone retornando a Latitude e Longitude.
+				 * Além disso foi criado um novo método para retornar uma mensagem de alerta e para verificar se o GPS está ativo ou não!,
+				 * informando ao usuário que a coordenada foi adicionada ao PlayList
+				 */
+				String provider = Settings.Secure.getString(getContentResolver(),
+				Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+					
+					if(!provider.contains("gps"))
+						{
+							VerificaGPSAtivo();						
+					}
+					else{
+							CapturaCoordenada();
+						    Manager.instance().addPositionPlaylist(this, playlist, Latitude ,Longitude );
+						    MensagemAlerta("Coordenada Adicionada", "As coordenadas " + Latitude+","  + Latitude + "  foram adicionadas.");
+					}
+		
 			} catch (DBException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -288,6 +358,91 @@ public class MainPlaylistListActivity extends Activity {
 		
 		
 
+	}
+	
+	public void CapturaCoordenada()
+	{
+		MMUNB_GPS GPS = new MMUNB_GPS(); 
+		LocationManager LM = null; 
+			   
+			
+		LM = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		String bestProvider = null;
+		
+		if (LM != null)
+			bestProvider = LM.getBestProvider(new Criteria(), true);
+							
+		if (GPS != null)
+			
+		   //atualiza a cada 0 minutos e 0 metros
+			LM.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,0, GPS);
+
+		Location l = null;
+		if (bestProvider != null)
+			l = LM.getLastKnownLocation(bestProvider);
+		if (l != null) {
+			
+			 Latitude= l.getLatitude();
+			 Longitude =l.getLongitude();
+		
+		} else {
+			 Latitude=null;
+		     Longitude =null;
+		}
+			
+	}
+	
+	public void VerificaGPSAtivo()
+	{
+		String provider = Settings.Secure.getString(getContentResolver(),
+		Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+											
+		LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
+		// Verifica se o GPS está ativo
+		boolean enabled = service.isProviderEnabled(LocationManager.GPS_PROVIDER);
+		// Caso não esteja ativo abre um novo diálogo com as configurações para.
+		// realizar se ativamento0.
+		if (!enabled) {
+			CaixaDialogo();
+         }
+
+	}
+	
+	public void MensagemAlerta(String TituloAlerta,String MensagemAlerta )
+	{
+		   AlertDialog.Builder Mensagem = new AlertDialog.Builder(MainPlaylistListActivity.this);
+		   Mensagem.setTitle(TituloAlerta);
+		   Mensagem.setMessage(MensagemAlerta);
+		   Mensagem.setNeutralButton("OK",null); 
+		   Mensagem.show();
+		  
+				   
+	}
+	
+	public void CaixaDialogo()
+	{
+		 AlertDialog.Builder builder = new AlertDialog.Builder(this);     
+	        builder.setMessage("GPS desativado! Deseja ativá-lo?")            
+	        .setCancelable(false)        
+	        .setIcon(android.R.drawable.ic_dialog_alert) // ícone de alerta
+	        .setTitle("Atenção:") //título do caixa de diálogo
+	                 
+	        //Evento disparado se clicar no botão Sim
+	        .setPositiveButton("Sim", new DialogInterface.OnClickListener() {               
+	            public void onClick(DialogInterface dialog, int id) {                     
+	            	  Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                      startActivity(intent);  
+	            }            
+	        })            
+	   
+	        //Event disparado se clicar no botão Não
+	        .setNegativeButton("Não", new DialogInterface.OnClickListener() {                
+	            public void onClick(DialogInterface dialog, int id) {                     
+	                dialog.cancel(); //Cancela a caixa de diálogo e volta a tela anterior
+	            }            
+	        });     
+	        AlertDialog alert = builder.create();     
+	        alert.show(); //Chama a caixa de diálogo
 	}
 
 }
