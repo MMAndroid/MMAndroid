@@ -92,8 +92,9 @@ public class PlayListEditorActivity extends Activity {
 		registerForContextMenu(listMusicLists);
 		try {
 			playlist = Manager.instance().getSimplePlaylist(this,playListId);
-			if(playlist!=null)
+			if(playlist!=null){
 				musicList = Manager.instance().getMusicFromPlaylist(this, playListId);
+			}
 			
 			
 			//String[] names;
