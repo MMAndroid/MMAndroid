@@ -1,7 +1,17 @@
-# Diretorio BIN pode ser ignorado
-./bin
+# built application files
+*.apk
+*.ap_
 
-# Java byte code
+# files for the dex VM
+*.dex
 
+# Java class files
 *.class
+
+# generated files
+bin/
+gen/
+
+# Local configuration file (sdk path, etc)
+local.properties
 

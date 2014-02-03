@@ -7,14 +7,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
-import br.unb.mobileMedia.core.audioPlayer.AudioPlayerList;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.manager.Manager;
 import br.unb.mobileMedia.core.view.AudioPlayerActivity;
 import br.unb.mobileMedia.core.view.AuthorListActivity;
 import br.unb.mobileMedia.core.view.ShareListActivity;
 import br.unb.mobileMedia.playlist.MainPlaylistListActivity;
-import br.unb.mobileMedia.videoplayer.view.video.VideoListActivity;
 
 /**
  * The main activity of the MMUnB project.
