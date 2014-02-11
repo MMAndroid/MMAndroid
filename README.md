@@ -39,4 +39,8 @@ tais fotos foram tiradas nesse evento, etc.
 
 * ...
 
- 
+
+Para colaboradores
+===========================
+
+* Veja diagramas UML em /docs
