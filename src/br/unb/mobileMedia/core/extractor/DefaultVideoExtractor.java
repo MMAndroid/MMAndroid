@@ -3,13 +3,17 @@ package br.unb.mobileMedia.core.extractor;
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.content.Context;
-import android.database.Cursor;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.util.Log;
+import br.unb.mobileMedia.core.domain.Audio;
+import br.unb.mobileMedia.core.domain.Author;
 import br.unb.mobileMedia.core.domain.Video;
 
 /**
@@ -19,7 +23,7 @@ import br.unb.mobileMedia.core.domain.Video;
  */
 public class DefaultVideoExtractor implements MediaExtractor {
 	
-//	private static final String UNKNOWN = "Unknown";
+	private static final String UNKNOWN = "Unknown";
 
 	private static final String PROJECTION[] = {
 		android.provider.MediaStore.Video.Media._ID,
@@ -46,48 +50,51 @@ public class DefaultVideoExtractor implements MediaExtractor {
 	/**
 	 * @see MediaExtractor#processFile(File[])
 	 */
-	public List<Video> processFiles(List<File> videoFiles) {
-		List<Video> videos = new ArrayList<Video>();
+	public List<Author> processFiles(List<File> videoFiles) {
+		Map<Integer, Author> authors = new HashMap<Integer, Author>();
 
-		msc = createMediaScanner(videoFiles);
-		
-		Uri uri = android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI; 
-		
-		Cursor cursor = context.getContentResolver().query(uri, PROJECTION, null, null, null);
-		
-		int i = 0;
-		
-		if(cursor.getCount() > 0 && cursor.moveToFirst()) {
-			do{
-				Integer _id = cursor.getInt(0);
-				String title = cursor.getString(1);
-//				String album = cursor.getString(2) == null || cursor.getString(2).equals("") ? UNKNOWN :  cursor.getString(2);
-//				String author = cursor.getString(3) == null || cursor.getString(3).equals("") ? UNKNOWN :  cursor.getString(3);
-				
-				URI u =  videoFiles.get(i++).getAbsoluteFile().toURI();
-				
-				Log.i("URI: ", u.toASCIIString());
-				
-				videos.add(new Video(_id, title, u));
-			} while(cursor.moveToNext());
+		MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+
+		Log.i("Video files to process: ", String.valueOf(videoFiles.size()));
+		for(File file: videoFiles){
+
+			URI u =  file.getAbsoluteFile().toURI();
+
+			Log.i("URI: ", u.getPath());
+
+			mmr.setDataSource(u.getPath());
+
+			String authorName = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
+			authorName = authorName == null || authorName.equals("") ? UNKNOWN : authorName;
+
+			Integer authorId = authorName.hashCode();
+
+			String title = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
+			title = title == null || title.equals("") ? UNKNOWN : title;
+
+			String titleKey = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
+			titleKey = titleKey == null || titleKey.equals("") ? UNKNOWN : titleKey;
+
+			String album = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM);
+			album = album == null || album.equals("") ? UNKNOWN : album;
+
+			Log.i("authorId: ", String.valueOf(authorId));
+			Log.i("authorName: ", authorName);
+			Log.i("title: ", title);
+			Log.i("titleKey: ", titleKey);
+			Log.i("album: ", album);
+
+			Author author = authors.get(authorId);
+
+			if(author == null) {
+				author = new  Author(authorId.hashCode(), authorName);
+			}
+
+			author.addProduction(new Audio(titleKey.hashCode(), title, u, album));
+
+			authors.put(author.getId(), author);
 		}
-		return videos;
+		return new ArrayList<Author>(authors.values());
 	}
 
-	private MediaScannerConnection createMediaScanner(final List<File> videoFiles) {
-		return new MediaScannerConnection(context,
-				new MediaScannerConnection.MediaScannerConnectionClient() {
-					public void onScanCompleted(String path, Uri uri) {
-						msc.disconnect();
-					}
-
-					public void onMediaScannerConnected() {
-						for (final File file : videoFiles) {
-							mp4File = file;
-							msc.scanFile(mp4File.getAbsolutePath(), null);
-
-						}
-					}
-				});
-	}
 }

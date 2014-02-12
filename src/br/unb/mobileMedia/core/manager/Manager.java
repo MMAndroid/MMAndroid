@@ -23,7 +23,10 @@ import br.unb.mobileMedia.core.domain.AudioFormats;
 import br.unb.mobileMedia.core.domain.Author;
 import br.unb.mobileMedia.core.domain.MultimediaContent;
 import br.unb.mobileMedia.core.domain.Playlist;
+import br.unb.mobileMedia.core.domain.Video;
+import br.unb.mobileMedia.core.domain.VideoFormats;
 import br.unb.mobileMedia.core.extractor.DefaultAudioExtractor;
+import br.unb.mobileMedia.core.extractor.DefaultVideoExtractor;
 import br.unb.mobileMedia.core.extractor.MediaExtractor;
 import br.unb.mobileMedia.util.FileUtility;
 
@@ -54,6 +57,7 @@ public class Manager {
 		}
 		return instance;
 	}
+
 	/**
 	 * Updates the MMUnB database with the existing MP3s files 
 	 * in the SDCARD.
@@ -63,6 +67,39 @@ public class Manager {
 	 * @param context the application context.
 	 */
 	public void synchronizeMedia(Context context) throws DBException {
+		sync_audio(context);
+
+		sync_video(context);
+	}
+
+	private void sync_video(Context context) throws DBException{
+		final List<File> allVideos = new ArrayList<File>();
+
+		for(VideoFormats format : VideoFormats.values()) {
+			allVideos.addAll(FileUtility.listFiles(new File(Environment
+					.getExternalStorageDirectory().getPath() + "/Movies/"),
+					format.getFormatAsString()));
+		}
+		MediaExtractor extractor = new DefaultVideoExtractor(context);
+
+		List<Author> authors = (List<Author>) extractor.processFiles(allVideos);
+
+		for(Author author: authors) {
+			AuthorDAO dao = DBFactory.factory(context).createAuthorDAO();
+			dao.saveAuthor(author);
+			List<Video> production = new ArrayList<Video>();
+			for(int i = 0; i < author.sizeOfProduction(); i++) {
+				MultimediaContent c = author.getContentAt(i);
+				if (c instanceof Video) {
+					production.add((Video) c);
+				}
+			}
+			dao.saveAuthorProductionVideo(author, production);
+		}
+
+	}
+
+	private void sync_audio(Context context) throws DBException {
 		final List<File> allMusics = new ArrayList<File>();
 
 		for(AudioFormats format : AudioFormats.values()) {
@@ -77,17 +114,10 @@ public class Manager {
 
 		for(Author author: authors) {
 			AuthorDAO dao = DBFactory.factory(context).createAuthorDAO();
-
 			dao.saveAuthor(author);
-
-			// TODO: we must generalize this code, since it only works for 
-			// MP3 and M4A files.
-
 			List<Audio> production = new ArrayList<Audio>();
-
 			for(int i = 0; i < author.sizeOfProduction(); i++) {
 				MultimediaContent c = author.getContentAt(i);
-
 				if (c instanceof Audio) {
 					production.add((Audio) c);
 				}

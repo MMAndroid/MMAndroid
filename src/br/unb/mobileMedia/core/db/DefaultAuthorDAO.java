@@ -19,6 +19,7 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Author;
+import br.unb.mobileMedia.core.domain.Video;
 import br.unb.mobileMedia.core.manager.Manager;
 import br.unb.mobileMedia.util.MMConstants;
 
@@ -380,6 +381,14 @@ public class DefaultAuthorDAO implements AuthorDAO {
 		Author author = new Author(id, name);
 		author.setKey(key);
 		return author;
+	}
+
+	public void saveAuthorProductionVideo(Author author, List<Video> video)
+			throws DBException {
+		// TODO Auto-generated method stub
+		Log.i(DefaultAuthorDAO.class.getCanonicalName(), 
+				"TODO: implement saveAuthorProductionVideo");
+		
 	}
 
 }
