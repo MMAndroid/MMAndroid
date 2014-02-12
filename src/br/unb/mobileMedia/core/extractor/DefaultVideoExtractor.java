@@ -89,8 +89,8 @@ public class DefaultVideoExtractor implements MediaExtractor {
 			if(author == null) {
 				author = new  Author(authorId.hashCode(), authorName);
 			}
-
-			author.addProduction(new Audio(titleKey.hashCode(), title, u, album));
+			Integer id = titleKey.hashCode();
+			author.addProduction(new Video(id, id, album, u));
 
 			authors.put(author.getId(), author);
 		}

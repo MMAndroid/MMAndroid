@@ -17,6 +17,7 @@ import android.util.Log;
 import br.unb.mobileMedia.core.db.AuthorDAO;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.db.DBFactory;
+import br.unb.mobileMedia.core.db.DefaultAuthorDAO;
 import br.unb.mobileMedia.core.db.PlaylistDAO;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.AudioFormats;
@@ -87,14 +88,15 @@ public class Manager {
 		for(Author author: authors) {
 			AuthorDAO dao = DBFactory.factory(context).createAuthorDAO();
 			dao.saveAuthor(author);
-			List<Video> production = new ArrayList<Video>();
+			List<MultimediaContent> production = new ArrayList<MultimediaContent>();
 			for(int i = 0; i < author.sizeOfProduction(); i++) {
 				MultimediaContent c = author.getContentAt(i);
 				if (c instanceof Video) {
 					production.add((Video) c);
+					Log.i(Manager.class.getCanonicalName(), c + " added");
 				}
 			}
-			dao.saveAuthorProductionVideo(author, production);
+			dao.saveAuthorProduction(author, production);
 		}
 
 	}
@@ -115,11 +117,12 @@ public class Manager {
 		for(Author author: authors) {
 			AuthorDAO dao = DBFactory.factory(context).createAuthorDAO();
 			dao.saveAuthor(author);
-			List<Audio> production = new ArrayList<Audio>();
+			List<MultimediaContent> production = new ArrayList<MultimediaContent>();
 			for(int i = 0; i < author.sizeOfProduction(); i++) {
 				MultimediaContent c = author.getContentAt(i);
 				if (c instanceof Audio) {
 					production.add((Audio) c);
+					Log.i(Manager.class.getCanonicalName(), c + " added");
 				}
 			}
 			dao.saveAuthorProduction(author, production);

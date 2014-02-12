@@ -6,7 +6,7 @@ import java.util.Map;
 
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Author;
-import br.unb.mobileMedia.core.domain.Video;
+import br.unb.mobileMedia.core.domain.MultimediaContent;
 
 /**
  * A Data Access Object for handling the persistence 
@@ -24,18 +24,11 @@ public interface AuthorDAO {
 	public void saveAuthor(Author author) throws DBException;
 	
 	/**
-	 * Persist an audio media and relates it to author in the database
+	 * Persist an media and relates it to author in the database
 	 * @param author the author
-	 * @param audio the audio media that will be saved
+	 * @param audio the media that will be saved
 	 */
-	public void saveAuthorProduction(Author author, List<Audio> audio) throws DBException;
-	
-	/**
-	 * Persist an video media and relates it to author in the database
-	 * @param author the author
-	 * @param video the video media that will be saved
-	 */
-	public void saveAuthorProductionVideo(Author author, List<Video> video) throws DBException;
+	public void saveAuthorProduction(Author author, List<MultimediaContent> listOfMedia) throws DBException;
 	
 	/**
 	 * List all authors of the MMUnB database.
