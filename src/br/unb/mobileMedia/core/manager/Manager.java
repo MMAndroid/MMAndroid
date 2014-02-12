@@ -85,19 +85,7 @@ public class Manager {
 
 		List<Author> authors = (List<Author>) extractor.processFiles(allVideos);
 
-		for(Author author: authors) {
-			AuthorDAO dao = DBFactory.factory(context).createAuthorDAO();
-			dao.saveAuthor(author);
-			List<MultimediaContent> production = new ArrayList<MultimediaContent>();
-			for(int i = 0; i < author.sizeOfProduction(); i++) {
-				MultimediaContent c = author.getContentAt(i);
-				if (c instanceof Video) {
-					production.add((Video) c);
-					Log.i(Manager.class.getCanonicalName(), c + " added");
-				}
-			}
-			dao.saveAuthorProduction(author, production);
-		}
+		saveAuthor(context, authors);
 
 	}
 
@@ -114,16 +102,18 @@ public class Manager {
 
 		List<Author> authors = (List<Author>) extractor.processFiles(allMusics);
 
+		saveAuthor(context, authors);
+	}
+
+	private void saveAuthor(Context context, List<Author> authors) throws DBException {
 		for(Author author: authors) {
 			AuthorDAO dao = DBFactory.factory(context).createAuthorDAO();
 			dao.saveAuthor(author);
 			List<MultimediaContent> production = new ArrayList<MultimediaContent>();
 			for(int i = 0; i < author.sizeOfProduction(); i++) {
 				MultimediaContent c = author.getContentAt(i);
-				if (c instanceof Audio) {
-					production.add((Audio) c);
-					Log.i(Manager.class.getCanonicalName(), c + " added");
-				}
+				production.add(c);
+				Log.i(Manager.class.getCanonicalName(), c + " added");
 			}
 			dao.saveAuthorProduction(author, production);
 		}
