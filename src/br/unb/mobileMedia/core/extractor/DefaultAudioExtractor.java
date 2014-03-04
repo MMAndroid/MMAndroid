@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.media.MediaScannerConnection;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.util.Log;
 import br.unb.mobileMedia.core.domain.Audio;
@@ -24,13 +24,6 @@ public class DefaultAudioExtractor implements MediaExtractor {
 	
 	private static final String UNKNOWN = "Unknown";
 
-	private static final String PROJECTION[] = {
-		android.provider.MediaStore.Audio.Media.ARTIST_ID,
-		android.provider.MediaStore.Audio.Media.ARTIST, 
-		android.provider.MediaStore.Audio.Media.TITLE,
-		android.provider.MediaStore.Audio.Media.TITLE_KEY,
-		android.provider.MediaStore.Audio.Media.ALBUM};
-	
 	private File mp3File;
 	private MediaScannerConnection msc;
 	private Context context;
@@ -53,36 +46,46 @@ public class DefaultAudioExtractor implements MediaExtractor {
 	public List<Author> processFiles(List<File> audioFiles) {
 		Map<Integer, Author> authors = new HashMap<Integer, Author>();
 
-		msc = createMediaScanner(audioFiles);
-		
-		Uri uri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI; 
-		
-		Cursor cursor = context.getContentResolver().query(uri, PROJECTION, null, null, null);
-		
-		int i = 0;
-		
-		if(cursor.getCount() > 0 && cursor.moveToFirst()) {
-			do{
-				Integer authorId = cursor.getInt(0);
-				String authorName = cursor.getString(1);
-				String title = cursor.getString(2);
-				String titleKey = cursor.getString(3);
-				String album = cursor.getString(4) == null || cursor.getString(4).equals("") ? UNKNOWN :  cursor.getString(4);
-				
-				Author author = authors.get(authorId);
-				
-				if(author == null) {
-					author = new  Author(authorId.hashCode(), authorName);
-				}
-				
-				URI u =  audioFiles.get(i++).getAbsoluteFile().toURI();
-				
-				Log.i("URI: ", u.toASCIIString());
-				
-				author.addProduction(new Audio(titleKey.hashCode(), title, u, album));
-				
-				authors.put(author.getId(), author);
-			} while(cursor.moveToNext());
+		MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+
+		Log.i("Files to process: ", String.valueOf(audioFiles.size()));
+		for(File file: audioFiles){
+
+	       URI u =  file.getAbsoluteFile().toURI();
+	       
+	       Log.i("URI: ", u.getPath());
+	       
+	       mmr.setDataSource(u.getPath());
+	       
+	       String authorName = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST); 
+	       authorName = authorName == null || authorName.equals("") ? UNKNOWN : authorName;
+	       
+	       Integer authorId = authorName.hashCode();
+	       
+	       String title = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
+	       title = title == null || title.equals("") ? UNKNOWN : title;
+	       
+	       String titleKey = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
+	       titleKey = titleKey == null || titleKey.equals("") ? UNKNOWN : titleKey;
+	       
+	       String album = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM); //cursor.
+	       album = album == null || album.equals("") ? UNKNOWN : album;
+	       
+	       Log.i("authorId: ", String.valueOf(authorId));
+		   Log.i("authorName: ", authorName);
+		   Log.i("title: ", title);
+		   Log.i("titleKey: ", titleKey);
+		   Log.i("album: ", album);
+
+		   Author author = authors.get(authorId);
+		   
+		   if(author == null) {
+			   author = new  Author(authorId.hashCode(), authorName);
+		   }
+		   
+		   author.addProduction(new Audio(titleKey.hashCode(), title, u, album));
+		   
+		   authors.put(author.getId(), author);
 		}
 		return new ArrayList<Author>(authors.values());
 	}
