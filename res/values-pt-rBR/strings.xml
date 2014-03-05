@@ -1,0 +1,34 @@
+<resources>
+
+    <string name="hello">Hello World, MMUnBActivity!</string>
+    <string name="app_name">MMUnB</string>
+    <string name="btn_list_authors">Artistas</string>
+    <string name="btn_media">Mídia</string>
+    <string name="btn_media_list">Abrir Music Player</string>
+    <string name="btn_exit">Sair</string>
+    <string name="lb_select_media">Selecione um vídeo</string>
+    <string name="lb_instruction">selecione um vídeo para reproduzir</string>
+    <string name="btn_play_list">Playlists</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Configurações</string>
+    <string name="title_activity_play_list">PlayListActivity</string>
+    <string name="btn_addMusiclist">Inserir Musica</string>
+    <string name="btn_addPlaylist">Adicionar uma nova playlist</string>
+    <string name="btn_share">Compartilhar</string>
+    <string name="btn_synchronize">Sincronizar</string>
+    <string name="title_activity_author_list">AuthorListActivity</string>
+    <string name="title_activity_audio_table">AudioTableActivity</string>
+    <string name="title_activity_audio_player">AudioPlayerActivity</string>
+    <string name="message_synchronization_finished">O conteúdo do banco de dados foi sincronizado</string>
+    <string name="title_activity_playlist_editor">PlaylistEditorActivity</string>
+    <string name="title_activity_music_select">MusicSelectActivity</string>
+    <string name="btn_PlayPlaylist">Tocar Playlist</string>
+    <string name="ff">FF</string>
+    <string name="re">RE</string>
+    <string name="add_a_music">Adicionar uma música</string>
+    <string name="btn_top_artists">Top artistas</string>
+    <string name="btn_top_songs">Top músicas</string>
+    <string name="btn_share_app">Compartilhar app</string>
+    <string name="title_activity_share_list">Compartilhar</string>
+    <string name="title_activity_select_activity">AudioSelectActivity</string>
+</resources>
