@@ -1,105 +1,67 @@
 package br.unb.mobileMedia;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.Toast;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.manager.Manager;
-import br.unb.mobileMedia.core.view.AudioPlayerActivity;
-import br.unb.mobileMedia.core.view.AuthorListActivity;
-import br.unb.mobileMedia.core.view.ShareListActivity;
-import br.unb.mobileMedia.playlist.MainPlaylistListActivity;
+import br.unb.mobileMedia.core.view.AuthorListFragment;
+import br.unb.mobileMedia.playlist.MainPlaylistListFragment;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+import android.widget.Toast;
 
-/**
- * The main activity of the MMUnB project.
- * 
- * @author Paula Fernandes
- */
-public class MMUnBActivity extends Activity {
+public class MMUnBActivity extends FragmentActivity implements OnItemClickedCallBack{
+
+	@Override
+	protected void onCreate(Bundle savedInstanceStace){
+		super.onCreate(savedInstanceStace);
+		setContentView(R.layout.main);
+		
+		MenuFragment menuFrag = new MenuFragment();
+		
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		if (findViewById(R.id.main)!=null){
+			transaction.add(R.id.main, menuFrag);
+		}else{
+			transaction.add(R.id.menu, menuFrag);
+			transaction.add(R.id.content, new ContentFragment());
+		}
+		transaction.commit();
+	}
 	
-    /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.main);
-        this.configureUI();
-    }
-    
-    /*
-     * Configure the UI action listeners. One action listener is 
-     * defined to each button.
-     */
-    private void configureUI(){
-    	//configures the btn_list_authors action listener 
-    	((Button)findViewById(R.id.btn_list_authors)).setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				Intent startActivtyIntent = new Intent(getApplicationContext(), AuthorListActivity.class);
-				startActivity(startActivtyIntent);
-			}
-		});
-    	
-    	((Button)findViewById(R.id.btn_media_list)).setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				Intent startActivtyIntent = new Intent(getApplicationContext(), AudioPlayerActivity.class);
-				startActivity(startActivtyIntent);
-			}
-		});
-    	
-    	((Button)findViewById(R.id.btn_play_list)).setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				Intent startActivtyIntent = new Intent(getApplicationContext(), MainPlaylistListActivity.class);
-				startActivity(startActivtyIntent);
-			}
-		});
-    	
-    	((Button)findViewById(R.id.btn_synchronize)).setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
+	public void onItemClicked(int menuItem){
+		Fragment newFragment = null;
+		switch(menuItem){
+			case R.id.btn_list_authors:
+				newFragment = new AuthorListFragment();
+				break;
+			case R.id.btn_play_list:
+				newFragment = new MainPlaylistListFragment(); 
+				break;
+			case R.id.btn_synchronize:
 				try {
 					Manager.instance().synchronizeMedia(getApplicationContext());
 					Toast.makeText(getApplicationContext(), R.string.message_synchronization_finished, Toast.LENGTH_LONG).show();
 				}
 				catch(DBException e) {
-					Toast.makeText(getApplicationContext(),  e.getMessage(), Toast.LENGTH_LONG).show();
-				}
-			}
-		});
-    	
-    	/**
-    	 * 
-    	 * 
-    	 * 
-    	 * VELOCITY - SOCIAL NETWORK
-    	 * INICIO
-    	 * 
-    	 */
-    	
-    	//social network button
-    	((Button)findViewById(R.id.btn_share)).setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				Intent startActivtyIntent = new Intent(getApplicationContext(), ShareListActivity.class);
-				startActivity(startActivtyIntent);
-			}
-		});
-    	
-    	/**
-    	 * 
-    	 * 
-    	 * 
-    	 * VELOCITY - SOCIAL NETWORK
-    	 * FIM
-    	 * 
-    	 */
-    	
-    	((Button)findViewById(R.id.btn_exit)).setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
+					Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+				} 
+				break;
+			case R.id.btn_exit:
 				MMUnBActivity.this.finish();
+				break;
+		}
+		// TODO Extract this to a method (repeated in AuthorListFragment too)
+		if (newFragment !=null){
+			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+			if(findViewById(R.id.main) != null){
+				transaction.replace(R.id.main, newFragment);
+				transaction.addToBackStack(null);
+			}else{
+				transaction.replace(R.id.content, newFragment);
 			}
-		});
-    	
-    }
-    
+			transaction.commit();
+		}
+		
+	}
 }
