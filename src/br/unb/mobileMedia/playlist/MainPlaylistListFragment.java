@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -21,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.domain.Playlist;
@@ -46,40 +48,34 @@ public class MainPlaylistListFragment extends ListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getActivity().setContentView(R.layout.activity_play_list);
-		configureUI();
 	}
 
-	
-	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		
-		
+		getActivity().setTitle(R.string.title_activity_play_list);
+		View view = inflater.inflate(R.layout.activity_play_list, container);
+		configureUI(view);
 		
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 
-
-
-	private void configureUI() {
+	private void configureUI(View view) {
 		//ListView to show all playlists in a scrollable view
-		ListView listPlayLists = (ListView) getActivity().findViewById(R.id.list_playlist);
+		ListView listPlayLists = (ListView) view.findViewById(R.id.list_playlist);
 
 		//Associar a ListView ao ContextMenu
 		registerForContextMenu(listPlayLists);
 		
 		// Add playlist button
-		((Button)getActivity().findViewById(R.id.btn_addPlaylist)).setOnClickListener(new View.OnClickListener(){     
+		((Button)view.findViewById(R.id.btn_addPlaylist)).setOnClickListener(new View.OnClickListener(){     
 			public void onClick(View v) {                
 
 				//Dialog (Alert) to get the information of the new playlist
 				AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
 
-				alert.setTitle("Add Playlist");
-				alert.setMessage("Name:");
+				alert.setTitle(R.string.btn_addPlaylist);
+				alert.setMessage(R.string.name);
 
 				// Set an EditText view to get user input 
 				final EditText input = new EditText(getActivity());
@@ -99,7 +95,7 @@ public class MainPlaylistListFragment extends ListFragment {
 
 
 						//refresh the ViewList with recent added playlist
-						refreshListPlayLists ();
+						//refreshListPlayLists (view);
 					}
 				});
 				//Cancel button
@@ -115,7 +111,7 @@ public class MainPlaylistListFragment extends ListFragment {
 		});
 
 		//Refresh the List View (List of Playlists)
-		refreshListPlayLists ();
+		refreshListPlayLists (view);
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -196,7 +192,7 @@ public class MainPlaylistListFragment extends ListFragment {
 					}
 					
 					
-					refreshListPlayLists ();
+					//refreshListPlayLists ();
 				}
 			});
 			//Cancel button
@@ -218,7 +214,7 @@ public class MainPlaylistListFragment extends ListFragment {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			refreshListPlayLists ();
+			//refreshListPlayLists ();
 		}
 		
 		//Add geographical position
@@ -237,16 +233,16 @@ public class MainPlaylistListFragment extends ListFragment {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			refreshListPlayLists ();
+			//refreshListPlayLists ();
 		}
 		
 		return true;
 	}
 
-	private void refreshListPlayLists (){
+	private void refreshListPlayLists (View view){
 
 		//Update the List View
-		ListView listPlayLists = (ListView) getActivity().findViewById(R.id.list_playlist);
+		ListView listPlayLists = (ListView) view.findViewById(R.id.list_playlist);
 		playlists = null;
 		try {
 			playlists = Manager.instance().listSimplePlaylists(getActivity());

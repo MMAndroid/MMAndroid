@@ -33,5 +33,5 @@
     <string name="title_activity_share_list">Share</string>
     <string name="title_activity_select_activity">AudioSelectActivity</string>
     <string name="need_to_be_implemented">Need to be implemented.</string>
-
+    <string name="name">Name:</string>
 </resources>

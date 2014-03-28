@@ -12,7 +12,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Configurações</string>
     <string name="title_activity_play_list">PlayListActivity</string>
-    <string name="btn_addMusiclist">Inserir Musica</string>
+    <string name="btn_addMusiclist">Inserir música</string>
     <string name="btn_addPlaylist">Adicionar uma nova playlist</string>
     <string name="btn_share">Compartilhar</string>
     <string name="btn_synchronize">Sincronizar</string>
@@ -33,4 +33,5 @@
     <string name="title_activity_select_activity">AudioSelectActivity</string>
     
     <string name="need_to_be_implemented">Precisa ser implementado.</string>
+    <string name="name">Nome:</string>
 </resources>
