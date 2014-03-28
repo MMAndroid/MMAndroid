@@ -31,4 +31,6 @@
     <string name="btn_share_app">Compartilhar app</string>
     <string name="title_activity_share_list">Compartilhar</string>
     <string name="title_activity_select_activity">AudioSelectActivity</string>
+    
+    <string name="need_to_be_implemented">Precisa ser implementado.</string>
 </resources>

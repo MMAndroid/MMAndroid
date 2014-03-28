@@ -50,6 +50,8 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
 			case R.id.btn_exit:
 				MMUnBActivity.this.finish();
 				break;
+			default:
+				Toast.makeText(getApplicationContext(), R.string.need_to_be_implemented, Toast.LENGTH_LONG).show();
 		}
 		// TODO Extract this to a method (repeated in AuthorListFragment too)
 		if (newFragment !=null){
