@@ -7,6 +7,7 @@ import br.unb.mobileMedia.playlist.MainPlaylistListFragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.Toast;
 
@@ -55,7 +56,9 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
 		}
 		// TODO Extract this to a method (repeated in AuthorListFragment too)
 		if (newFragment !=null){
-			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+			FragmentManager manager = getSupportFragmentManager();
+			FragmentTransaction transaction = manager.beginTransaction();
+			
 			if(findViewById(R.id.main) != null){
 				transaction.replace(R.id.main, newFragment);
 				transaction.addToBackStack(null);
@@ -66,4 +69,5 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
 		}
 		
 	}
+
 }

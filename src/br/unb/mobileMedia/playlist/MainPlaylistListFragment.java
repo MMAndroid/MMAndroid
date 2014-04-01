@@ -2,14 +2,11 @@ package br.unb.mobileMedia.playlist;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
+import android.support.v4.app.Fragment;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -22,12 +19,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.domain.Playlist;
 import br.unb.mobileMedia.core.manager.Manager;
-import br.unb.mobileMedia.util.MMConstants;
 
 /**
  * The main activity of the playlist feature.
@@ -36,7 +31,7 @@ import br.unb.mobileMedia.util.MMConstants;
  */
 
 // TODO change the extends from MainPlaylistListActivity from Activity to ListActivity
-public class MainPlaylistListFragment extends ListFragment {
+public class MainPlaylistListFragment extends Fragment {
 
 	//Store the Playlists names to display in the ListView
 	private String names[];
@@ -54,21 +49,26 @@ public class MainPlaylistListFragment extends ListFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		getActivity().setTitle(R.string.title_activity_play_list);
-		View view = inflater.inflate(R.layout.activity_play_list, container);
-		configureUI(view);
-		
-		return super.onCreateView(inflater, container, savedInstanceState);
+		return inflater.inflate(R.layout.activity_play_list, container, false);
 	}
 
-	private void configureUI(View view) {
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onActivityCreated(savedInstanceState);
+		
+		configureUI();
+	}
+
+	private void configureUI() {
 		//ListView to show all playlists in a scrollable view
-		ListView listPlayLists = (ListView) view.findViewById(R.id.list_playlist);
+		ListView listPlayLists = (ListView) getActivity().findViewById(R.id.list_playlist);
 
 		//Associar a ListView ao ContextMenu
 		registerForContextMenu(listPlayLists);
 		
 		// Add playlist button
-		((Button)view.findViewById(R.id.btn_addPlaylist)).setOnClickListener(new View.OnClickListener(){     
+		((Button)getActivity().findViewById(R.id.btn_addPlaylist)).setOnClickListener(new View.OnClickListener(){     
 			public void onClick(View v) {                
 
 				//Dialog (Alert) to get the information of the new playlist
@@ -92,10 +92,9 @@ public class MainPlaylistListFragment extends ListFragment {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-
-
+						
 						//refresh the ViewList with recent added playlist
-						//refreshListPlayLists (view);
+						refreshListPlayLists ();
 					}
 				});
 				//Cancel button
@@ -111,7 +110,7 @@ public class MainPlaylistListFragment extends ListFragment {
 		});
 
 		//Refresh the List View (List of Playlists)
-		refreshListPlayLists (view);
+		refreshListPlayLists ();
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -192,7 +191,7 @@ public class MainPlaylistListFragment extends ListFragment {
 					}
 					
 					
-					//refreshListPlayLists ();
+					refreshListPlayLists ();
 				}
 			});
 			//Cancel button
@@ -214,7 +213,7 @@ public class MainPlaylistListFragment extends ListFragment {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			//refreshListPlayLists ();
+			refreshListPlayLists ();
 		}
 		
 		//Add geographical position
@@ -233,16 +232,16 @@ public class MainPlaylistListFragment extends ListFragment {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			//refreshListPlayLists ();
+			refreshListPlayLists ();
 		}
 		
 		return true;
 	}
 
-	private void refreshListPlayLists (View view){
+	private void refreshListPlayLists (){
 
 		//Update the List View
-		ListView listPlayLists = (ListView) view.findViewById(R.id.list_playlist);
+		ListView listPlayLists = (ListView) getActivity().findViewById(R.id.list_playlist);
 		playlists = null;
 		try {
 			playlists = Manager.instance().listSimplePlaylists(getActivity());
