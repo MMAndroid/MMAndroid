@@ -19,6 +19,7 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Author;
+import br.unb.mobileMedia.core.domain.MultimediaContent;
 import br.unb.mobileMedia.core.manager.Manager;
 import br.unb.mobileMedia.util.MMConstants;
 
@@ -127,9 +128,9 @@ public class DefaultAuthorDAO implements AuthorDAO {
 	}
 
 	/**
-	 * @see AuthorDAO#saveAuthorProduction(Author, List<Audio>)
+	 * @see AuthorDAO#saveAuthorProduction(Author, List<MultimediaContent>)
 	 */
-	public void saveAuthorProduction(Author author, List<Audio> listOfAudio)
+	public void saveAuthorProduction(Author author, List<MultimediaContent> listOfMedia)
 			throws DBException {
 		try {
 			Author dbAuthor = findByName(author.getName());
@@ -145,11 +146,11 @@ public class DefaultAuthorDAO implements AuthorDAO {
 			db = dbHelper.getWritableDatabase();
 
 			db.beginTransaction();
-			for (Audio audio : listOfAudio) {
+			for (MultimediaContent media : listOfMedia) {
 				Cursor cursor = db.rawQuery(
 						DBConstants.SELECT_AUDIO_BY_AUTHOR_KEY_TITLE,
 						new String[] { dbAuthor.getKey().toString(),
-								audio.getTitle() });
+								media.getTitle() });
 
 				// here we check whether the audio exists or not. if it already
 				// exists,
@@ -159,16 +160,22 @@ public class DefaultAuthorDAO implements AuthorDAO {
 				if (cursor.getCount() == 0) {
 					ContentValues values = new ContentValues();
 
-					values.put(DBConstants.AUDIO_ID_COLUMN, audio.getId());
-					values.put(DBConstants.AUDIO_TITLE_COLUMN, audio.getTitle());
-					values.put(DBConstants.AUDIO_ALBUM_COLUMN, audio.getAlbum());
-					values.put(DBConstants.AUDIO_URL_COLUMN, audio.getURI()
+					values.put(DBConstants.AUDIO_ID_COLUMN, media.getId());
+					values.put(DBConstants.AUDIO_TITLE_COLUMN, media.getTitle());
+
+					// TODO: This is not cool...
+					if (media instanceof Audio){
+						Audio audio = (Audio)media;
+						values.put(DBConstants.AUDIO_ALBUM_COLUMN, audio.getAlbum());
+					}
+
+					values.put(DBConstants.AUDIO_URL_COLUMN, media.getURI()
 							.toASCIIString());
 					values.put(DBConstants.AUDIO_FK_AUTHOR_COLUMN,
 							author.getId());
-
+					Log.i(DefaultAuthorDAO.class.getCanonicalName(),
+							"Putting " + media.getTitle() + "on database");
 					db.insert(DBConstants.AUDIO_TABLE, null, values);
-
 				}
 				cursor.close();
 			}
