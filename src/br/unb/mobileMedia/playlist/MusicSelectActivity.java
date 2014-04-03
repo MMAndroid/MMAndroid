@@ -30,7 +30,7 @@ public class MusicSelectActivity extends Activity {
       //get from intent the playlist`s id.
         Bundle extras = getIntent().getExtras();
         //the playlist id that the music will be added.
-        playListId = extras.getInt(MainPlaylistListActivity.SELECTED_PLAYLIST_ID);
+        playListId = extras.getInt(MainPlaylistListFragment.SELECTED_PLAYLIST_ID);
         
         setContentView(R.layout.activity_playlist_music_select);
         refreshListMusicLists();

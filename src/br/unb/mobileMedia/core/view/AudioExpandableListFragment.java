@@ -8,16 +8,21 @@ import java.util.Map;
 import android.app.ExpandableListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ListAdapter;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.Toast;
 import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.manager.Manager;
 
-public class AudioExpandableListActivity extends ExpandableListActivity {
+public class AudioExpandableListFragment extends ExpandableListFragment {
 
 	public static final String SELECTED_ARTIST_ID = "SELECTED_AUTHOR_ID";
 	public static final String SELECTED_ARTIST_NAME = "SELECTED_ARTIST_NAME";
@@ -35,23 +40,25 @@ public class AudioExpandableListActivity extends ExpandableListActivity {
         List<Audio> production = new ArrayList<Audio>();
         try {
         	
-        	if(getIntent().hasExtra(SELECTED_ARTIST_ID) && getIntent().getIntExtra(SELECTED_ARTIST_ID, -1) != -1) {
-            	production = Manager.instance().listProductionByAuthorPK(getApplicationContext(), getIntent().getIntExtra(SELECTED_ARTIST_ID, -1));
+       		Bundle args = getArguments();
+        	
+        	if(args!=null && args.containsKey(SELECTED_ARTIST_ID) && args.getInt(SELECTED_ARTIST_ID, -1) != -1) {
+            	production = Manager.instance().listProductionByAuthorPK(getActivity().getApplicationContext(), args.getInt(SELECTED_ARTIST_ID, -1));
             }
         	else { 
-        		production = Manager.instance().listAllProduction(getApplication());
+        		production = Manager.instance().listAllProduction(getActivity().getApplication());
         	} 
         	
         	albuns = groupByAlbum(production);
         	
-        	setTitle("Albuns from " + getIntent().getStringExtra(SELECTED_ARTIST_NAME));
+        	getActivity().setTitle("Albuns from " + args.getString(SELECTED_ARTIST_NAME));
         	
         	groupList = createGroupList(albuns);
         	childList = createChildList(albuns);
         	 
         	SimpleExpandableListAdapter expListAdapter =
         			new SimpleExpandableListAdapter(
-        				this,
+        				getActivity(),
         				groupList,								// groupData describes the first-level entries
         				R.layout.child_row,						// Layout for the first-level entries
         				new String[] { ALBUM },					// Key in the groupData maps to display
@@ -61,19 +68,17 @@ public class AudioExpandableListActivity extends ExpandableListActivity {
         				new String[] { TITLE },					// Keys in childData maps to display
         				new int[] { R.id.childname }			// Data under the keys above go into these TextViews
         			);
-        		setListAdapter( expListAdapter );
-        		getExpandableListView().setOnChildClickListener(this);
+        	setListAdapter( expListAdapter );
+        	getExpandableListView().setOnChildClickListener(this);
         }
         catch(Exception e) {
         	e.printStackTrace();
-        	Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        	Toast.makeText(getActivity().getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 	
 	
 
-
-	@Override
 	public boolean onChildClick(ExpandableListView parent, View v,
 			int groupPosition, int childPosition, long id) {
 		
@@ -86,17 +91,18 @@ public class AudioExpandableListActivity extends ExpandableListActivity {
 			
 			listTmp.toArray(executionList);
 		
-			Intent startActivtyIntent = new Intent(getApplicationContext(), AudioPlayerActivity.class);
+			//TODO Change a Fragment...
+			Intent startActivtyIntent = new Intent(getActivity().getApplicationContext(), AudioPlayerActivity.class);
 			startActivtyIntent.putExtra(AudioPlayerActivity.EXECUTION_LIST, executionList);
 			startActivity(startActivtyIntent);
 			
 			
 			//Manager.instance().playMultimediaContent(getApplicationContext(), executionList);
 		
-		return  super.onChildClick(parent, v, groupPosition, childPosition, id);
+			return true;
 		}
 		catch(Throwable e) {
-        	Toast.makeText(getApplicationContext(), "Error... could not play the selected audio.", Toast.LENGTH_SHORT).show();
+        	Toast.makeText(getActivity().getApplicationContext(), "Error... could not play the selected audio.", Toast.LENGTH_SHORT).show();
         	return false;
 		}
 	}
@@ -139,9 +145,8 @@ public class AudioExpandableListActivity extends ExpandableListActivity {
 	}
 
 
-	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_audio_table, menu);
+        getActivity().getMenuInflater().inflate(R.menu.activity_audio_table, menu);
         return true;
     }
 

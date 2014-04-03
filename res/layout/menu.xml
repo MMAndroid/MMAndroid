@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/btn_list_authors"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_database"
+        android:text="@string/btn_list_authors" />
+
+    <Button
+        android:id="@+id/btn_play_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_playlist"
+        android:text="@string/btn_play_list" />
+
+    <Button
+        android:id="@+id/btn_media_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_media_list" 
+        android:drawableLeft="@drawable/video"
+        />
+
+    <Button
+        android:id="@+id/btn_share"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/twitter"
+        android:text="@string/btn_share" />
+
+    <Button
+        android:id="@+id/btn_synchronize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_sync"
+        android:text="@string/btn_synchronize" />
+
+    <Button
+        android:id="@+id/btn_exit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_exit"
+        android:text="@string/btn_exit" />
+
+</LinearLayout>

@@ -39,7 +39,7 @@ public class PlayListEditorActivity extends Activity {
         
         //get from intent the playlist`s id.
         Bundle extras = getIntent().getExtras();
-        playListId = extras.getInt(MainPlaylistListActivity.SELECTED_PLAYLIST_ID);
+        playListId = extras.getInt(MainPlaylistListFragment.SELECTED_PLAYLIST_ID);
         configureUI();
     }
 
