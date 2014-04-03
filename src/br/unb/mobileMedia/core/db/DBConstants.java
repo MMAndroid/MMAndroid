@@ -2,6 +2,10 @@ package br.unb.mobileMedia.core.db;
 
 public interface DBConstants {
 	public String DATABASE_NAME = "MMUnBDB";
+	
+
+	//String repetida em várias partes do código
+	public String DEFINICAO_PK = "PK INTEGER PRIMARY KEY AUTOINCREMENT";
 
 	public int DATABASE_VERSION = 24;
 
@@ -11,17 +15,17 @@ public interface DBConstants {
 			"DROP TABLE IF EXISTS TB_MEDIA_FROM_PLAYLIST" };
 
 	public String CREATE_TABLE_STATEMENTS[] = {
-			"CREATE TABLE AUTHOR(" + "PK INTEGER PRIMARY KEY AUTOINCREMENT, "
+			"CREATE TABLE AUTHOR(" +  DEFINICAO_PK +", "
 					+ "ID INTEGER, " + "NAME VARCHAR(50) NOT NULL);",
 			
 			//TODO: here, we are only considering audio. we must generalize!
-			"CREATE TABLE AUDIO ( " + "PK INTEGER PRIMARY KEY AUTOINCREMENT, "
+			"CREATE TABLE AUDIO ( " + DEFINICAO_PK +", "
 					+ "ID INTEGER, " + "TITLE VARCHAR(50) NOT NULL,"
 					+ "URL VARCHAR(255) NOT NULL, " + "ALBUM VARCHAR(50),"
 					+ "FK_AUTHOR INTEGER);",
 
 			"CREATE TABLE EXECUTION_HISTORY ( "
-					+ "PK INTEGER PRIMARY KEY AUTOINCREMENT, "
+					+ DEFINICAO_PK+", "
 					+ "DATE_TIME_EXECUTION CHAR(14), " + "FK_MEDIA INTEGER);",
 			
 			"CREATE TABLE TB_PLAYLIST ( " 
@@ -29,7 +33,7 @@ public interface DBConstants {
 					+ "NAME VARCHAR(255) UNIQUE NOT NULL );",
 			
 			"CREATE TABLE TB_MEDIA_FROM_PLAYLIST ("
-					+ "PK INTEGER PRIMARY KEY AUTOINCREMENT, "
+					+ DEFINICAO_PK + ", "
 					+ "FK_PLAYLIST INTEGER," 
 					+ "FK_MEDIA INTEGER );",
 					
@@ -61,6 +65,7 @@ public interface DBConstants {
 	public String AUTHOR_KEY_COLUMN = "PK";
 	public String AUTHOR_ID_COLUMN = "ID";
 	public String AUTHOR_NAME_COLUMN = "NAME";
+	
 
 	public String AUDIO_TABLE = "AUDIO";
 	public String AUDIO_KEY_COLUMN = "PK";

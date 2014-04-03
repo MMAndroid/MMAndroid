@@ -51,8 +51,9 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	private AudioPlayerList(Context context, Audio[] audioArray) {
 		this(context);
 
-		if (audioArray == null)
+		if (audioArray == null){
 			audioList = new ArrayList<Audio>();
+		}
 
 		for(Audio audio : audioArray)  {
 			audioList.add(audio);

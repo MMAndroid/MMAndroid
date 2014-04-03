@@ -66,17 +66,25 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
 //				 TODO externalize the string to the xml file
 //				throw new Exception("Playlist already exists");
 		} catch (SQLiteException e) {
-			e.printStackTrace();
-			Log.e(DefaultPlaylistDAO.class.getCanonicalName(),
-					e.getLocalizedMessage());
-			throw new DBException();
+			trataException(e);
 		} finally {
-			if (db.inTransaction()) {
-				db.endTransaction();
-			}
-			db.close();
-			dbHelper.close();
+			fechaConexao();
 		}
+	}
+	
+	private void fechaConexao(){
+		if (db.inTransaction()) {
+			db.endTransaction();
+		}
+		db.close();
+		dbHelper.close();
+	}
+	
+	private void trataException(SQLiteException e) throws DBException{
+		e.printStackTrace();
+		Log.e(DefaultPlaylistDAO.class.getCanonicalName(),
+				e.getLocalizedMessage());
+		throw new DBException();
 	}
 
 	public void addToPlaylist(int idPlaylist, List<Integer> mediaList)
@@ -104,16 +112,9 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
 				
 
 		} catch (SQLiteException e) {
-			e.printStackTrace();
-			Log.e(DefaultPlaylistDAO.class.getCanonicalName(),
-					e.getLocalizedMessage());
-			throw new DBException();
+			trataException(e);
 		} finally {
-			if (db.inTransaction()) {
-				db.endTransaction();
-			}
-			db.close();
-			dbHelper.close();
+			fechaConexao();
 		}
 		
 		
@@ -141,13 +142,11 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
 			cursor.close();
 			return playlists;
 		} catch (SQLiteException e) {
-			Log.e(DefaultPlaylistDAO.class.getCanonicalName(),
-					e.getLocalizedMessage());
-			throw new DBException();
+			trataException(e);
 		} finally {
-			db.close();
-			dbHelper.close();
+			fechaConexao();
 		}
+		return null;
 	}
 	
 	public Playlist getSimplePlaylist(int idPlaylist) throws DBException {
@@ -250,16 +249,9 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
 //				 TODO externalize the string to the xml file
 //				throw new Exception("Playlist already exists");
 		} catch (SQLiteException e) {
-			e.printStackTrace();
-			Log.e(DefaultPlaylistDAO.class.getCanonicalName(),
-					e.getLocalizedMessage());
-			throw new DBException();
+			trataException(e);
 		} finally {
-			if (db.inTransaction()) {
-				db.endTransaction();
-			}
-			db.close();
-			dbHelper.close();
+			fechaConexao();
 		}
 		
 	}
@@ -280,16 +272,9 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
 			}
 
 		} catch (SQLiteException e) {
-			e.printStackTrace();
-			Log.e(DefaultPlaylistDAO.class.getCanonicalName(),
-					e.getLocalizedMessage());
-			throw new DBException();
+			trataException(e);
 		} finally {
-			if (db.inTransaction()) {
-				db.endTransaction();
-			}
-			db.close();
-			dbHelper.close();
+			fechaConexao();
 		}
 		
 		try {
@@ -312,16 +297,9 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
 			}
 
 		} catch (SQLiteException e) {
-			e.printStackTrace();
-			Log.e(DefaultPlaylistDAO.class.getCanonicalName(),
-					e.getLocalizedMessage());
-			throw new DBException();
+			trataException(e);
 		} finally {
-			if (db.inTransaction()) {
-				db.endTransaction();
-			}
-			db.close();
-			dbHelper.close();
+			fechaConexao();
 		}
 		
 	}
@@ -350,16 +328,9 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
 				
 
 		} catch (SQLiteException e) {
-			e.printStackTrace();
-			Log.e(DefaultPlaylistDAO.class.getCanonicalName(),
-					e.getLocalizedMessage());
-			throw new DBException();
+			trataException(e);
 		} finally {
-			if (db.inTransaction()) {
-				db.endTransaction();
-			}
-			db.close();
-			dbHelper.close();
+			fechaConexao();
 		}
 		
 		
@@ -402,16 +373,9 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
 				
 
 		} catch (SQLiteException e) {
-			e.printStackTrace();
-			Log.e(DefaultPlaylistDAO.class.getCanonicalName(),
-					e.getLocalizedMessage());
-			throw new DBException();
+			trataException(e);
 		} finally {
-			if (db.inTransaction()) {
-				db.endTransaction();
-			}
-			db.close();
-			dbHelper.close();
+			fechaConexao();
 		}
 		
 		
@@ -439,14 +403,10 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
 				cursor.close();
 				
 			} catch (SQLiteException e) {
-				Log.e(DefaultAuthorDAO.class.getCanonicalName(),
-						e.getLocalizedMessage());
-				throw new DBException();
+				trataException(e);
 			} finally {
-				db.close();
-				dbHelper.close();
-			}
-				
+				fechaConexao();
+			}		
 				
 		}
 			
