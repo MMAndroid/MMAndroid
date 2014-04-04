@@ -20,7 +20,6 @@ import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Playlist;
 import br.unb.mobileMedia.core.manager.Manager;
-import br.unb.mobileMedia.core.view.AudioPlayerActivity;
 
 public class PlayListEditorActivity extends Activity {
 
@@ -72,11 +71,13 @@ public class PlayListEditorActivity extends Activity {
 				Audio[] executionList = new Audio[listTmp.size()]; 
 				
 				listTmp.toArray(executionList);
-			
+				
+				//TODO Change to AudioPlayerFragment
+				/*
 				Intent startActivtyIntent = new Intent(getApplicationContext(), AudioPlayerActivity.class);
 				startActivtyIntent.putExtra(AudioPlayerActivity.EXECUTION_LIST, executionList);
 				startActivity(startActivtyIntent);		    				
-		    		
+		    	*/
     			}
 			
     	});

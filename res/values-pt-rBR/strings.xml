@@ -4,7 +4,7 @@
     <string name="app_name">MMUnB</string>
     <string name="btn_list_authors">Artistas</string>
     <string name="btn_media">Mídia</string>
-    <string name="btn_media_list">Abrir Music Player</string>
+    <string name="btn_open_music_player">Abrir Music Player</string>
     <string name="btn_exit">Sair</string>
     <string name="lb_select_media">Selecione um vídeo</string>
     <string name="lb_instruction">selecione um vídeo para reproduzir</string>

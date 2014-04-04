@@ -2,6 +2,7 @@ package br.unb.mobileMedia;
 
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.manager.Manager;
+import br.unb.mobileMedia.core.view.AudioPlayerFragment;
 import br.unb.mobileMedia.core.view.AuthorListFragment;
 import br.unb.mobileMedia.playlist.MainPlaylistListFragment;
 import android.os.Bundle;
@@ -38,6 +39,9 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
 				break;
 			case R.id.btn_play_list:
 				newFragment = new MainPlaylistListFragment(); 
+				break;
+			case R.id.btn_open_music_player:
+				newFragment = new AudioPlayerFragment(); 
 				break;
 			case R.id.btn_synchronize:
 				try {

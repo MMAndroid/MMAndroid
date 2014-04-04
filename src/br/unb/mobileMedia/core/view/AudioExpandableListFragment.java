@@ -92,9 +92,9 @@ public class AudioExpandableListFragment extends ExpandableListFragment {
 			listTmp.toArray(executionList);
 		
 			//TODO Change a Fragment...
-			Intent startActivtyIntent = new Intent(getActivity().getApplicationContext(), AudioPlayerActivity.class);
-			startActivtyIntent.putExtra(AudioPlayerActivity.EXECUTION_LIST, executionList);
-			startActivity(startActivtyIntent);
+			//Intent startActivtyIntent = new Intent(getActivity().getApplicationContext(), AudioPlayerActivity.class);
+			//startActivtyIntent.putExtra(AudioPlayerActivity.EXECUTION_LIST, executionList);
+			//startActivity(startActivtyIntent);
 			
 			
 			//Manager.instance().playMultimediaContent(getApplicationContext(), executionList);
