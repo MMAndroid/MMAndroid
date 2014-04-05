@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListAdapter;
@@ -144,11 +145,10 @@ public class AudioExpandableListFragment extends ExpandableListFragment {
 		return result;
 	}
 
-
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getActivity().getMenuInflater().inflate(R.menu.activity_audio_table, menu);
-        return true;
-    }
+    @Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.activity_audio_table, menu);
+	}
 
 	/*
 	 * Return all production (musics) grouped by album (a map <String, List<Audio>>, where 

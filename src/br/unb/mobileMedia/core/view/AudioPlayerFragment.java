@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -87,8 +88,16 @@ public class AudioPlayerFragment extends Fragment{
 		getActivity().findViewById(R.id.btn_add_a_music).setOnClickListener(new OnClickListener() {
 			
 			public void onClick(View v) {
-				Intent startActivityIntent = new Intent(getActivity().getApplicationContext(), AudioSelectActivity.class);
-				startActivity(startActivityIntent);
+				// TODO Extract this to a method (repeated in MMUnBActivity too)
+				Fragment newFragment = new AudioSelectFragment();
+				FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+				if(getActivity().findViewById(R.id.main) != null){
+					transaction.replace(R.id.main, newFragment);
+					transaction.addToBackStack(null);
+				}else{
+					transaction.replace(R.id.content, newFragment);
+				}
+				transaction.commit();
 			}
 		});
 	}
