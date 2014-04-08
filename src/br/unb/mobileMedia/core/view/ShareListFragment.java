@@ -22,7 +22,6 @@ public class ShareListFragment extends Fragment{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//setContentView(br.unb.mobileMedia.R.layout.activity_share_list);
 	}
 	
 	@Override
@@ -34,7 +33,6 @@ public class ShareListFragment extends Fragment{
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 		
 		configureUI();
