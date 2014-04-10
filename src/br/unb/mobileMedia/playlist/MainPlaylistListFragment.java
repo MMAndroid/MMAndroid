@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -24,6 +26,7 @@ import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.domain.Playlist;
 import br.unb.mobileMedia.core.manager.Manager;
+import br.unb.mobileMedia.core.view.AudioExpandableListFragment;
 
 /**
  * The main activity of the playlist feature.
@@ -272,7 +275,7 @@ public class MainPlaylistListFragment extends Fragment {
 		            
 		            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		            //if(position == 1) {
-		            Intent intent = new Intent(getActivity().getApplicationContext(), PlayListEditorActivity.class);
+		            
 		            //Get the selected playlist name!
 		            String selectedPlaylistName = (String) parent.getItemAtPosition(position);
 		            Playlist recoveredPlaylist = null;		
@@ -285,9 +288,21 @@ public class MainPlaylistListFragment extends Fragment {
 		            
 		            int message = recoveredPlaylist.getId();
 		            
-		        	intent.putExtra(SELECTED_PLAYLIST_ID, message);
-		            
-		            startActivity(intent);
+		            Bundle args = new Bundle();
+		    		args.putInt(SELECTED_PLAYLIST_ID, message);
+		    		
+		    		// TODO Extract this to a method (repeated in MMUnBActivity too)
+		    		Fragment newFragment = new PlayListEditorFragment();
+		    		newFragment.setArguments(args);
+		    		FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+		    		if(getActivity().findViewById(R.id.main) != null){
+		    			transaction.replace(R.id.main, newFragment);
+		    			transaction.addToBackStack(null);
+		    		}else{
+		    			transaction.replace(R.id.content, newFragment);
+		    			transaction.addToBackStack(null);
+		    		}
+		    		transaction.commit();
 		            		//	}	
 		            		}
 		            });
