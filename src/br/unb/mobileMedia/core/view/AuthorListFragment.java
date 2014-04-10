@@ -66,6 +66,7 @@ public class AuthorListFragment extends ListFragment {
 			transaction.addToBackStack(null);
 		}else{
 			transaction.replace(R.id.content, newFragment);
+			transaction.addToBackStack(null);
 		}
 		transaction.commit();
 	}

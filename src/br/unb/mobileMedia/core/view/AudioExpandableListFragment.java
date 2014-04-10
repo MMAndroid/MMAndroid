@@ -8,6 +8,9 @@ import java.util.Map;
 import android.app.ExpandableListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.Toast;
 import br.unb.mobileMedia.R;
@@ -37,8 +41,12 @@ public class AudioExpandableListFragment extends ExpandableListFragment {
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       
-        List<Audio> production = new ArrayList<Audio>();
+    }
+	
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		List<Audio> production = new ArrayList<Audio>();
         try {
         	
        		Bundle args = getArguments();
@@ -74,16 +82,17 @@ public class AudioExpandableListFragment extends ExpandableListFragment {
         }
         catch(Exception e) {
         	e.printStackTrace();
-        	Toast.makeText(getActivity().getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        	Toast.makeText(getActivity().getApplicationContext(), "Exception: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         }
-    }
-	
-	
+        
+		
+	}
 
+	@Override
 	public boolean onChildClick(ExpandableListView parent, View v,
 			int groupPosition, int childPosition, long id) {
-		
-		
+	
+		Toast.makeText(getActivity().getApplicationContext(), "Abrindo player...", Toast.LENGTH_SHORT).show();
 		try {
 			String albumName = groupList.get(groupPosition).get(ALBUM);
 			List<Audio> album = albuns.get(albumName);
@@ -92,14 +101,25 @@ public class AudioExpandableListFragment extends ExpandableListFragment {
 			
 			listTmp.toArray(executionList);
 		
-			//TODO Change a Fragment...
-			//Intent startActivtyIntent = new Intent(getActivity().getApplicationContext(), AudioPlayerActivity.class);
-			//startActivtyIntent.putExtra(AudioPlayerActivity.EXECUTION_LIST, executionList);
-			//startActivity(startActivtyIntent);
+			Bundle args = new Bundle();
+			args.putParcelableArray(AudioPlayerFragment.EXECUTION_LIST, executionList);
 			
+			// TODO Extract this to a method (repeated in MMUnBActivity too)
+			Fragment newFragment = new AudioPlayerFragment();
+			newFragment.setArguments(args);
 			
-			//Manager.instance().playMultimediaContent(getApplicationContext(), executionList);
-		
+			FragmentManager manager = getActivity().getSupportFragmentManager();
+			FragmentTransaction transaction = manager.beginTransaction();
+			
+			if(getActivity().findViewById(R.id.main) != null){
+				transaction.replace(R.id.main, newFragment);
+				transaction.addToBackStack(null);
+			}else{
+				transaction.replace(R.id.content, newFragment);
+				transaction.addToBackStack(null);
+			}
+			transaction.commit();
+			
 			return true;
 		}
 		catch(Throwable e) {

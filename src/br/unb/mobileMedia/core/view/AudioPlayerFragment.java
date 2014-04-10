@@ -1,16 +1,18 @@
 package br.unb.mobileMedia.core.view;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.audioPlayer.AudioPlayerList;
 import br.unb.mobileMedia.core.domain.Audio;
@@ -51,6 +53,7 @@ public class AudioPlayerFragment extends Fragment{
 			player.play();
 		} catch (RuntimeException e) {
 			e.printStackTrace();
+			Toast.makeText(getActivity().getApplicationContext(), "Exception: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
 		}
 
 		getActivity().findViewById(R.id.img_bt_play_pause).setOnClickListener(new OnClickListener() {
@@ -96,6 +99,7 @@ public class AudioPlayerFragment extends Fragment{
 					transaction.addToBackStack(null);
 				}else{
 					transaction.replace(R.id.content, newFragment);
+					transaction.addToBackStack(null);
 				}
 				transaction.commit();
 			}
@@ -103,12 +107,19 @@ public class AudioPlayerFragment extends Fragment{
 	}
 
 	private Audio[] refreshAudioList() {
-		Parcelable[] ps = getActivity().getIntent().getParcelableArrayExtra(EXECUTION_LIST);
+		
+		if(getArguments()==null){
+			return new Audio[0];
+		}
+		
+		Parcelable[] ps = getArguments().getParcelableArray(EXECUTION_LIST);
+		
 		if (ps != null){
 			Audio[] executionList = new Audio[ps.length];
 
 			for (int i = 0; i < ps.length; i++) {
 				executionList[i] = (Audio) ps[i];
+				Log.i("AudioPlayerFragment", "Add music: " + executionList[i]);
 			}
 
 			ListView listView = (ListView) getActivity().findViewById(R.id.list_audio_player);
@@ -120,8 +131,8 @@ public class AudioPlayerFragment extends Fragment{
 		return new Audio[0];
 	}
 
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getActivity().getMenuInflater().inflate(R.menu.activity_audio_player, menu);
-		return true;
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.activity_audio_player, menu);
 	}
 }
