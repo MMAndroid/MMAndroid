@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -26,6 +27,7 @@ import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Playlist;
 import br.unb.mobileMedia.core.manager.Manager;
+import br.unb.mobileMedia.core.view.AudioPlayerFragment;
 
 public class PlayListEditorFragment extends Fragment{
 
@@ -97,14 +99,26 @@ public class PlayListEditorFragment extends Fragment{
 				
 				listTmp.toArray(executionList);
 				
-				//TODO Change to AudioPlayerFragment
-				/*
-				Intent startActivtyIntent = new Intent(getApplicationContext(), AudioPlayerActivity.class);
-				startActivtyIntent.putExtra(AudioPlayerActivity.EXECUTION_LIST, executionList);
-				startActivity(startActivtyIntent);		    				
-		    	*/
-    			}
-			
+				Bundle args = new Bundle();
+				args.putParcelableArray(AudioPlayerFragment.EXECUTION_LIST, executionList);
+				
+				// TODO Extract this to a method (repeated in MMUnBActivity too)
+				Fragment newFragment = new AudioPlayerFragment();
+				newFragment.setArguments(args);
+				
+				FragmentManager manager = getActivity().getSupportFragmentManager();
+				FragmentTransaction transaction = manager.beginTransaction();
+				
+				if(getActivity().findViewById(R.id.main) != null){
+					transaction.replace(R.id.main, newFragment);
+					transaction.addToBackStack(null);
+				}else{
+					transaction.replace(R.id.content, newFragment);
+					transaction.addToBackStack(null);
+				}
+				transaction.commit();
+				
+    		}
     	});
     	
 		//Refresh the List View (List of Musics)
