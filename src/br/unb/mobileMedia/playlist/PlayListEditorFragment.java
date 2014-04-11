@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -65,10 +67,21 @@ public class PlayListEditorFragment extends Fragment{
 				
 				//when button is clicked, start activity and wait for result.
 				//result is caught in method onActivityResult.
-				
-				Intent startActivityIntent = new Intent(getActivity().getApplicationContext(), MusicSelectActivity.class);
-				startActivityIntent.putExtra(SELECTED_PLAYLIST_ID, playListId);
-				startActivityForResult(startActivityIntent, result);
+				Bundle args = new Bundle();
+	    		args.putInt(SELECTED_PLAYLIST_ID, playListId);
+	    		
+	    		// TODO Extract this to a method (repeated in MMUnBActivity too)
+	    		Fragment newFragment = new MusicSelectFragment();
+	    		newFragment.setArguments(args);
+	    		FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+	    		if(getActivity().findViewById(R.id.main) != null){
+	    			transaction.replace(R.id.main, newFragment);
+	    			transaction.addToBackStack(null);
+	    		}else{
+	    			transaction.replace(R.id.content, newFragment);
+	    			transaction.addToBackStack(null);
+	    		}
+	    		transaction.commit();
 			}        
 
 		});
@@ -140,7 +153,7 @@ public class PlayListEditorFragment extends Fragment{
     @Override
     public void onActivityResult(int requestCode,int resultCode,Intent data)
     {
-  
+    	Log.i("PlayListEditor", "Executing onActivityResult");
     	refreshListMusicLists();
     }
     
