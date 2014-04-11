@@ -5,23 +5,43 @@ import org.brickred.socialauth.android.SocialAuthAdapter;
 import org.brickred.socialauth.android.SocialAuthAdapter.Provider;
 import org.brickred.socialauth.android.SocialAuthError;
 
-import android.app.Activity;
+import br.unb.mobileMedia.R;
+
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 
-public class ShareListActivity extends Activity{
+public class ShareListFragment extends Fragment{
 
 	private SocialAuthAdapter adapterTopArtists,adapterTopSongs,adapterShareApp;
 	private Button btnTopArtists,btnTopSongs,btnShareApp;
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(br.unb.mobileMedia.R.layout.activity_share_list);
+	}
+	
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		getActivity().setTitle(R.string.title_activity_play_list);
+		return inflater.inflate(R.layout.activity_share_list, container, false);
+	}
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 		
-		btnTopArtists = (Button)findViewById(br.unb.mobileMedia.R.id.btn_top_artists);
-		btnTopSongs = (Button)findViewById(br.unb.mobileMedia.R.id.btn_top_songs);
-		btnShareApp = (Button)findViewById(br.unb.mobileMedia.R.id.btn_share_app);
+		configureUI();
+	}
+	
+	private void configureUI() {
+		btnTopArtists = (Button)getActivity().findViewById(br.unb.mobileMedia.R.id.btn_top_artists);
+		btnTopSongs = (Button)getActivity().findViewById(br.unb.mobileMedia.R.id.btn_top_songs);
+		btnShareApp = (Button)getActivity().findViewById(br.unb.mobileMedia.R.id.btn_share_app);
 /*		btTopArtists.setText(br.unb.mobileMedia.R.string.btn_top_artists);
 		btTopArtists.setTextColor(Color.WHITE);
 		btTopArtists.setBackgroundResource(br.unb.mobileMedia.R.drawable.button_gradient);
@@ -58,8 +78,8 @@ public class ShareListActivity extends Activity{
 		 * Pegar as informacoes dos ShareAPP e passar para a string conteudo
 		 * */
 		configAdapter(adapterShareApp,conteudo,btnShareApp);
-		
 	}
+	
 	
 	private void configAdapter(SocialAuthAdapter adapter, String conteudo, Button btn){
 		ResponseListener listener = new ResponseListener(conteudo,adapter);

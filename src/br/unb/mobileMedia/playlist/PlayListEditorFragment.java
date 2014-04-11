@@ -6,11 +6,18 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -20,9 +27,9 @@ import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Playlist;
 import br.unb.mobileMedia.core.manager.Manager;
-import br.unb.mobileMedia.core.view.AudioPlayerActivity;
+import br.unb.mobileMedia.core.view.AudioPlayerFragment;
 
-public class PlayListEditorActivity extends Activity {
+public class PlayListEditorFragment extends Fragment{
 
 	private int playListId;
 	Playlist playlist;
@@ -32,37 +39,56 @@ public class PlayListEditorActivity extends Activity {
 	int result=1;
 	//String containing the playlist id that will be passed on to another activity through an intent.
 		public final static String SELECTED_PLAYLIST_ID = "idPlaylist";
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_playlist_editor);
-        
-        //get from intent the playlist`s id.
-        Bundle extras = getIntent().getExtras();
-        playListId = extras.getInt(MainPlaylistListActivity.SELECTED_PLAYLIST_ID);
-        configureUI();
-    }
+    
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		getActivity().setTitle(R.string.title_activity_playlist_editor);
+		return inflater.inflate(R.layout.activity_playlist_editor, container, false);
+	}
 
-    private void configureUI() {
+    @Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onActivityCreated(savedInstanceState);
+		
+        //get from intent the playlist`s id.
+        Bundle extras = getArguments();
+        playListId = extras.getInt(MainPlaylistListFragment.SELECTED_PLAYLIST_ID);
+        configureUI();
+	}
+
+	private void configureUI() {
     	//Update the List View
-    			ListView listMusicLists = (ListView) findViewById(R.id.list_musiclist);
+    			ListView listMusicLists = (ListView) getActivity().findViewById(R.id.list_musiclist);
     			registerForContextMenu(listMusicLists);
     			
     			
-    	((Button)findViewById(R.id.btn_addMusiclist)).setOnClickListener(new View.OnClickListener(){     
+    	((Button)getActivity().findViewById(R.id.btn_addMusiclist)).setOnClickListener(new View.OnClickListener(){     
 			public void onClick(View v) {
 				
 				//when button is clicked, start activity and wait for result.
 				//result is caught in method onActivityResult.
-				
-				Intent startActivityIntent = new Intent(getApplicationContext(), MusicSelectActivity.class);
-				startActivityIntent.putExtra(SELECTED_PLAYLIST_ID, playListId);
-				startActivityForResult(startActivityIntent, result);
+				Bundle args = new Bundle();
+	    		args.putInt(SELECTED_PLAYLIST_ID, playListId);
+	    		
+	    		// TODO Extract this to a method (repeated in MMUnBActivity too)
+	    		Fragment newFragment = new MusicSelectFragment();
+	    		newFragment.setArguments(args);
+	    		FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+	    		if(getActivity().findViewById(R.id.main) != null){
+	    			transaction.replace(R.id.main, newFragment);
+	    			transaction.addToBackStack(null);
+	    		}else{
+	    			transaction.replace(R.id.content, newFragment);
+	    			transaction.addToBackStack(null);
+	    		}
+	    		transaction.commit();
 			}        
 
 		});
     	
-    	((Button)findViewById(R.id.btn_playPlaylist)).setOnClickListener(new View.OnClickListener(){     
+    	((Button)getActivity().findViewById(R.id.btn_playPlaylist)).setOnClickListener(new View.OnClickListener(){     
 			
     		public void onClick(View v) {
     			
@@ -72,13 +98,27 @@ public class PlayListEditorActivity extends Activity {
 				Audio[] executionList = new Audio[listTmp.size()]; 
 				
 				listTmp.toArray(executionList);
-			
-				Intent startActivtyIntent = new Intent(getApplicationContext(), AudioPlayerActivity.class);
-				startActivtyIntent.putExtra(AudioPlayerActivity.EXECUTION_LIST, executionList);
-				startActivity(startActivtyIntent);		    				
-		    		
-    			}
-			
+				
+				Bundle args = new Bundle();
+				args.putParcelableArray(AudioPlayerFragment.EXECUTION_LIST, executionList);
+				
+				// TODO Extract this to a method (repeated in MMUnBActivity too)
+				Fragment newFragment = new AudioPlayerFragment();
+				newFragment.setArguments(args);
+				
+				FragmentManager manager = getActivity().getSupportFragmentManager();
+				FragmentTransaction transaction = manager.beginTransaction();
+				
+				if(getActivity().findViewById(R.id.main) != null){
+					transaction.replace(R.id.main, newFragment);
+					transaction.addToBackStack(null);
+				}else{
+					transaction.replace(R.id.content, newFragment);
+					transaction.addToBackStack(null);
+				}
+				transaction.commit();
+				
+    		}
     	});
     	
 		//Refresh the List View (List of Musics)
@@ -88,12 +128,12 @@ public class PlayListEditorActivity extends Activity {
     private void refreshListMusicLists(){
 
 		//Update the List View
-		ListView listMusicLists = (ListView) findViewById(R.id.list_musiclist);
+		ListView listMusicLists = (ListView) getActivity().findViewById(R.id.list_musiclist);
 		registerForContextMenu(listMusicLists);
 		try {
-			playlist = Manager.instance().getSimplePlaylist(this,playListId);
+			playlist = Manager.instance().getSimplePlaylist(getActivity(),playListId);
 			if(playlist!=null){
-				musicList = Manager.instance().getMusicFromPlaylist(this, playListId);
+				musicList = Manager.instance().getMusicFromPlaylist(getActivity(), playListId);
 			}
 			
 			
@@ -103,7 +143,7 @@ public class PlayListEditorActivity extends Activity {
 				names = new String[1];
 				// TODO Refactor: extract string to xml
 				names[0] = "Nenhuma Musica Encontrada.";
-				ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, names);
+				ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, names);
 				listMusicLists.setAdapter(adapter);
 			} else {
 				names = new String[musicList.size()];
@@ -112,7 +152,7 @@ public class PlayListEditorActivity extends Activity {
 					names[i++] = p.getTitle();
 				}
 				
-				ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, 
+				ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), 
 						android.R.layout.simple_list_item_1, 
 						android.R.id.text1, 
 						names);
@@ -127,7 +167,7 @@ public class PlayListEditorActivity extends Activity {
     @Override
     public void onActivityResult(int requestCode,int resultCode,Intent data)
     {
-  
+    	Log.i("PlayListEditor", "Executing onActivityResult");
     	refreshListMusicLists();
     }
     
@@ -164,7 +204,7 @@ public class PlayListEditorActivity extends Activity {
 			
 			
 			try {
-				Manager.instance().removeMediaFromPlaylist(this, playListId ,song );
+				Manager.instance().removeMediaFromPlaylist(getActivity(), playListId ,song );
 			} catch (DBException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -4,7 +4,7 @@
     <string name="app_name">MMUnB</string>
     <string name="btn_list_authors">Artistas</string>
     <string name="btn_media">Mídia</string>
-    <string name="btn_media_list">Abrir Music Player</string>
+    <string name="btn_open_music_player">Abrir Music Player</string>
     <string name="btn_exit">Sair</string>
     <string name="lb_select_media">Selecione um vídeo</string>
     <string name="lb_instruction">selecione um vídeo para reproduzir</string>
@@ -12,7 +12,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Configurações</string>
     <string name="title_activity_play_list">PlayListActivity</string>
-    <string name="btn_addMusiclist">Inserir Musica</string>
+    <string name="btn_addMusiclist">Inserir música</string>
     <string name="btn_addPlaylist">Adicionar uma nova playlist</string>
     <string name="btn_share">Compartilhar</string>
     <string name="btn_synchronize">Sincronizar</string>
@@ -31,4 +31,7 @@
     <string name="btn_share_app">Compartilhar app</string>
     <string name="title_activity_share_list">Compartilhar</string>
     <string name="title_activity_select_activity">AudioSelectActivity</string>
+    
+    <string name="need_to_be_implemented">Precisa ser implementado.</string>
+    <string name="name">Nome:</string>
 </resources>

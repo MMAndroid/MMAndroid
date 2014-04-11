@@ -8,16 +8,26 @@ import java.util.Map;
 import android.app.ExpandableListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.ListFragment;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.Toast;
 import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.manager.Manager;
 
-public class AudioExpandableListActivity extends ExpandableListActivity {
+public class AudioExpandableListFragment extends ExpandableListFragment {
 
 	public static final String SELECTED_ARTIST_ID = "SELECTED_AUTHOR_ID";
 	public static final String SELECTED_ARTIST_NAME = "SELECTED_ARTIST_NAME";
@@ -31,27 +41,33 @@ public class AudioExpandableListActivity extends ExpandableListActivity {
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       
-        List<Audio> production = new ArrayList<Audio>();
+    }
+	
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		List<Audio> production = new ArrayList<Audio>();
         try {
         	
-        	if(getIntent().hasExtra(SELECTED_ARTIST_ID) && getIntent().getIntExtra(SELECTED_ARTIST_ID, -1) != -1) {
-            	production = Manager.instance().listProductionByAuthorPK(getApplicationContext(), getIntent().getIntExtra(SELECTED_ARTIST_ID, -1));
+       		Bundle args = getArguments();
+        	
+        	if(args!=null && args.containsKey(SELECTED_ARTIST_ID) && args.getInt(SELECTED_ARTIST_ID, -1) != -1) {
+            	production = Manager.instance().listProductionByAuthorPK(getActivity().getApplicationContext(), args.getInt(SELECTED_ARTIST_ID, -1));
             }
         	else { 
-        		production = Manager.instance().listAllProduction(getApplication());
+        		production = Manager.instance().listAllProduction(getActivity().getApplication());
         	} 
         	
         	albuns = groupByAlbum(production);
         	
-        	setTitle("Albuns from " + getIntent().getStringExtra(SELECTED_ARTIST_NAME));
+        	getActivity().setTitle("Albuns from " + args.getString(SELECTED_ARTIST_NAME));
         	
         	groupList = createGroupList(albuns);
         	childList = createChildList(albuns);
         	 
         	SimpleExpandableListAdapter expListAdapter =
         			new SimpleExpandableListAdapter(
-        				this,
+        				getActivity(),
         				groupList,								// groupData describes the first-level entries
         				R.layout.child_row,						// Layout for the first-level entries
         				new String[] { ALBUM },					// Key in the groupData maps to display
@@ -61,23 +77,22 @@ public class AudioExpandableListActivity extends ExpandableListActivity {
         				new String[] { TITLE },					// Keys in childData maps to display
         				new int[] { R.id.childname }			// Data under the keys above go into these TextViews
         			);
-        		setListAdapter( expListAdapter );
-        		getExpandableListView().setOnChildClickListener(this);
+        	setListAdapter( expListAdapter );
+        	getExpandableListView().setOnChildClickListener(this);
         }
         catch(Exception e) {
         	e.printStackTrace();
-        	Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        	Toast.makeText(getActivity().getApplicationContext(), "Exception: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         }
-    }
-	
-	
-
+        
+		
+	}
 
 	@Override
 	public boolean onChildClick(ExpandableListView parent, View v,
 			int groupPosition, int childPosition, long id) {
-		
-		
+	
+		Toast.makeText(getActivity().getApplicationContext(), "Abrindo player...", Toast.LENGTH_SHORT).show();
 		try {
 			String albumName = groupList.get(groupPosition).get(ALBUM);
 			List<Audio> album = albuns.get(albumName);
@@ -86,17 +101,29 @@ public class AudioExpandableListActivity extends ExpandableListActivity {
 			
 			listTmp.toArray(executionList);
 		
-			Intent startActivtyIntent = new Intent(getApplicationContext(), AudioPlayerActivity.class);
-			startActivtyIntent.putExtra(AudioPlayerActivity.EXECUTION_LIST, executionList);
-			startActivity(startActivtyIntent);
+			Bundle args = new Bundle();
+			args.putParcelableArray(AudioPlayerFragment.EXECUTION_LIST, executionList);
 			
+			// TODO Extract this to a method (repeated in MMUnBActivity too)
+			Fragment newFragment = new AudioPlayerFragment();
+			newFragment.setArguments(args);
 			
-			//Manager.instance().playMultimediaContent(getApplicationContext(), executionList);
-		
-		return  super.onChildClick(parent, v, groupPosition, childPosition, id);
+			FragmentManager manager = getActivity().getSupportFragmentManager();
+			FragmentTransaction transaction = manager.beginTransaction();
+			
+			if(getActivity().findViewById(R.id.main) != null){
+				transaction.replace(R.id.main, newFragment);
+				transaction.addToBackStack(null);
+			}else{
+				transaction.replace(R.id.content, newFragment);
+				transaction.addToBackStack(null);
+			}
+			transaction.commit();
+			
+			return true;
 		}
 		catch(Throwable e) {
-        	Toast.makeText(getApplicationContext(), "Error... could not play the selected audio.", Toast.LENGTH_SHORT).show();
+        	Toast.makeText(getActivity().getApplicationContext(), "Error... could not play the selected audio.", Toast.LENGTH_SHORT).show();
         	return false;
 		}
 	}
@@ -138,12 +165,10 @@ public class AudioExpandableListActivity extends ExpandableListActivity {
 		return result;
 	}
 
-
-	@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_audio_table, menu);
-        return true;
-    }
+    @Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.activity_audio_table, menu);
+	}
 
 	/*
 	 * Return all production (musics) grouped by album (a map <String, List<Audio>>, where 
