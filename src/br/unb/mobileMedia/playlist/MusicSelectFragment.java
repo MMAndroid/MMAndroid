@@ -3,12 +3,13 @@ package br.unb.mobileMedia.playlist;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.KeyEvent;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -17,38 +18,46 @@ import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.manager.Manager;
 
-public class MusicSelectActivity extends Activity {
+public class MusicSelectFragment extends Fragment {
 
     List<Audio> musicas = new ArrayList<Audio>();
     List<Integer> musicasAdicionadasId = new ArrayList<Integer>();
     private String names[];
     private int playListId; 
     
+        
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-      //get from intent the playlist`s id.
-        Bundle extras = getIntent().getExtras();
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+    	super.onCreateView(inflater, container, savedInstanceState);
+    	getActivity().setTitle(R.string.title_activity_music_select);
+		return inflater.inflate(R.layout.activity_playlist_music_select, container, false);
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onActivityCreated(savedInstanceState);
+		
+		Bundle extras = getArguments();
         //the playlist id that the music will be added.
         playListId = extras.getInt(MainPlaylistListFragment.SELECTED_PLAYLIST_ID);
         
-        setContentView(R.layout.activity_playlist_music_select);
         refreshListMusicLists();
-    }
+	}
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_playlist_music_select, menu);
-        return true;
+	@Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+        inflater.inflate(R.menu.activity_playlist_music_select, menu);
     }
     
     //updates the listview with all the musics from the DB
     private void refreshListMusicLists(){
     	
-    	ListView listMusicLists = (ListView) findViewById(R.id.list_musiclistselect);
+    	ListView listMusicLists = (ListView) getActivity().findViewById(R.id.list_musiclistselect);
     	
     	try {
-    		musicas = Manager.instance().listAllProduction(this);
+    		musicas = Manager.instance().listAllProduction(getActivity());
     		
     		}
     	catch (DBException e) {e.printStackTrace();}
@@ -57,7 +66,7 @@ public class MusicSelectActivity extends Activity {
     	int i=0;
     	for (Audio aux : musicas){names[i++]=aux.getTitle();}
     	
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, 
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), 
 				android.R.layout.simple_list_item_1, 
 				android.R.id.text1, 
 				names);
@@ -72,9 +81,9 @@ public class MusicSelectActivity extends Activity {
 					Audio aux = musicas.get(position);
 					musicasAdicionadasId.add(aux.getId());
 					
-					Manager.instance().addMediaToPlaylist(getBaseContext(), playListId, musicasAdicionadasId);
+					Manager.instance().addMediaToPlaylist(getActivity().getBaseContext(), playListId, musicasAdicionadasId);
 					//Closes the activity. Only one music can be added per time.
-					finish();
+					getActivity().getSupportFragmentManager().popBackStack();
 					
             		} catch (DBException e) {
 				// TODO Auto-generated catch block
@@ -86,9 +95,10 @@ public class MusicSelectActivity extends Activity {
     
     }
     
-    
+    //TODO review this method
     //when back button is pressed, saves the ids selected and return the array to the previous activity.
-    @Override
+    //@Override
+    /*
     public boolean onKeyDown(int keyCode, KeyEvent event)  {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
         	Intent intent=new Intent();
@@ -98,4 +108,5 @@ public class MusicSelectActivity extends Activity {
         }
         return super.onKeyDown(keyCode, event);
     }
+    */
 }

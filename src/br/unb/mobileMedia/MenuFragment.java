@@ -26,7 +26,7 @@ public class MenuFragment extends Fragment {
 		button = ((Button) view.findViewById(R.id.btn_play_list));
 		button.setOnClickListener(new OnClickMenuItemListener());
 		
-		button = ((Button) view.findViewById(R.id.btn_media_list));
+		button = ((Button) view.findViewById(R.id.btn_open_music_player));
 		button.setOnClickListener(new OnClickMenuItemListener());
 		
 		button = ((Button) view.findViewById(R.id.btn_share));
