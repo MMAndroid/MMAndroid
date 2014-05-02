@@ -6,7 +6,6 @@ import java.util.List;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,6 +20,7 @@ import br.unb.mobileMedia.core.audioPlayer.AudioPlayerList;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.manager.Manager;
+import br.unb.mobileMedia.playlist.PlayListManager;
 
 public class AudioSelectFragment extends Fragment{
 
@@ -81,7 +81,14 @@ public class AudioSelectFragment extends Fragment{
 				musicasAdicionadasId.add(aux.getId());
 
 				AudioPlayerList.getInstance(getActivity().getApplicationContext()).addMusic(aux);
-				getActivity().getSupportFragmentManager().popBackStack();
+				
+				Fragment target = getTargetFragment();
+				if(target instanceof PlayListManager) {
+					((PlayListManager) target).addMusic(aux);
+				}
+				
+				
+			    getActivity().getSupportFragmentManager().popBackStack();
 			}
 		});
 	}
