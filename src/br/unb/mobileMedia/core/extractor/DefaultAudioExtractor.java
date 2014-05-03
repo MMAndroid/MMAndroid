@@ -48,7 +48,7 @@ public class DefaultAudioExtractor implements MediaExtractor {
 
 		MediaMetadataRetriever mmr = new MediaMetadataRetriever();
 
-		Log.i("Files to process: ", String.valueOf(audioFiles.size()));
+		Log.i("Audio files to process: ", String.valueOf(audioFiles.size()));
 		for(File file: audioFiles){
 
 	       URI u =  file.getAbsoluteFile().toURI();

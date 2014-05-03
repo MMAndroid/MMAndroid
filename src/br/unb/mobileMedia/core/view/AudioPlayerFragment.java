@@ -1,5 +1,8 @@
 package br.unb.mobileMedia.core.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
@@ -16,19 +19,25 @@ import android.widget.Toast;
 import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.audioPlayer.AudioPlayerList;
 import br.unb.mobileMedia.core.domain.Audio;
+import br.unb.mobileMedia.playlist.PlayListManager;
 
-public class AudioPlayerFragment extends Fragment{
+public class AudioPlayerFragment extends Fragment implements PlayListManager{
 
 	public static final String EXECUTION_LIST = "EXECUTION_LIST";
+	private List<Audio> musicList = new ArrayList<Audio>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Log.i("AudioPlayerFragment", "OnCreate...");
+		
+		initAudioList();
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		Log.i("AudioPlayerFragment", "OnCreateView...");
 		getActivity().setTitle(R.string.title_activity_audio_player);
 		return inflater.inflate(R.layout.activity_audio_player, container, false);
 	}
@@ -36,20 +45,21 @@ public class AudioPlayerFragment extends Fragment{
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		
+		Log.i("AudioPlayerFragment", "OnActivityCreated...");
 		createUI();
+		updateAudioListView();
 	}
 	
 	private void createUI() {
-		Audio[] executionList = refreshAudioList();
-
+		Log.i("AudioPlayerFragment", "Creating UI...");
 		try {
 			AudioPlayerList player = AudioPlayerList.getInstance(getActivity().getApplicationContext());
 			if (player.isPlaying()){ 
 				player.stop();
 				player.killPLaylist();
 			}
-			player.newPlaylist(executionList);
+			Audio[] music = musicList.toArray(new Audio[musicList.size()]);
+			player.newPlaylist(music);
 			player.play();
 		} catch (RuntimeException e) {
 			e.printStackTrace();
@@ -93,6 +103,8 @@ public class AudioPlayerFragment extends Fragment{
 			public void onClick(View v) {
 				// TODO Extract this to a method (repeated in MMUnBActivity too)
 				Fragment newFragment = new AudioSelectFragment();
+				newFragment.setTargetFragment(AudioPlayerFragment.this, -1);
+				
 				FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 				if(getActivity().findViewById(R.id.main) != null){
 					transaction.replace(R.id.main, newFragment);
@@ -105,34 +117,66 @@ public class AudioPlayerFragment extends Fragment{
 			}
 		});
 	}
-
-	private Audio[] refreshAudioList() {
-		
+	/**
+	 * Initialize the audio list with arguments passed to fragment
+	 */
+	private void initAudioList() {
+		Log.i("AudioPlayerFragment", "init audio list...");
 		if(getArguments()==null){
-			return new Audio[0];
+			musicList = new ArrayList<Audio>();
+			Log.i("AudioPlayerFragment", "getArguments() is null");
+			return;
 		}
 		
 		Parcelable[] ps = getArguments().getParcelableArray(EXECUTION_LIST);
 		
 		if (ps != null){
-			Audio[] executionList = new Audio[ps.length];
+			Log.i("AudioPlayerFragment", "getParcelableArray(EXECUTION_LIST) has " + ps.length + " itens");
+			musicList = new ArrayList<Audio>();
 
 			for (int i = 0; i < ps.length; i++) {
-				executionList[i] = (Audio) ps[i];
-				Log.i("AudioPlayerFragment", "Add music: " + executionList[i]);
+				musicList.add((Audio) ps[i]);
+				Log.i("AudioPlayerFragment", "Add music to musicList: " + (Audio) ps[i]);
 			}
-
-			ListView listView = (ListView) getActivity().findViewById(R.id.list_audio_player);
-
-			listView.setAdapter(new AudioPlayerArrayAdapter(getActivity().getApplicationContext(), executionList));
-			listView.setItemChecked(0, true);
-			return executionList;
 		}
-		return new Audio[0];
+	}
+	
+	/**
+	 * Update the list view with audio list
+	 */
+	private void updateAudioListView(){
+		Log.i("AudioPlayerFragment", "Updateding audio list view...");
+		ListView listView = (ListView) getActivity().findViewById(R.id.list_audio_player);
+		Audio[] music = musicList.toArray(new Audio[musicList.size()]);
+		
+		listView.setAdapter(new AudioPlayerArrayAdapter(getActivity().getApplicationContext(), music));
+		listView.setItemChecked(0, true);
+	}
+	
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		Log.i("AudioPlayerFragment", "OnCreateOptionsMenu...");
+		inflater.inflate(R.menu.activity_audio_player, menu);
+	}
+	
+	/**
+	 * Add a audio to audio list
+	 * Doesn't updated the list view
+	 */
+	public void addMusic(Audio audio) {
+		// TODO Auto-generated method stub
+		Log.i("AudioPlayerFragment", "Adding music..." + audio);
+		musicList.add(audio);
 	}
 
 	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.activity_audio_player, menu);
+	public void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		
+		AudioPlayerList player = AudioPlayerList.getInstance(getActivity().getApplicationContext());
+		player.stop();
+		player.killPLaylist();
 	}
+	
 }
