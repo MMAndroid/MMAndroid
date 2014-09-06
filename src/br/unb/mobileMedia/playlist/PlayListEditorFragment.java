@@ -3,11 +3,10 @@ package br.unb.mobileMedia.playlist;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -22,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.domain.Audio;
@@ -66,6 +66,7 @@ public class PlayListEditorFragment extends Fragment{
     			
     	((Button)getActivity().findViewById(R.id.btn_addMusiclist)).setOnClickListener(new View.OnClickListener(){     
 			public void onClick(View v) {
+				
 				
 				//when button is clicked, start activity and wait for result.
 				//result is caught in method onActivityResult.

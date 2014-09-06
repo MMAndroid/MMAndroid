@@ -4,10 +4,8 @@ import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -26,7 +24,6 @@ import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.domain.Playlist;
 import br.unb.mobileMedia.core.manager.Manager;
-import br.unb.mobileMedia.core.view.AudioExpandableListFragment;
 
 /**
  * The main activity of the playlist feature.

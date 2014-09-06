@@ -17,6 +17,7 @@ import android.view.View.OnClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 import br.unb.mobileMedia.R;
+import br.unb.mobileMedia.core.FileChooser.*;
 import br.unb.mobileMedia.core.audioPlayer.AudioPlayerList;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.playlist.PlayListManager;
@@ -98,11 +99,15 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager{
 			}
 		});
 		
+		
+		
+		//Click no botao para adicionar uma musica
 		getActivity().findViewById(R.id.btn_add_a_music).setOnClickListener(new OnClickListener() {
 			
 			public void onClick(View v) {
-				// TODO Extract this to a method (repeated in MMUnBActivity too)
-				Fragment newFragment = new AudioSelectFragment();
+				// TODO Extract this to a method (repeated in MMUnBActivity too)				
+				
+				Fragment newFragment =  new AudioSelectFragment();
 				newFragment.setTargetFragment(AudioPlayerFragment.this, -1);
 				
 				FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -116,6 +121,24 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager{
 				transaction.commit();
 			}
 		});
+		
+		getActivity().findViewById(R.id.btn_file_chooser).setOnClickListener(new OnClickListener() {
+
+			public void onClick(View v){
+				Fragment newFragment = new FileChooserFragment();
+				
+				FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+				if(getActivity().findViewById(R.id.main) != null){
+					transaction.replace(R.id.main, newFragment);
+					transaction.addToBackStack(null);
+				}else{
+					transaction.replace(R.id.content, newFragment);
+					transaction.addToBackStack(null);
+				}
+				transaction.commit();
+			}
+		});
+
 	}
 	/**
 	 * Initialize the audio list with arguments passed to fragment

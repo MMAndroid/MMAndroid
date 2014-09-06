@@ -45,6 +45,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/add_a_music" />
+        
+        
+        <Button
+            android:id="@+id/btn_file_chooser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="File Chooser" />
+        
+        
 
         <ListView
             android:id="@+id/list_audio_player"
