@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.domain.Playlist;
@@ -269,13 +271,18 @@ public class MainPlaylistListFragment extends Fragment {
 				
 				//Calls the Playlist Editor when a playlist is pressed.
 				listPlayLists.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-		            
+			
 		            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		            //if(position == 1) {
 		            
 		            //Get the selected playlist name!
 		            String selectedPlaylistName = (String) parent.getItemAtPosition(position);
-		            Playlist recoveredPlaylist = null;		
+		            
+		            //Log de qual PlayList foi clicada
+		            Log.i("PlayList: ", selectedPlaylistName+" Clicada.");
+		            
+		            Playlist recoveredPlaylist = null;	
+		            
 		            try {
 						recoveredPlaylist = Manager.instance().getSimplePlaylist(getActivity().getApplicationContext(), selectedPlaylistName);
 					} catch (DBException e) {

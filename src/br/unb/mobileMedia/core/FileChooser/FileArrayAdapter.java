@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class FileArrayAdapter extends ArrayAdapter<FileDetail> {
@@ -49,15 +50,17 @@ public class FileArrayAdapter extends ArrayAdapter<FileDetail> {
 
 		if (f != null) {
 			
+			ImageView icon = (ImageView) rowView.findViewById(R.id.item_icon);
 			TextView t1 = (TextView) rowView.findViewById(R.id.nameFile);//Adiciona o nome do arquivo ou diretorio
-			TextView t2 = (TextView) rowView.findViewById(R.id.sizeFile); // adiciona o tamnaho do arquivo			
+//			TextView t2 = (TextView) rowView.findViewById(R.id.sizeFile); // adiciona o tamnaho do arquivo			
 
 			if (t1 != null){
+				icon.setImageResource(f.getIcon());
 				t1.setText(f.getName().toString());
 			}
 			
-			if (t2 != null)
-				t2.setText(f.getData());
+//			if (t2 != null)
+//				t2.setText(f.getData());
 
 		}
 		return rowView;

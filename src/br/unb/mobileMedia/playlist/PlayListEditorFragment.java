@@ -3,7 +3,6 @@ package br.unb.mobileMedia.playlist;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,8 +20,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 import br.unb.mobileMedia.R;
+import br.unb.mobileMedia.core.FileChooser.FileChooserFragment;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Playlist;
@@ -44,6 +43,9 @@ public class PlayListEditorFragment extends Fragment{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		getActivity().setTitle(R.string.title_activity_playlist_editor);
+		
+		Log.i("###PlayList", "Clicada");
+		
 		return inflater.inflate(R.layout.activity_playlist_editor, container, false);
 	}
 
@@ -60,9 +62,9 @@ public class PlayListEditorFragment extends Fragment{
 
 	private void configureUI() {
     	//Update the List View
-    			ListView listMusicLists = (ListView) getActivity().findViewById(R.id.list_musiclist);
-    			registerForContextMenu(listMusicLists);
-    			
+		
+    	ListView listMusicLists = (ListView) getActivity().findViewById(R.id.list_musiclist);
+    	registerForContextMenu(listMusicLists);
     			
     	((Button)getActivity().findViewById(R.id.btn_addMusiclist)).setOnClickListener(new View.OnClickListener(){     
 			public void onClick(View v) {
@@ -74,8 +76,14 @@ public class PlayListEditorFragment extends Fragment{
 	    		args.putInt(SELECTED_PLAYLIST_ID, playListId);
 	    		
 	    		// TODO Extract this to a method (repeated in MMUnBActivity too)
-	    		Fragment newFragment = new MusicSelectFragment();
+//	    		Fragment newFragment = new MusicSelectFragment();
+	    		
+	    		//Chamando o FileChooser para escolher as musicas
+	    		//###############################################################################
+	    		Fragment newFragment = new FileChooserFragment();
+	    		
 	    		newFragment.setArguments(args);
+	    		
 	    		FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 	    		if(getActivity().findViewById(R.id.main) != null){
 	    			transaction.replace(R.id.main, newFragment);
@@ -214,6 +222,9 @@ public class PlayListEditorFragment extends Fragment{
 		}
 		return true;
 	}
+
+	
+	
 
     
     /*

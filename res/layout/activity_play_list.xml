@@ -12,6 +12,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:text="@string/btn_addPlaylist" />
+   
 
     <ListView
         android:id="@+id/list_playlist"

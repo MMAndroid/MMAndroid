@@ -2,14 +2,24 @@ package br.unb.mobileMedia.core.FileChooser;
 
 public class FileDetail implements Comparable<FileDetail> {
 
+	private int    icon;
 	private String name;
 	private String data;
 	private String path;
 
-	public FileDetail(String name, String data, String path) {
+	public FileDetail(int icon, String name, String data, String path) {
+		this.icon = icon;
 		this.name = name;
 		this.data = data;
 		this.path = path;
+	}
+
+	public int getIcon() {
+		return icon;
+	}
+
+	public void setIcon(int icon) {
+		this.icon = icon;
 	}
 
 	public String getName() {
