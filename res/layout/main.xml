@@ -6,6 +6,7 @@
     android:orientation="horizontal"
     android:baselineAligned="false">
 
+    
     <FrameLayout
         android:id="@+id/main"
         android:layout_width="0dip"
