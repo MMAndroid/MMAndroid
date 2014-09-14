@@ -12,13 +12,6 @@
         android:text="@string/btn_list_authors" />
 
     <Button
-        android:id="@+id/btn_play_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_playlist"
-        android:text="@string/btn_play_list" />
-
-    <Button
         android:id="@+id/btn_open_music_player"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,24 +20,10 @@
         />
 
     <Button
-        android:id="@+id/btn_share"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/twitter"
-        android:text="@string/btn_share" />
-
-    <Button
         android:id="@+id/btn_synchronize"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/ic_sync"
         android:text="@string/btn_synchronize" />
-
-    <Button
-        android:id="@+id/btn_exit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_exit"
-        android:text="@string/btn_exit" />
 
 </LinearLayout>

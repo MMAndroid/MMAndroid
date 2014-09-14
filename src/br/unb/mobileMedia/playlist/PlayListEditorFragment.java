@@ -13,12 +13,12 @@ import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.FileChooser.FileChooserFragment;
@@ -37,14 +37,16 @@ public class PlayListEditorFragment extends Fragment{
 	
 	int result=1;
 	//String containing the playlist id that will be passed on to another activity through an intent.
-		public final static String SELECTED_PLAYLIST_ID = "idPlaylist";
+	public final static String SELECTED_PLAYLIST_ID = "idPlaylist";
     
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		
+		setHasOptionsMenu(true);
+		
 		getActivity().setTitle(R.string.title_activity_playlist_editor);
 		
-		Log.i("###PlayList", "Clicada");
+		Log.i("Recebendo PlayList", "Clicada");
 		
 		return inflater.inflate(R.layout.activity_playlist_editor, container, false);
 	}
@@ -57,6 +59,9 @@ public class PlayListEditorFragment extends Fragment{
         //get from intent the playlist`s id.
         Bundle extras = getArguments();
         playListId = extras.getInt(MainPlaylistListFragment.SELECTED_PLAYLIST_ID);
+        
+        Log.i("PlayList Name", "Num:"+playListId);
+        
         configureUI();
 	}
 
@@ -65,75 +70,96 @@ public class PlayListEditorFragment extends Fragment{
 		
     	ListView listMusicLists = (ListView) getActivity().findViewById(R.id.list_musiclist);
     	registerForContextMenu(listMusicLists);
-    			
-    	((Button)getActivity().findViewById(R.id.btn_addMusiclist)).setOnClickListener(new View.OnClickListener(){     
-			public void onClick(View v) {
-				
-				
-				//when button is clicked, start activity and wait for result.
-				//result is caught in method onActivityResult.
-				Bundle args = new Bundle();
-	    		args.putInt(SELECTED_PLAYLIST_ID, playListId);
-	    		
-	    		// TODO Extract this to a method (repeated in MMUnBActivity too)
-//	    		Fragment newFragment = new MusicSelectFragment();
-	    		
-	    		//Chamando o FileChooser para escolher as musicas
-	    		//###############################################################################
-	    		Fragment newFragment = new FileChooserFragment();
-	    		
-	    		newFragment.setArguments(args);
-	    		
-	    		FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-	    		if(getActivity().findViewById(R.id.main) != null){
-	    			transaction.replace(R.id.main, newFragment);
-	    			transaction.addToBackStack(null);
-	    		}else{
-	    			transaction.replace(R.id.content, newFragment);
-	    			transaction.addToBackStack(null);
-	    		}
-	    		transaction.commit();
-			}        
 
-		});
-    	
-    	((Button)getActivity().findViewById(R.id.btn_playPlaylist)).setOnClickListener(new View.OnClickListener(){     
-			
-    		public void onClick(View v) {
-    			
-    			//when button is clicked, the music list is send to player.
-    			
-    			List<Audio> listTmp = musicList;
-				Audio[] executionList = new Audio[listTmp.size()]; 
-				
-				listTmp.toArray(executionList);
-				
-				Bundle args = new Bundle();
-				args.putParcelableArray(AudioPlayerFragment.EXECUTION_LIST, executionList);
-				
-				// TODO Extract this to a method (repeated in MMUnBActivity too)
-				Fragment newFragment = new AudioPlayerFragment();
-				newFragment.setArguments(args);
-				
-				FragmentManager manager = getActivity().getSupportFragmentManager();
-				FragmentTransaction transaction = manager.beginTransaction();
-				
-				if(getActivity().findViewById(R.id.main) != null){
-					transaction.replace(R.id.main, newFragment);
-					transaction.addToBackStack(null);
-				}else{
-					transaction.replace(R.id.content, newFragment);
-					transaction.addToBackStack(null);
-				}
-				transaction.commit();
-				
-    		}
-    	});
-    	
 		//Refresh the List View (List of Musics)
     	refreshListMusicLists();
 	}
 
+	
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		menu.clear();
+		inflater.inflate(R.menu.activity_playlist_editor_action_bar, menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	
+		switch(item.getItemId()){
+		
+			case R.id.AddMisicInPlayListActionBar:
+				//To do insert animate rotate in this item of action bar
+				addMusicInPlayList();
+				break;
+		
+			case R.id.ExecutePlayList:
+				executePlayList();
+				break;
+				
+			default:
+				Log.i("Message PL", "nao Implementado");
+				
+		}
+		
+		return super.onOptionsItemSelected(item);
+	}
+	
+	
+	private void addMusicInPlayList(){
+		//when button is clicked, start activity and wait for result.
+		//result is caught in method onActivityResult.
+		Bundle args = new Bundle();
+		args.putInt(SELECTED_PLAYLIST_ID, playListId);
+		
+		// TODO Extract this to a method (repeated in MMUnBActivity too)
+//		Fragment newFragment = new MusicSelectFragment();
+		
+		//Chamando o FileChooser para escolher as musicas
+		Fragment newFragment = new FileChooserFragment();
+		
+		newFragment.setArguments(args);
+		
+		FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+		
+		if(getActivity().findViewById(R.id.main) != null){
+			transaction.replace(R.id.main, newFragment);
+			transaction.addToBackStack(null);
+		}else{
+			transaction.replace(R.id.content, newFragment);
+			transaction.addToBackStack(null);
+		}
+		
+		transaction.commit();
+	}
+	
+	
+	private void executePlayList(){
+		List<Audio> listTmp = musicList;
+		Audio[] executionList = new Audio[listTmp.size()]; 
+		
+		listTmp.toArray(executionList);
+		
+		Bundle args = new Bundle();
+		args.putParcelableArray(AudioPlayerFragment.EXECUTION_LIST, executionList);
+		
+		// TODO Extract this to a method (repeated in MMUnBActivity too)
+		Fragment newFragment = new AudioPlayerFragment();
+		newFragment.setArguments(args);
+		
+		FragmentManager manager = getActivity().getSupportFragmentManager();
+		FragmentTransaction transaction = manager.beginTransaction();
+		
+		if(getActivity().findViewById(R.id.main) != null){
+			transaction.replace(R.id.main, newFragment);
+			transaction.addToBackStack(null);
+		}else{
+			transaction.replace(R.id.content, newFragment);
+			transaction.addToBackStack(null);
+		}
+		transaction.commit();
+	}
+	
+	
     private void refreshListMusicLists(){
 
 		//Update the List View
@@ -174,8 +200,7 @@ public class PlayListEditorFragment extends Fragment{
     
     //catch result from another activity.
     @Override
-    public void onActivityResult(int requestCode,int resultCode,Intent data)
-    {
+    public void onActivityResult(int requestCode,int resultCode,Intent data){
     	Log.i("PlayListEditor", "Executing onActivityResult");
     	refreshListMusicLists();
     }
@@ -183,12 +208,10 @@ public class PlayListEditorFragment extends Fragment{
     
     //long press para deletar determinada musica
     @Override
-	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenuInfo menuInfo) {
-		if (v.getId()==R.id.list_musiclist) {
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 
-
-			menu.setHeaderTitle("Menu:");
+    	if (v.getId()==R.id.list_musiclist) {
+			menu.setHeaderTitle("Options PlayList");
 			String[] menuItems = getResources().getStringArray(R.array.menu_music);
 			for (int i = 0; i<menuItems.length; i++) {
 				menu.add(Menu.NONE, i, i, menuItems[i]);
@@ -202,7 +225,7 @@ public class PlayListEditorFragment extends Fragment{
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
 		//Index number of the selected option from the context menu
 		int menuItemIndex = item.getItemId();
-
+				
 		List<Integer> song = new ArrayList<Integer>();		
 		song.add(musicList.get(info.position).getId());
 

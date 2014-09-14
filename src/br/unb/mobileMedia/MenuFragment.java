@@ -14,8 +14,7 @@ public class MenuFragment extends Fragment {
 	OnItemClickedCallBack callBack;
 	
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-							Bundle savedInstanceState){
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,	Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.menu, container, false);
 		
 		Button button;
@@ -23,19 +22,10 @@ public class MenuFragment extends Fragment {
 		button = ((Button) view.findViewById(R.id.btn_list_authors));
 		button.setOnClickListener(new OnClickMenuItemListener());
 		
-		button = ((Button) view.findViewById(R.id.btn_play_list));
-		button.setOnClickListener(new OnClickMenuItemListener());
-		
 		button = ((Button) view.findViewById(R.id.btn_open_music_player));
 		button.setOnClickListener(new OnClickMenuItemListener());
-		
-		button = ((Button) view.findViewById(R.id.btn_share));
-		button.setOnClickListener(new OnClickMenuItemListener());
-		
+				
 		button = ((Button) view.findViewById(R.id.btn_synchronize));
-		button.setOnClickListener(new OnClickMenuItemListener());
-		
-		button = ((Button) view.findViewById(R.id.btn_exit));
 		button.setOnClickListener(new OnClickMenuItemListener());
 
 		return view;

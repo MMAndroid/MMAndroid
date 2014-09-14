@@ -18,10 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.domain.Playlist;
@@ -49,8 +47,8 @@ public class MainPlaylistListFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		setHasOptionsMenu(true);
 		getActivity().setTitle(R.string.title_activity_play_list);
 		return inflater.inflate(R.layout.activity_play_list, container, false);
 	}
@@ -69,48 +67,6 @@ public class MainPlaylistListFragment extends Fragment {
 
 		//Associar a ListView ao ContextMenu
 		registerForContextMenu(listPlayLists);
-		
-		// Add playlist button
-		((Button)getActivity().findViewById(R.id.btn_addPlaylist)).setOnClickListener(new View.OnClickListener(){     
-			public void onClick(View v) {                
-
-				//Dialog (Alert) to get the information of the new playlist
-				AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-
-				alert.setTitle(R.string.btn_addPlaylist);
-				alert.setMessage(R.string.name);
-
-				// Set an EditText view to get user input 
-				final EditText input = new EditText(getActivity());
-				alert.setView(input);
-				//Ok button
-				alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-
-					public void onClick(DialogInterface dialog, int whichButton) {
-
-						String value = input.getText().toString();
-						try {
-							Manager.instance().newPlaylist(getActivity().getApplicationContext(), new Playlist(value));
-						} catch (DBException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						
-						//refresh the ViewList with recent added playlist
-						refreshListPlayLists ();
-					}
-				});
-				//Cancel button
-				alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						// Canceled.
-					}
-				});
-
-				alert.show();  
-			}        
-
-		});
 
 		//Refresh the List View (List of Playlists)
 		refreshListPlayLists ();
@@ -118,9 +74,77 @@ public class MainPlaylistListFragment extends Fragment {
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.activity_play_list, menu);
+		menu.clear();
+		inflater.inflate(R.menu.activity_playlist_action_bar, menu);
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	
+		switch(item.getItemId()){
+		
+			case R.id.refreshActionBar:
+				//To do insert animate rotate in this item of action bar
+				refreshListPlayLists ();
+				break;
+		
+			case R.id.AddPlayListActionBar:
+				createPlayList();
+				break;
+				
+			default:
+				Log.i("Message PL", "nao Implementado");
+				
+		}
+		
+		return super.onOptionsItemSelected(item);
+	}
+	
+	
+
+	
+	private void createPlayList(){
+		
+		//Dialog (Alert) to get the information of the new playlist
+		AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+
+		alert.setTitle(R.string.btn_addPlaylist);
+		alert.setMessage(R.string.name);
+
+		// Set an EditText view to get user input 
+		final EditText input = new EditText(getActivity());
+		alert.setView(input);
+		
+		//Ok button
+		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+
+			public void onClick(DialogInterface dialog, int whichButton) {
+				//get name new playlist 
+				String newPlayListName = input.getText().toString();
+				try {
+					Manager.instance().newPlaylist(getActivity().getApplicationContext(), new Playlist(newPlayListName));
+				} catch (DBException e) {
+					
+					Log.i("Create PL Exception", e.getMessage());
+					
+				}
+				
+				//refresh the ViewList with recent added playlist
+				refreshListPlayLists ();
+			}
+		});
+		//Cancel button
+		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				// Canceled.
+			}
+		});
+
+		alert.show();  
+	}
+	
+	
+	
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
@@ -139,6 +163,8 @@ public class MainPlaylistListFragment extends Fragment {
 	public boolean onContextItemSelected(MenuItem item) {
 
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+		
+				
 		//Index number of the selected option from the context menu
 		int menuItemIndex = item.getItemId();
 
@@ -241,6 +267,9 @@ public class MainPlaylistListFragment extends Fragment {
 		return true;
 	}
 
+	
+	
+	
 	private void refreshListPlayLists (){
 
 		//Update the List View
@@ -269,6 +298,8 @@ public class MainPlaylistListFragment extends Fragment {
 						names);
 				listPlayLists.setAdapter(adapter);
 				
+				//##############################################################################################				
+				//##############################################################################################				
 				//Calls the Playlist Editor when a playlist is pressed.
 				listPlayLists.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			

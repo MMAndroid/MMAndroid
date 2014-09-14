@@ -26,7 +26,6 @@
     <string name="ff">FF</string>
     <string name="re">RE</string>
     <string name="add_a_music">Add a music</string>
-    
     <string name="btn_top_artists">Top Artists</string>
     <string name="btn_top_songs">Top Songs</string>
     <string name="btn_share_app">Share App</string>
@@ -34,4 +33,22 @@
     <string name="title_activity_select_activity">AudioSelectActivity</string>
     <string name="need_to_be_implemented">Need to be implemented.</string>
     <string name="name">Name:</string>
+
+    <!-- Action Bar Strings MMUnBActivity -->
+    <string name="play_list_ab">Play List</string>
+    <string name="facebook_ab">Facebook</string>
+    <string name="twiiter_ab">Twiiter</string>
+    <string name="instagram_ab">Instagram</string>
+    <string name="exit_ab">Exit</string>
+    <string name="refresh_ab">Refresh</string>
+    
+    
+    <!-- Action Bar Strings PlayListActivity -->
+    <string name="add_play_list_ab">New Play List</string>
+    <string name="add_music_in_play_list_ab">Add Music</string>
+    <string name="execute_play_list">Play</string>
+    
+    
+    
+    
 </resources>
