@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 import br.unb.mobileMedia.R;
@@ -26,6 +27,14 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager{
 
 	public static final String EXECUTION_LIST = "EXECUTION_LIST";
 	private List<Audio> musicList = new ArrayList<Audio>();
+	
+	private ImageButton btnPlayPause;
+    private ImageButton btnForward;
+    private ImageButton btnBackward;
+    private ImageButton btnNext;
+    private ImageButton btnPrevious;
+	
+	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -36,11 +45,25 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager{
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,	Bundle savedInstanceState) {
+		
+		View v = inflater.inflate(R.layout.activity_audio_player, container, false);
+		
 		Log.i("AudioPlayerFragment", "OnCreateView...");
+
+		// All player buttons
+		//Ao inves de criar instancias o botoes em Oncreate
+		// fiz em onCreateView pois os botoes no existem no neste fragment e nao
+		// na activity principal
+		btnPlayPause = (ImageButton) v.findViewById(R.id.btnPlayPause);
+		btnPlayPause = (ImageButton) v.findViewById(R.id.btnPlayPause);
+        btnForward   = (ImageButton) v.findViewById(R.id.btnForward);
+        btnBackward  = (ImageButton) v.findViewById(R.id.btnBackward);
+        btnNext      = (ImageButton) v.findViewById(R.id.btnNext);
+        btnPrevious  = (ImageButton) v.findViewById(R.id.btnPrevious);
+        
 		getActivity().setTitle(R.string.title_activity_audio_player);
-		return inflater.inflate(R.layout.activity_audio_player, container, false);
+		return v;
 	}
 	
 	@Override
@@ -55,44 +78,61 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager{
 		Log.i("AudioPlayerFragment", "Creating UI...");
 		try {
 			AudioPlayerList player = AudioPlayerList.getInstance(getActivity().getApplicationContext());
-			if (player.isPlaying()){ 
+			if (player.isPlaying()){
 				player.stop();
 				player.killPLaylist();
 			}
 			Audio[] music = musicList.toArray(new Audio[musicList.size()]);
 			player.newPlaylist(music);
 			player.play();
+			
+			// Verifica no inicio da activity se existe 
+			//alguma musica tocando se existir o btnPlayPause vai exibir a imagem de pause.
+			if (AudioPlayerList.getInstance(getActivity().getApplicationContext()).isPlaying()) {
+				btnPlayPause.setImageResource(R.drawable.btn_pause);
+			}
+            
 		} catch (RuntimeException e) {
 			e.printStackTrace();
 			Toast.makeText(getActivity().getApplicationContext(), "Exception: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
 		}
 
-		getActivity().findViewById(R.id.img_bt_play_pause).setOnClickListener(new OnClickListener() {
+		btnPlayPause.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
 				if (AudioPlayerList.getInstance(getActivity().getApplicationContext()).isPlaying()) {
-					AudioPlayerList.getInstance(getActivity().getApplicationContext()).pause();
+					
+					if(AudioPlayerList.getInstance(getActivity().getApplicationContext())!=null){
+						AudioPlayerList.getInstance(getActivity().getApplicationContext()).pause();
+						btnPlayPause.setImageResource(R.drawable.btn_play);
+					}
+					
+//					AudioPlayerList.getInstance(getActivity().getApplicationContext()).pause();
 				} else {
-					AudioPlayerList.getInstance(getActivity().getApplicationContext()).play();
+					if(AudioPlayerList.getInstance(getActivity().getApplicationContext())!=null){
+						AudioPlayerList.getInstance(getActivity().getApplicationContext()).play();
+						btnPlayPause.setImageResource(R.drawable.btn_pause);
+					}
+//					AudioPlayerList.getInstance(getActivity().getApplicationContext()).play();
 				}
 			}
 		});
 
-		getActivity().findViewById(R.id.img_btn_stop).setOnClickListener(new OnClickListener() {
+//		getActivity().findViewById(R.id.img_btn_stop).setOnClickListener(new OnClickListener() {
+//
+//			public void onClick(View v) {
+//				AudioPlayerList.getInstance(getActivity().getApplicationContext()).stop();
+//			}
+//		});
 
-			public void onClick(View v) {
-				AudioPlayerList.getInstance(getActivity().getApplicationContext()).stop();
-			}
-		});
-
-		getActivity().findViewById(R.id.btn_ff).setOnClickListener(new OnClickListener() {
+		 getActivity().findViewById(R.id.btnForward).setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
 				AudioPlayerList.getInstance(getActivity().getApplicationContext()).nextTrack();
 			}
 		});
 
-		getActivity().findViewById(R.id.btn_re).setOnClickListener(new OnClickListener() {
+		 getActivity().findViewById(R.id.btnBackward).setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
 				AudioPlayerList.getInstance(getActivity().getApplicationContext()).previousTrack();
@@ -106,7 +146,6 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager{
 			
 			public void onClick(View v) {
 				// TODO Extract this to a method (repeated in MMUnBActivity too)				
-				
 				Fragment newFragment =  new AudioSelectFragment();
 				newFragment.setTargetFragment(AudioPlayerFragment.this, -1);
 				
@@ -118,26 +157,27 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager{
 					transaction.replace(R.id.content, newFragment);
 					transaction.addToBackStack(null);
 				}
+				
 				transaction.commit();
 			}
 		});
 		
-		getActivity().findViewById(R.id.btn_file_chooser).setOnClickListener(new OnClickListener() {
-
-			public void onClick(View v){
-				Fragment newFragment = new FileChooserFragment();
-				
-				FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-				if(getActivity().findViewById(R.id.main) != null){
-					transaction.replace(R.id.main, newFragment);
-					transaction.addToBackStack(null);
-				}else{
-					transaction.replace(R.id.content, newFragment);
-					transaction.addToBackStack(null);
-				}
-				transaction.commit();
-			}
-		});
+//		getActivity().findViewById(R.id.btn_file_chooser).setOnClickListener(new OnClickListener() {
+//
+//			public void onClick(View v){
+//				Fragment newFragment = new FileChooserFragment();
+//				
+//				FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+//				if(getActivity().findViewById(R.id.main) != null){
+//					transaction.replace(R.id.main, newFragment);
+//					transaction.addToBackStack(null);
+//				}else{
+//					transaction.replace(R.id.content, newFragment);
+//					transaction.addToBackStack(null);
+//				}
+//				transaction.commit();
+//			}
+//		});
 
 	}
 	/**
