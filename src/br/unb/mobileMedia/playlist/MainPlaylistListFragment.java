@@ -146,8 +146,7 @@ public class MainPlaylistListFragment extends Fragment {
 	
 	
 	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenuInfo menuInfo) {
+	public void onCreateContextMenu(ContextMenu menu, View v,ContextMenuInfo menuInfo) {
 		if (v.getId()==R.id.list_playlist) {
 
 			menu.setHeaderTitle("Menu:");

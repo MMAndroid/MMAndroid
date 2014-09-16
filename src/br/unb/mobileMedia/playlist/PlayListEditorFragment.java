@@ -112,10 +112,10 @@ public class PlayListEditorFragment extends Fragment{
 		args.putInt(SELECTED_PLAYLIST_ID, playListId);
 		
 		// TODO Extract this to a method (repeated in MMUnBActivity too)
-//		Fragment newFragment = new MusicSelectFragment();
+		Fragment newFragment = new MusicSelectFragment();
 		
 		//Chamando o FileChooser para escolher as musicas
-		Fragment newFragment = new FileChooserFragment();
+//		Fragment newFragment = new FileChooserFragment();
 		
 		newFragment.setArguments(args);
 		

@@ -11,11 +11,11 @@
         android:layout_alignParentTop="true"
         android:orientation="vertical" >
 
-        <Button
-            android:id="@+id/btn_add_a_music"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/add_a_music" />
+<!--         <Button -->
+<!--             android:id="@+id/btn_add_a_music" -->
+<!--             android:layout_width="match_parent" -->
+<!--             android:layout_height="wrap_content" -->
+<!--             android:text="@string/add_a_music" /> -->
 
         <!-- <Button -->
         <!-- android:id="@+id/btn_file_chooser" -->

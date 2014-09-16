@@ -1,5 +1,7 @@
 package br.unb.mobileMedia.core.view;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +65,7 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager{
         btnPrevious  = (ImageButton) v.findViewById(R.id.btnPrevious);
         
 		getActivity().setTitle(R.string.title_activity_audio_player);
+		
 		return v;
 	}
 	
@@ -125,14 +128,14 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager{
 //			}
 //		});
 
-		 getActivity().findViewById(R.id.btnForward).setOnClickListener(new OnClickListener() {
+		btnForward.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
 				AudioPlayerList.getInstance(getActivity().getApplicationContext()).nextTrack();
 			}
 		});
 
-		 getActivity().findViewById(R.id.btnBackward).setOnClickListener(new OnClickListener() {
+		btnBackward.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
 				AudioPlayerList.getInstance(getActivity().getApplicationContext()).previousTrack();
@@ -141,12 +144,12 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager{
 		
 		
 		
-		//Click no botao para adicionar uma musica
-		getActivity().findViewById(R.id.btn_add_a_music).setOnClickListener(new OnClickListener() {
+		//Click no botao para adicionar uma musica Chamando o FileChooser
+		getActivity().findViewById(R.id.btnPlaylist).setOnClickListener(new OnClickListener() {
 			
 			public void onClick(View v) {
 				// TODO Extract this to a method (repeated in MMUnBActivity too)				
-				Fragment newFragment =  new AudioSelectFragment();
+				Fragment newFragment =  new FileChooserFragment(); //AudioSelectFragment();
 				newFragment.setTargetFragment(AudioPlayerFragment.this, -1);
 				
 				FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -180,11 +183,17 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager{
 //		});
 
 	}
+	
+	
+	
+	
+	
 	/**
 	 * Initialize the audio list with arguments passed to fragment
 	 */
 	private void initAudioList() {
 		Log.i("AudioPlayerFragment", "init audio list...");
+		
 		if(getArguments()==null){
 			musicList = new ArrayList<Audio>();
 			Log.i("AudioPlayerFragment", "getArguments() is null");
@@ -231,6 +240,36 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager{
 		Log.i("AudioPlayerFragment", "Adding music..." + audio);
 		musicList.add(audio);
 	}
+	
+	
+	
+	/**
+	 * Receive the files selecetds in FileChooser 
+	 */
+	public void receiveFileChooser(ArrayList<FileDetail> files){
+
+		//TODO colocar para executar as musicas recebidas.
+		
+		Toast.makeText(getActivity(), "AudioPlayerFragment Receive " + files.size()+ " Files of FileChooser" , Toast.LENGTH_SHORT).show();
+//		URI path = null;
+//		
+//		for(int i = 0; i< files.size(); i++){
+//			
+//			try {
+//				path = new URI(files.get(i).getPath().toString());
+//			} catch (URISyntaxException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			
+//			musicList.add(new Audio(i, files.get(i).getName().toString(), path ));
+//		}
+		
+		
+	}
+	
+	
+	
 
 	@Override
 	public void onDestroy() {
