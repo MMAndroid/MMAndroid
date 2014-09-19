@@ -18,6 +18,9 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.TextView;
 import android.widget.Toast;
 import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.FileChooser.*;
@@ -31,10 +34,12 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager{
 	private List<Audio> musicList = new ArrayList<Audio>();
 	
 	private ImageButton btnPlayPause;
-    private ImageButton btnForward;
-    private ImageButton btnBackward;
     private ImageButton btnNext;
     private ImageButton btnPrevious;
+    
+    private TextView songTitleLabel;
+    
+    private SeekBar songProgressBar;
 	
 	
 
@@ -52,18 +57,41 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager{
 		View v = inflater.inflate(R.layout.activity_audio_player, container, false);
 		
 		Log.i("AudioPlayerFragment", "OnCreateView...");
+		
+		//Song title
+		songTitleLabel = (TextView) v.findViewById(R.id.songTitle);
 
+		songProgressBar = (SeekBar) v.findViewById(R.id.songProgressBar);
+		
+		
+		//listeners
+		songProgressBar.setOnSeekBarChangeListener( new OnSeekBarChangeListener (){
+
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				
+			}
+
+			public void onStartTrackingTouch(SeekBar seekBar) {
+
+				
+			}
+
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				
+			}
+			
+		});
+		
+		
 		// All player buttons
 		//Ao inves de criar instancias o botoes em Oncreate
 		// fiz em onCreateView pois os botoes no existem no neste fragment e nao
 		// na activity principal
 		btnPlayPause = (ImageButton) v.findViewById(R.id.btnPlayPause);
 		btnPlayPause = (ImageButton) v.findViewById(R.id.btnPlayPause);
-        btnForward   = (ImageButton) v.findViewById(R.id.btnForward);
-        btnBackward  = (ImageButton) v.findViewById(R.id.btnBackward);
-        btnNext      = (ImageButton) v.findViewById(R.id.btnNext);
-        btnPrevious  = (ImageButton) v.findViewById(R.id.btnPrevious);
-        
+		btnNext   = (ImageButton) v.findViewById(R.id.btnNext);
+		btnPrevious  = (ImageButton) v.findViewById(R.id.btnPrevious);
+		
 		getActivity().setTitle(R.string.title_activity_audio_player);
 		
 		return v;
@@ -88,6 +116,14 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager{
 			Audio[] music = musicList.toArray(new Audio[musicList.size()]);
 			player.newPlaylist(music);
 			player.play();
+			
+			//Titulo da Musica atual exibiba no topo da view
+			songTitleLabel.setText(musicList.get(player.current()).getTitle());
+			
+			//set Progress bar values
+			songProgressBar.setProgress(0);
+			songProgressBar.setMax(100);
+			
 			
 			// Verifica no inicio da activity se existe 
 			//alguma musica tocando se existir o btnPlayPause vai exibir a imagem de pause.
@@ -128,14 +164,14 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager{
 //			}
 //		});
 
-		btnForward.setOnClickListener(new OnClickListener() {
+		btnNext.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
 				AudioPlayerList.getInstance(getActivity().getApplicationContext()).nextTrack();
 			}
 		});
 
-		btnBackward.setOnClickListener(new OnClickListener() {
+		btnPrevious.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
 				AudioPlayerList.getInstance(getActivity().getApplicationContext()).previousTrack();
@@ -243,6 +279,8 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager{
 	
 	
 	
+	
+	
 	/**
 	 * Receive the files selecetds in FileChooser 
 	 */
@@ -252,18 +290,24 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager{
 		
 		Toast.makeText(getActivity(), "AudioPlayerFragment Receive " + files.size()+ " Files of FileChooser" , Toast.LENGTH_SHORT).show();
 //		URI path = null;
-//		
-//		for(int i = 0; i< files.size(); i++){
+		String url = null;
+		
+		for(int i = 0; i< files.size(); i++){
 //			
-//			try {
-//				path = new URI(files.get(i).getPath().toString());
-//			} catch (URISyntaxException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
+			try {
+				url = files.get(i).getPath().toString();
+				
+				musicList.add(new Audio(files.get(i).getName().toString(), new URI(url)));
+				
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				Log.i("Exception", "receiveFileChooser()");
+				e.printStackTrace();
+			}
 //			
-//			musicList.add(new Audio(i, files.get(i).getName().toString(), path ));
-//		}
+			
+		}
+
 		
 		
 	}

@@ -110,12 +110,6 @@
                 android:src="@drawable/btn_previous" />
             
             <!-- Backward Button -->
-            <ImageButton
-                android:id="@+id/btnBackward"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:src="@drawable/btn_backward" />
             
             <!-- Play Button -->
             <ImageButton
@@ -126,12 +120,6 @@
                 android:src="@drawable/btn_play" />
             
             <!-- Forward Button -->
-            <ImageButton
-                android:id="@+id/btnForward"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:src="@drawable/btn_forward" />
             
             <!-- Next Button -->
             <ImageButton
