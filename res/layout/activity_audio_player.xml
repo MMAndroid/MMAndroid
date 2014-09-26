@@ -11,17 +11,7 @@
         android:layout_alignParentTop="true"
         android:orientation="vertical" >
 
-<!--         <Button -->
-<!--             android:id="@+id/btn_add_a_music" -->
-<!--             android:layout_width="match_parent" -->
-<!--             android:layout_height="wrap_content" -->
-<!--             android:text="@string/add_a_music" /> -->
 
-        <!-- <Button -->
-        <!-- android:id="@+id/btn_file_chooser" -->
-        <!-- android:layout_width="match_parent" -->
-        <!-- android:layout_height="wrap_content" -->
-        <!-- android:text="File Chooser" /> -->
 
         <ListView
             android:id="@+id/list_audio_player"
@@ -102,6 +92,16 @@
             android:paddingRight="10dp" >
 
             <!-- Previous Button -->
+            
+                    <!-- Repeat Button -->
+        <ImageButton 
+            android:id="@+id/btnRepeat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/btn_repeat"
+            android:layout_marginRight="5dp"
+            android:background="@null"/>
+  
             <ImageButton
                 android:id="@+id/btnPrevious"
                 android:layout_width="wrap_content"
@@ -119,7 +119,6 @@
                 android:background="@null"
                 android:src="@drawable/btn_play" />
             
-            <!-- Forward Button -->
             
             <!-- Next Button -->
             <ImageButton
@@ -128,33 +127,17 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:src="@drawable/btn_next" />
+            
+                  
+        <!-- Shuffle Button -->        
+         <ImageButton 
+            android:id="@+id/btnShuffle" 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/btn_shuffle"
+            android:layout_marginLeft="5dp"
+            android:background="@null"/>
 
-            <!-- <Button -->
-            <!-- android:id="@+id/btn_re" -->
-            <!-- android:layout_width="wrap_content" -->
-            <!-- android:layout_height="wrap_content" -->
-            <!-- android:text="@string/re" /> -->
-
-
-            <!-- <ImageButton -->
-            <!-- android:id="@+id/img_bt_play_pause" -->
-            <!-- android:layout_width="wrap_content" -->
-            <!-- android:layout_height="wrap_content" -->
-            <!-- android:src="@drawable/start" /> -->
-
-
-            <!-- <ImageButton -->
-            <!-- android:id="@+id/img_btn_stop" -->
-            <!-- android:layout_width="wrap_content" -->
-            <!-- android:layout_height="wrap_content" -->
-            <!-- android:src="@drawable/stop" /> -->
-
-
-            <!-- <Button -->
-            <!-- android:id="@+id/btn_ff" -->
-            <!-- android:layout_width="wrap_content" -->
-            <!-- android:layout_height="wrap_content" -->
-            <!-- android:text="@string/ff" /> -->
         </LinearLayout>
     </LinearLayout>
     
@@ -191,8 +174,7 @@
             android:layout_weight="1"
             android:gravity="left"
             android:textColor="#eeeeee"
-            android:textStyle="bold"
-            android:text="0:13"/>
+            android:textStyle="bold"/>
        
         <!-- Total Duration Label -->
         <TextView 
@@ -202,34 +184,9 @@
             android:layout_weight="1"
             android:gravity="right"
             android:textColor="#04cbde"
-            android:textStyle="bold"
-            android:text="3:59"/>
+            android:textStyle="bold"/>
     </LinearLayout>
     
-    <!-- Repeat / Shuffle buttons -->
-    <LinearLayout 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/timerDisplay"
-        android:gravity="center">
-        <!-- Repeat Button -->
-        <ImageButton 
-            android:id="@+id/btnRepeat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/btn_repeat"
-            android:layout_marginRight="5dp"
-            android:background="@null"/>
-        
-        <!-- Shuffle Button -->        
-         <ImageButton 
-            android:id="@+id/btnShuffle" 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/btn_shuffle"
-            android:layout_marginLeft="5dp"
-            android:background="@null"/>
-    </LinearLayout>
 
 
 </RelativeLayout>

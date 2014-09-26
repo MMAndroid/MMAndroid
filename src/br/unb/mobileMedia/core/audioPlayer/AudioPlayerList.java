@@ -26,11 +26,13 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	private boolean isPlaying = false;
 	private boolean isPaused = false;
 
-	private AudioPlayerList () {}
+	private AudioPlayerList() { }
 
 	/**
 	 * Default constructor expecting just the application context.
-	 * @param context the application context.
+	 * 
+	 * @param context
+	 *            the application context.
 	 */
 	private AudioPlayerList(Context context) {
 		this.context = context;
@@ -44,24 +46,28 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	}
 
 	/**
-	 * A constructor that expects both application context and an array of audio.
-	 * @param context the application context.
-	 * @param audioArray an array of musics that the user might choose to play
+	 * A constructor that expects both application context and an array of
+	 * audio.
+	 * 
+	 * @param context
+	 *            the application context.
+	 * @param audioArray
+	 *            an array of musics that the user might choose to play
 	 */
 	private AudioPlayerList(Context context, Audio[] audioArray) {
 		this(context);
 
-		if (audioArray == null){
+		if (audioArray == null) {
 			audioList = new ArrayList<Audio>();
 		}
 
-		for(Audio audio : audioArray)  {
+		for (Audio audio : audioArray) {
 			audioList.add(audio);
 		}
 	}
 
-	public static AudioPlayerList getInstance (Context context, Audio[] audioArray) {
-		if (uniqueInstance == null){
+	public static AudioPlayerList getInstance(Context context, Audio[] audioArray) {
+		if (uniqueInstance == null) {
 			synchronized (AudioPlayerList.class) {
 				if (uniqueInstance == null) {
 					uniqueInstance = new AudioPlayerList(context, audioArray);
@@ -71,8 +77,8 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 		return uniqueInstance;
 	}
 
-	public static AudioPlayerList getInstance (Context context) {
-		if (uniqueInstance == null){
+	public static AudioPlayerList getInstance(Context context) {
+		if (uniqueInstance == null) {
 			synchronized (AudioPlayerList.class) {
 				if (uniqueInstance == null) {
 					uniqueInstance = new AudioPlayerList(context);
@@ -84,6 +90,7 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 
 	/**
 	 * Return the number of elements of the list.
+	 * 
 	 * @return the number of elements of the list.
 	 */
 	public int size() {
@@ -91,7 +98,8 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	}
 
 	/**
-	 * Returns an iterator on the elements of the list. 
+	 * Returns an iterator on the elements of the list.
+	 * 
 	 * @return an iterator on the elements of the list.
 	 */
 	public Iterator<Audio> iterator() {
@@ -102,65 +110,67 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 		return current;
 	}
 
+	
+	
 	/**
 	 * Play the current audio on the audio play list.
 	 */
 	public void play() throws RuntimeException {
-		if(current >= 0 && current < audioList.size()) {
+		if (current >= 0 && current < audioList.size()) {
 			if (isPlaying) {
-				return; 
+				return;
 			} else if (isPaused) {
 				player.start();
 				isPaused = false;
 				isPlaying = true;
 				return;
-			}else {				
+			} else {
 				Audio audio = audioList.get(current);
-				try {
-					player.setDataSource(context, Uri.parse(audio.getURI().toString()));
+				try {					
+					player.setDataSource(context,Uri.parse(audio.getURI().toString()));
 					player.prepare();
 					player.start();
 					isPlaying = true;
-				}
-				catch(Exception e) {
-					Log.v(AudioPlayerList.class.getCanonicalName(), e.getMessage());
+				} catch (Exception e) {
+					Log.v(AudioPlayerList.class.getCanonicalName(),
+							e.getMessage());
 					throw new RuntimeException(e);
 				}
 			}
-		} 
+		}
 	}
 
-
 	public void onCompletion(MediaPlayer mp) {
-		//TODO: this is a poor example of exception handling.
+//		mp.reset();
+//	    nextTrack();
+	    
 		try {
-			Log.v(AudioPlayerList.class.getCanonicalName(), "PK: " + audioList.get(current).getPrimaryKey());
-			Manager.instance().registerExecution(context, audioList.get(current));
-		}
-		catch(DBException e) {
+			// Log.v(AudioPlayerList.class.getCanonicalName(), "PK: " +
+			// audioList.get(current).getPrimaryKey());
+			Manager.instance().registerExecution(context,
+					audioList.get(current));
+
+		} catch (DBException e) {
 			throw new RuntimeException(e);
 		}
 
-		mp.reset();
-		//if Shuffle off:
-		if(!shuffle){
-			if(current >= 0 && current < audioList.size()) {
+		// if Shuffle off:
+		if (!shuffle) {
+			if (current >= 0 && current < audioList.size()) {
 				current++;
 				play();
-			}
-			else {
+			} else {
 				current = 0;
-				if(repeat) {
+				if (repeat) {
 					play();
-				}
-				else{
+				} else {
 					mp.release();
 					Log.v(AudioPlayerList.class.getCanonicalName(), " done !");
 				}
 			}
 		}
-		//if Shuffle on:
-		else{
+		// if Shuffle on:
+		else {
 
 			Random rand = new Random();
 			current = rand.nextInt(audioList.size());
@@ -169,22 +179,19 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 		}
 	}
 
-
 	public boolean isRepeat() {
 		return repeat;
 	}
-
 
 	public void setRepeat(boolean repeat) {
 		this.repeat = repeat;
 	}
 
-
 	public boolean isShuffle() {
 		return shuffle;
 	}
 
-	public boolean isPlaying () {
+	public boolean isPlaying() {
 		return isPlaying;
 	}
 
@@ -206,7 +213,7 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	}
 
 	public void newPlaylist(Audio[] executionList) {
-		for(Audio audio : executionList)  {
+		for (Audio audio : executionList) {
 			audioList.add(audio);
 		}
 		current = 0;
@@ -219,7 +226,7 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	}
 
 	public void nextTrack() {
-		if (current >= (audioList.size()-1)) {
+		if (current > (audioList.size() - 1)) {
 			stop();
 			current = 0;
 		} else {
@@ -230,23 +237,48 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	}
 
 	public void previousTrack() {
-		if (player.getCurrentPosition() >= 3000) {
+
+		if (current > 0) {
 			stop();
+			current--;
 			play();
 		} else {
-			if (current > 0) {
-				stop();
-				current--;
-				play();
-			} else {
-				stop();
-				play();
-			}
+			stop();
+			play();
+			// current = (audioList.size()-1);
 		}
+
 	}
-	
-	public void addMusic (Audio newMusic) {
+
+	public void reset() {
+		player.reset();
+	}
+
+	public void addMusic(Audio newMusic) {
 		audioList.add(newMusic);
+	}
+
+	public String getTitleSong() {
+		return audioList.get(current).getTitle();
+	}
+
+	public int getDuration() {
+		return player.getDuration();
+	}
+
+	public int getCurrentPosition() {
+		return player.getCurrentPosition();
+	}
+
+	public void seekTo(int currentPosition) {
+		player.seekTo(currentPosition);
+	}
+
+	public boolean isPlayer() {
+		if (player.isPlaying())
+			return true;
+
+		return false;
 	}
 
 }
