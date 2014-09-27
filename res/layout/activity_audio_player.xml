@@ -4,23 +4,23 @@
     android:layout_height="match_parent" 
     android:background="#4a4a4a">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:orientation="vertical" >
+<!--     <LinearLayout -->
+<!--         android:layout_width="fill_parent" -->
+<!--         android:layout_height="wrap_content" -->
+<!--         android:layout_alignParentLeft="true" -->
+<!--         android:layout_alignParentTop="true" -->
+<!--         android:orientation="vertical" > -->
 
 
 
-        <ListView
-            android:id="@+id/list_audio_player"
-            android:layout_width="320dp"
-            android:layout_height="wrap_content"
-            android:choiceMode="singleChoice"
-            android:listSelector="@android:color/background_light" >
-        </ListView>
-    </LinearLayout>
+<!--         <ListView -->
+<!--             android:id="@+id/list_audio_player" -->
+<!--             android:layout_width="320dp" -->
+<!--             android:layout_height="wrap_content" -->
+<!--             android:choiceMode="singleChoice" -->
+<!--             android:listSelector="@android:color/background_light" > -->
+<!--         </ListView> -->
+<!--     </LinearLayout> -->
 
     <!-- Player Header -->
     <LinearLayout
@@ -40,10 +40,9 @@
             android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:paddingLeft="10dp"
-            android:text="The Good, The Bad And The Ugly"
-            android:textColor="#04b3d2"
-            android:textSize="16dp"
-            android:textStyle="bold" />
+            android:paddingTop="10dp"
+            android:textColor="#35B5E5"
+            android:textSize="16dp"/>
 
         <!-- Playlist button -->
         <ImageButton

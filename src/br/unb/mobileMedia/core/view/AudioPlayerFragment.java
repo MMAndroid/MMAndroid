@@ -5,23 +5,19 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View.OnTouchListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,8 +28,6 @@ import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.playlist.PlayListManager;
 
 public class AudioPlayerFragment extends Fragment implements PlayListManager, SeekBar.OnSeekBarChangeListener{
-
-	MediaPlayer mp;
 
 	public static final String EXECUTION_LIST = "EXECUTION_LIST";
 	private List<Audio> musicList = new ArrayList<Audio>();
@@ -75,14 +69,12 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager, Se
 
 		// All player buttons
 		btnPlayPause = (ImageButton) v.findViewById(R.id.btnPlayPause);
-		btnPlayPause = (ImageButton) v.findViewById(R.id.btnPlayPause);
 		btnNext = (ImageButton) v.findViewById(R.id.btnNext);
 		btnPrevious = (ImageButton) v.findViewById(R.id.btnPrevious);
 		btnRepeat = (ImageButton) v.findViewById(R.id.btnRepeat);
 		btnShuffle = (ImageButton) v.findViewById(R.id.btnShuffle);
 		songProgressBar = (SeekBar) v.findViewById(R.id.songProgressBar);
 
-		player = AudioPlayerList.getInstance(getActivity().getApplicationContext());
 		utils = new Utilities();
 		songProgressBar.setOnSeekBarChangeListener(this);
 
@@ -109,20 +101,23 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager, Se
 	private void createUI() {
 		Log.i("AudioPlayerFragment", "Creating UI...");
 		
-		music = musicList.toArray(new Audio[musicList.size()]);
-		
-		try {			
+		player = AudioPlayerList.getInstance(getActivity().getApplicationContext());
+
+		try {		
 			
-			player.reset();
-            btnPlayPause.setImageResource(R.drawable.btn_pause);
-
-			player.newPlaylist(music);
-			player.play();
-
-			if(player.isPlaying()){
-				songTitleLabel.setText(musicList.get(player.current()).getTitle().toString());
-				updateProgressBar();
-			}
+            if(musicList.size() > 0){
+            	player.newPlaylist(musicList);
+            	player.play(0);
+            }
+            
+            
+            if(player.isPlaying()){
+        		btnPlayPause.setImageResource(R.drawable.btn_pause);
+            }else{
+        		btnPlayPause.setImageResource(R.drawable.btn_play);
+            }
+            
+			updateProgressBar();
 		    
 		}catch (RuntimeException e){
 			e.printStackTrace();
@@ -133,37 +128,29 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager, Se
 		btnPlayPause.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				// check for already playing
-                if(player.isPlaying()){
-                    if(player!=null){
-                        player.pause();
-                        btnPlayPause.setImageResource(R.drawable.btn_play);
-                    }
-                }else{
-                    // Resume song
-                    if(player!=null){
-                        player.play();
-                        btnPlayPause.setImageResource(R.drawable.btn_pause);
-                    }
-                }
-
+				player.playPause();
+				
+				if(player.isPlaying()){
+					btnPlayPause.setImageResource(R.drawable.btn_pause);
+				}else{
+					btnPlayPause.setImageResource(R.drawable.btn_play);
+				}
+					
+				
 			}
 		});
 
 		btnNext.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
                 player.nextTrack();
-//				AudioPlayerList.getInstance(getActivity().getApplicationContext()).nextTrack();
 			}
 		});
 
 		btnPrevious.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				player.previousTrack();
-//				AudioPlayerList.getInstance(getActivity().getApplicationContext()).previousTrack();
  			}
 		});
-		
 		
 		/**
 		 * Button Click event for Repeat button
@@ -176,10 +163,7 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager, Se
 //					Toast.makeText(getApplicationContext(), "Repeat is OFF", Toast.LENGTH_SHORT).show();
 					btnRepeat.setImageResource(R.drawable.btn_repeat);
 				}else{
-					// make repeat to true
 					player.setRepeat(true);
-//					Toast.makeText(getApplicationContext(), "Repeat is ON", Toast.LENGTH_SHORT).show();
-					// make shuffle to false
 					player.setShuffle(false);
 					btnRepeat.setImageResource(R.drawable.btn_repeat_focused);
 					btnShuffle.setImageResource(R.drawable.btn_shuffle);
@@ -193,19 +177,18 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager, Se
 		 * */
 		btnShuffle.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View arg0) {
+				
 				if(player.isShuffle()){
 					player.setShuffle(false);
-//					Toast.makeText(getApplicationContext(), "Shuffle is OFF", Toast.LENGTH_SHORT).show();
 					btnShuffle.setImageResource(R.drawable.btn_shuffle);
 				}else{
-					// make repeat to true
 					player.setShuffle(true);
-//					Toast.makeText(getApplicationContext(), "Shuffle is ON", Toast.LENGTH_SHORT).show();
-					// make shuffle to false
 					player.setRepeat(false);
 					btnShuffle.setImageResource(R.drawable.btn_shuffle_focused);
 					btnRepeat.setImageResource(R.drawable.btn_repeat);
-				}	
+				}
+				
+				
 			}
 		});
 		
@@ -234,7 +217,7 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager, Se
 		
 	}
 
-	public synchronized void updateProgressBar() {
+	public void updateProgressBar() {
 		mHandler.postDelayed(mUpdateTimeTask, 100);
 	}
 
@@ -244,20 +227,19 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager, Se
 	private Runnable mUpdateTimeTask = new Runnable() {
 		public void run() {		
 			
-			if(player.isPlayer()){
+			if(player.isPlaying()){
 				long totalDuration = player.getDuration();
 				long currentDuration = player.getCurrentPosition();
 			
 				songTotalDurationLabel.setText(""+ utils.milliSecondsToTimer(totalDuration));
 				songCurrentDurationLabel.setText(""+ utils.milliSecondsToTimer(currentDuration));
 	
+				songTitleLabel.setText(player.getTitleSong());
+				
 				int progress = (int) (utils.getProgressPercentage(currentDuration,totalDuration));
-//				// Log.d("Progress", ""+progress);
+				// Log.d("Progress", ""+progress);
 				songProgressBar.setProgress(progress);
 				
-			}else{
-				Log.i("Player", "not isPlayer()");
-				player.nextTrack();
 			}
 			
 			mHandler.postDelayed(this, 100);
@@ -321,11 +303,11 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager, Se
 	 */
 	private void updateAudioListView() {
 		Log.i("AudioPlayerFragment", "Updateding audio list view...");
-		ListView listView = (ListView) getActivity().findViewById(R.id.list_audio_player);
+//		ListView listView = (ListView) getActivity().findViewById(R.id.list_audio_player);
 		music = musicList.toArray(new Audio[musicList.size()]);
 
-		listView.setAdapter(new AudioPlayerArrayAdapter(getActivity().getApplicationContext(), music));
-		listView.setItemChecked(0, true);
+//		listView.setAdapter(new AudioPlayerArrayAdapter(getActivity().getApplicationContext(), music));
+//		listView.setItemChecked(0, true);
 	}
 
 	@Override
@@ -364,10 +346,10 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager, Se
 
 	@Override
 	public void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
 		player.stop();
 		player.killPLaylist();
+
 	}
 
 }

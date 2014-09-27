@@ -1,17 +1,14 @@
 package br.unb.mobileMedia.core.audioPlayer;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.util.Log;
-import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.domain.Audio;
-import br.unb.mobileMedia.core.manager.Manager;
 
 public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 
@@ -20,24 +17,25 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	private Context context;
 	private MediaPlayer player;
 	private List<Audio> audioList;
-	private int current;
 	private boolean repeat = false;
 	private boolean shuffle = false;
 	private boolean isPlaying = false;
-	private boolean isPaused = false;
+	private int currentSongIndex = 0; 
 
-	private AudioPlayerList() { }
+	
+	
+	private AudioPlayerList() {
+	}
 
 	/**
 	 * Default constructor expecting just the application context.
-	 * 
-	 * @param context
-	 *            the application context.
+	 * @param context the application context.
 	 */
 	private AudioPlayerList(Context context) {
 		this.context = context;
+
 		player = new MediaPlayer();
-		current = 0;
+		
 		audioList = new ArrayList<Audio>();
 
 		setRepeat(false);
@@ -48,11 +46,8 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	/**
 	 * A constructor that expects both application context and an array of
 	 * audio.
-	 * 
-	 * @param context
-	 *            the application context.
-	 * @param audioArray
-	 *            an array of musics that the user might choose to play
+	 * @param context the application context.
+	 * @param audioArray an array of musics that the user might choose to play
 	 */
 	private AudioPlayerList(Context context, Audio[] audioArray) {
 		this(context);
@@ -88,95 +83,41 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 		return uniqueInstance;
 	}
 
-	/**
-	 * Return the number of elements of the list.
-	 * 
-	 * @return the number of elements of the list.
-	 */
-	public int size() {
-		return audioList.size();
-	}
 
-	/**
-	 * Returns an iterator on the elements of the list.
-	 * 
-	 * @return an iterator on the elements of the list.
-	 */
-	public Iterator<Audio> iterator() {
-		return audioList.iterator();
-	}
-
-	public int current() {
-		return current;
-	}
-
-	
-	
-	/**
-	 * Play the current audio on the audio play list.
-	 */
-	public void play() throws RuntimeException {
-		if (current >= 0 && current < audioList.size()) {
-			if (isPlaying) {
-				return;
-			} else if (isPaused) {
-				player.start();
-				isPaused = false;
-				isPlaying = true;
-				return;
-			} else {
-				Audio audio = audioList.get(current);
-				try {					
-					player.setDataSource(context,Uri.parse(audio.getURI().toString()));
-					player.prepare();
-					player.start();
-					isPlaying = true;
-				} catch (Exception e) {
-					Log.v(AudioPlayerList.class.getCanonicalName(),
-							e.getMessage());
-					throw new RuntimeException(e);
-				}
-			}
+	public void play(int indexFile){
+		try {
+			
+			player.reset();
+			player.setDataSource(context,  Uri.parse(audioList.get(indexFile).getURI().toString()));
+			player.prepare();
+			player.start();
+			
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
 	public void onCompletion(MediaPlayer mp) {
-//		mp.reset();
-//	    nextTrack();
-	    
-		try {
-			// Log.v(AudioPlayerList.class.getCanonicalName(), "PK: " +
-			// audioList.get(current).getPrimaryKey());
-			Manager.instance().registerExecution(context,
-					audioList.get(current));
-
-		} catch (DBException e) {
-			throw new RuntimeException(e);
-		}
-
-		// if Shuffle off:
-		if (!shuffle) {
-			if (current >= 0 && current < audioList.size()) {
-				current++;
-				play();
-			} else {
-				current = 0;
-				if (repeat) {
-					play();
-				} else {
-					mp.release();
-					Log.v(AudioPlayerList.class.getCanonicalName(), " done !");
-				}
+		
+		if(repeat){
+			play(currentSongIndex);
+		}else if(isShuffle()){
+			currentSongIndex = random();
+			play(currentSongIndex);
+		}else{
+			if(currentSongIndex < (audioList.size()-1)){
+				play(currentSongIndex +1);
+				currentSongIndex++;
+			}else{
+				play(0);
+				currentSongIndex = 0;
 			}
 		}
-		// if Shuffle on:
-		else {
-
-			Random rand = new Random();
-			current = rand.nextInt(audioList.size());
-			play();
-
-		}
+	
 	}
 
 	public boolean isRepeat() {
@@ -191,12 +132,8 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 		return shuffle;
 	}
 
-	public boolean isPlaying() {
-		return isPlaying;
-	}
-
 	public void setShuffle(boolean Shuffle) {
-		this.shuffle = Shuffle;
+		shuffle = Shuffle;
 	}
 
 	public void stop() {
@@ -204,7 +141,6 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 			player.stop();
 			player.reset();
 			isPlaying = false;
-			isPaused = false;
 		}
 	}
 
@@ -212,42 +148,49 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 		audioList.removeAll(audioList);
 	}
 
-	public void newPlaylist(Audio[] executionList) {
-		for (Audio audio : executionList) {
-			audioList.add(audio);
-		}
-		current = 0;
+	public void newPlaylist(List<Audio> executionList) {
+		audioList = executionList;
 	}
 
-	public void pause() {
-		player.pause();
-		isPlaying = false;
-		isPaused = true;
+	public void playPause() {
+		if(isPlaying()){
+			player.pause();
+		}else{
+			player.start();
+		}
 	}
 
 	public void nextTrack() {
-		if (current > (audioList.size() - 1)) {
-			stop();
-			current = 0;
-		} else {
-			current++;
-			stop();
-			play();
+		if(currentSongIndex < (audioList.size() -1)){
+			if(isShuffle()){
+				currentSongIndex = random();
+			}else{
+				currentSongIndex++;
+			}
+			
+			play(currentSongIndex);
+			
+		}else{
+			currentSongIndex = 0;
+			play(currentSongIndex);
 		}
 	}
 
 	public void previousTrack() {
-
-		if (current > 0) {
-			stop();
-			current--;
-			play();
-		} else {
-			stop();
-			play();
-			// current = (audioList.size()-1);
+		if(currentSongIndex > 0){
+			
+			if(isShuffle()){
+				currentSongIndex = random();
+			}else{
+				currentSongIndex--;
+			}
+			
+			currentSongIndex--;
+			play(currentSongIndex);
+		}else{
+			currentSongIndex = random();
+			play(currentSongIndex);
 		}
-
 	}
 
 	public void reset() {
@@ -258,8 +201,15 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 		audioList.add(newMusic);
 	}
 
+	/**
+	 * 
+	 * @return name of current music
+	 */
 	public String getTitleSong() {
-		return audioList.get(current).getTitle();
+		
+	    String str1 = audioList.get(currentSongIndex).getTitle();  
+	    
+		return str1.substring (0, str1.indexOf ("."));
 	}
 
 	public int getDuration() {
@@ -274,11 +224,24 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 		player.seekTo(currentPosition);
 	}
 
-	public boolean isPlayer() {
-		if (player.isPlaying())
-			return true;
+	public boolean isPlaying() {
+		return player.isPlaying();
+	}
+	
+	
 
-		return false;
+	/**
+	 * @return the number of elements of the list.
+	 */
+	private int sizeOfAudioList() {
+		return audioList.size();
+	}
+	
+	/**
+	 * @return a number random based in length of audioList how range.
+	 */
+	private int random(){
+		return new Random().nextInt(sizeOfAudioList()-1);
 	}
 
 }
