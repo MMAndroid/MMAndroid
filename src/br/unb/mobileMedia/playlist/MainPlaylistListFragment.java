@@ -336,6 +336,7 @@ public class MainPlaylistListFragment extends Fragment {
 		    			transaction.replace(R.id.content, newFragment);
 		    			transaction.addToBackStack(null);
 		    		}
+		    		
 		    		transaction.commit();
 		            		//	}	
 		            		}

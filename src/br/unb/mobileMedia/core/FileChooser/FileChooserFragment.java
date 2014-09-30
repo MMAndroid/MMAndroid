@@ -1,8 +1,8 @@
 package br.unb.mobileMedia.core.FileChooser;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import br.unb.mobileMedia.R;
@@ -22,10 +22,12 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 public class FileChooserFragment extends ListFragment {
-	File currentDir;
-	FileArrayAdapter adapter;
-	String[] extensionsAccepteds;
-	ArrayList<FileDetail> fileSelecteds = new ArrayList<FileDetail>();
+	
+	private File sdcard, extSdcard;
+	private List<FileDetail> result = new ArrayList<FileDetail>();
+	private FileArrayAdapter adapter;
+	private String[] extensionsAccepteds;
+	private ArrayList<FileDetail> fileSelecteds = new ArrayList<FileDetail>();
 	private int playListId;
 	
 
@@ -52,9 +54,11 @@ public class FileChooserFragment extends ListFragment {
 	
 		extensionsAccepteds = getResources().getStringArray(R.array.extensions_accepteds);
 
-		currentDir = Environment.getExternalStorageDirectory();
+		sdcard = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
+		extSdcard = new File("/mnt/extSdCard/");
 
-		CreateUI(currentDir);
+		CreateUI();
+		
 
 		return inflater.inflate(R.layout.activity_list_file_chooser, container, false);
 	}
@@ -82,7 +86,6 @@ public class FileChooserFragment extends ListFragment {
 			
 		default:
 			Log.i("Message PL", "nao Implementado");
-			
 		}
 	
 		return super.onOptionsItemSelected(item);
@@ -105,70 +108,69 @@ public class FileChooserFragment extends ListFragment {
 		getActivity().getSupportFragmentManager().popBackStack();
 	}
 	
-	private void CreateUI(File f) {
+	private void CreateUI() {
 
-		File[] dirs = f.listFiles();
-		Log.i("----", "f.listFiles() OK");
+		adapter = new FileArrayAdapter(getActivity().getApplicationContext(), R.layout.activity_list_file_chooser, getAllMusic());
+		this.setListAdapter(adapter);
+		
+	}
 
-		List<FileDetail> dir = new ArrayList<FileDetail>();
-		List<FileDetail> fls = new ArrayList<FileDetail>();
-
-		// Listando todos os diretorios com os arquivos contidos
-		try {
-			for (File ff : dirs) {
-
-				if (ff.isDirectory()) {
-					dir.add(new FileDetail(R.drawable.icon_folder, ff.getName(), "Folder", ff.getAbsolutePath()));
-//					Log.i("### Dir ###: ", ff.getName());
-				} else {
-					// Loop Para Comparar as extensões de arquivos válidas
-					for (int i = 0; i < extensionsAccepteds.length; i++) {
-						if (ff.getName().endsWith(extensionsAccepteds[i])) {
-							fls.add(new FileDetail(R.drawable.icon_audio, ff.getName(), "File Size: " + (ff.length() / 1000000) + "Mb", ff.getAbsolutePath()));
-//							Log.i("### FILE ###: ", ff.getName());
+	
+	
+	private void listAllDirs(File file) throws IOException{
+		
+		if(!file.exists()){
+			throw new IOException("File "+ file.getAbsolutePath()+ " not exists.");
+		}else if(!file.canRead()){
+			throw new IOException("Permission denied in: "+ file.getAbsolutePath());
+		}else{
+			for(File temp: file.listFiles()){
+				if(temp.isDirectory()){
+					listAllDirs(temp);
+				}else{
+					for(String extensionAccepted : extensionsAccepteds){
+						if(temp.getAbsolutePath().endsWith(extensionAccepted)  && !temp.isHidden()){
+							Log.i("", temp.getAbsolutePath());
+							result.add(new FileDetail(R.drawable.icon_audio, temp.getName(), "File Size: " + (temp.length() / 1000000) + "Mb", temp.getAbsolutePath()));
 						}
 					}
-
 				}
 			}
-		} catch (Exception e) {
-			Log.i("EXCEPTION::::", e.getStackTrace().toString());
 		}
-
-		Collections.sort(dir);
-		Collections.sort(fls);
-
-		// add as files aos respectivos dirs
-		dir.addAll(fls);
-
-		if (!f.getName().equalsIgnoreCase("sdcard")) {
-			dir.add(0, new FileDetail(R.drawable.icon_back, "..", "Parent Directory", f.getParent()));
-		}
-
-		// Adicionando os itens na view list e informo qual xml vai ser
-		// carregado no fragment
-		adapter = new FileArrayAdapter(getActivity().getApplicationContext(), R.layout.activity_list_file_chooser, dir);
-		this.setListAdapter(adapter);
+	
+        return;
 
 	}
 
+	public List<FileDetail> getAllMusic(){
+		
+		try {
+			listAllDirs(sdcard);	
+			listAllDirs(extSdcard);
+			
+		}catch (IOException e) {
+			Log.i("IOException",e.getMessage());
+		}catch(Exception e){
+			e.getStackTrace();
+		}
+		
+		
+		
+		return result;
+		
+	}
+	
+	
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		// TODO Auto-generated method stub
 		super.onListItemClick(l, v, position, id);
 
 		l.setItemChecked(position, true);
-		// v.setBackgroundColor("#FF0000");
 
 		FileDetail o = adapter.getItem(position);
-
-		if (o.getData().equalsIgnoreCase("folder")
-				|| o.getData().equalsIgnoreCase("parent directory")) {
-			currentDir = new File(o.getPath());
-			CreateUI(currentDir);
-		} else {
-			onFileClick(o);	
-		}
+		
+		onFileClick(o);	
 
 	}
 
