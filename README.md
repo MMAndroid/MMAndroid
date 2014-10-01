@@ -10,6 +10,7 @@ implementacoes de Linhas de Produtos de Software.
 As versoes anteriores eram para a plataforma Java 
 Micro Edition.
 
+
 Features dessa versao
 ===========================
 
