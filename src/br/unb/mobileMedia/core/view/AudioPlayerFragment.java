@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -108,6 +109,8 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager, Se
             if(musicList.size() > 0){
             	player.newPlaylist(musicList);
             	player.play(0);
+            }else{
+            	player.stop();
             }
             
             
@@ -226,7 +229,6 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager, Se
 	 */
 	private Runnable mUpdateTimeTask = new Runnable() {
 		public void run() {		
-			
 			if(player.isPlaying()){
 				long totalDuration = player.getDuration();
 				long currentDuration = player.getCurrentPosition();
@@ -244,8 +246,6 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager, Se
 			
 			mHandler.postDelayed(this, 100);
 		}
-		
-		
 	};
 
 	
@@ -334,8 +334,10 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager, Se
 		String url = null;
 		for (int i = 0; i < files.size(); i++) {
 			try {
+				
 				url = files.get(i).getPath().toString();
-				musicList.add(new Audio(files.get(i).getName().toString(), new URI(url)));
+				
+				musicList.add(new Audio(files.get(i).getName().toString(), new URI(Uri.encode(url))));
 			} catch (URISyntaxException e) {
 				// TODO Auto-generated catch block
 				Log.i("Exception", "receiveFileChooser()");

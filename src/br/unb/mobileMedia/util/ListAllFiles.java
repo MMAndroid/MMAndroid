@@ -55,8 +55,8 @@ public class ListAllFiles {
 				} else {
 					for (AudioFormats extensionAccepted : AudioFormats.values()) {
 						if (temp.getAbsolutePath().endsWith(extensionAccepted.getFormatAsString()) && !temp.isHidden()) {
-							Log.i("", temp.getAbsolutePath());
-							result.add(new FileDetail(R.drawable.icon_audio, temp.getName(), "File Size: " + (temp.length() / 1000000) + "Mb",temp.getAbsolutePath()));
+							Log.i("", temp.getAbsolutePath());	
+							result.add(new FileDetail(R.drawable.icon_audio, temp.getName(), "File Size: " + (temp.length() / 1000000) + "Mb", temp.getAbsolutePath()));
 						}
 					}
 				}

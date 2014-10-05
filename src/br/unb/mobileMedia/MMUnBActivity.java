@@ -216,7 +216,7 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
             }
 			
 
-			Log.i("NÂ° mÃºsicas Post: ", ""+num_music + " - "+ list.size());
+//			Log.i("N° músicas Post: ", ""+num_music + " - "+ list.size());
 
         }
 		
