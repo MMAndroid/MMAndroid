@@ -8,6 +8,7 @@ import java.util.Random;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.util.Log;
 import br.unb.mobileMedia.core.domain.Audio;
 
 public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
@@ -21,7 +22,7 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	private boolean shuffle = false;
 	private boolean isPlaying = false;
 	private int currentSongIndex = 0; 
-
+	
 	
 	
 	private AudioPlayerList() {
@@ -34,6 +35,7 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	private AudioPlayerList(Context context) {
 		this.context = context;
 
+		
 		player = new MediaPlayer();
 		
 		audioList = new ArrayList<Audio>();
@@ -87,8 +89,10 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	public void play(int indexFile){
 		try {
 			
+			Log.i("Player: ", audioList.get(indexFile).getURI().toString() );
+			
 			player.reset();
-			player.setDataSource(context,  Uri.parse(audioList.get(indexFile).getURI().toString()));
+			player.setDataSource(context, Uri.parse(audioList.get(indexFile).getURI().toString()));
 			player.prepare();
 			player.start();
 			

@@ -16,6 +16,15 @@
         
     </item>
     
+        <item
+        android:id="@+id/syncFiles"
+        android:icon="@drawable/navigation_refresh"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="Load">
+        </item>
+    
+    
     <item
         android:id="@+id/menu_settings"
         android:name="android:background"
