@@ -23,16 +23,16 @@ import android.widget.ListView;
 import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.FileChooser.FileChooserFragment;
 import br.unb.mobileMedia.core.db.DBException;
-import br.unb.mobileMedia.core.domain.Audio;
-import br.unb.mobileMedia.core.domain.Playlist;
+import br.unb.mobileMedia.core.domain.AudioOld;
+import br.unb.mobileMedia.core.domain.PlaylistOld;
 import br.unb.mobileMedia.core.manager.Manager;
 import br.unb.mobileMedia.core.view.AudioPlayerFragment;
 
 public class PlayListEditorFragment extends Fragment{
 
 	private int playListId;
-	Playlist playlist;
-	List<Audio> musicList = null;
+	PlaylistOld playlist;
+	List<AudioOld> musicList = null;
 	private String names[];
 	
 	int result=1;
@@ -67,10 +67,74 @@ public class PlayListEditorFragment extends Fragment{
 
 	private void configureUI() {
     	//Update the List View
+<<<<<<< HEAD
 		
     	ListView listMusicLists = (ListView) getActivity().findViewById(R.id.list_musiclist);
     	registerForContextMenu(listMusicLists);
 
+=======
+    			ListView listMusicLists = (ListView) getActivity().findViewById(R.id.list_musiclist);
+    			registerForContextMenu(listMusicLists);
+    			
+    			
+    	((Button)getActivity().findViewById(R.id.btn_addMusiclist)).setOnClickListener(new View.OnClickListener(){     
+			public void onClick(View v) {
+				
+				//when button is clicked, start activity and wait for result.
+				//result is caught in method onActivityResult.
+				Bundle args = new Bundle();
+	    		args.putInt(SELECTED_PLAYLIST_ID, playListId);
+	    		
+	    		// TODO Extract this to a method (repeated in MMUnBActivity too)
+	    		Fragment newFragment = new MusicSelectFragment();
+	    		newFragment.setArguments(args);
+	    		FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+	    		if(getActivity().findViewById(R.id.main) != null){
+	    			transaction.replace(R.id.main, newFragment);
+	    			transaction.addToBackStack(null);
+	    		}else{
+	    			transaction.replace(R.id.content, newFragment);
+	    			transaction.addToBackStack(null);
+	    		}
+	    		transaction.commit();
+			}        
+
+		});
+    	
+    	((Button)getActivity().findViewById(R.id.btn_playPlaylist)).setOnClickListener(new View.OnClickListener(){     
+			
+    		public void onClick(View v) {
+    			
+    			//when button is clicked, the music list is send to player.
+    			
+    			List<AudioOld> listTmp = musicList;
+				AudioOld[] executionList = new AudioOld[listTmp.size()]; 
+				
+				listTmp.toArray(executionList);
+				
+				Bundle args = new Bundle();
+				args.putParcelableArray(AudioPlayerFragment.EXECUTION_LIST, executionList);
+				
+				// TODO Extract this to a method (repeated in MMUnBActivity too)
+				Fragment newFragment = new AudioPlayerFragment();
+				newFragment.setArguments(args);
+				
+				FragmentManager manager = getActivity().getSupportFragmentManager();
+				FragmentTransaction transaction = manager.beginTransaction();
+				
+				if(getActivity().findViewById(R.id.main) != null){
+					transaction.replace(R.id.main, newFragment);
+					transaction.addToBackStack(null);
+				}else{
+					transaction.replace(R.id.content, newFragment);
+					transaction.addToBackStack(null);
+				}
+				transaction.commit();
+				
+    		}
+    	});
+    	
+>>>>>>> decd2c463fec42b8b5ab27b6ec760833b7bd1696
 		//Refresh the List View (List of Musics)
     	refreshListMusicLists();
 	}
@@ -183,7 +247,7 @@ public class PlayListEditorFragment extends Fragment{
 			} else {
 				names = new String[musicList.size()];
 				int i = 0;
-				for (Audio p : musicList) {
+				for (AudioOld p : musicList) {
 					names[i++] = p.getTitle();
 				}
 				

@@ -22,7 +22,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.db.DBException;
-import br.unb.mobileMedia.core.domain.Playlist;
+import br.unb.mobileMedia.core.domain.PlaylistOld;
 import br.unb.mobileMedia.core.manager.Manager;
 
 /**
@@ -36,7 +36,7 @@ public class MainPlaylistListFragment extends Fragment {
 
 	//Store the Playlists names to display in the ListView
 	private String names[];
-	List<Playlist> playlists;	
+	List<PlaylistOld> playlists;	
 	
 	//String containing the playlist id that will be passed on to another activity through an intent.
 	public final static String SELECTED_PLAYLIST_ID = "idPlaylist";
@@ -67,6 +67,51 @@ public class MainPlaylistListFragment extends Fragment {
 
 		//Associar a ListView ao ContextMenu
 		registerForContextMenu(listPlayLists);
+<<<<<<< HEAD
+=======
+		
+		// Add playlist button
+		((Button)getActivity().findViewById(R.id.btn_addPlaylist)).setOnClickListener(new View.OnClickListener(){     
+			public void onClick(View v) {                
+
+				//Dialog (Alert) to get the information of the new playlist
+				AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+
+				alert.setTitle(R.string.btn_addPlaylist);
+				alert.setMessage(R.string.name);
+
+				// Set an EditText view to get user input 
+				final EditText input = new EditText(getActivity());
+				alert.setView(input);
+				//Ok button
+				alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+
+					public void onClick(DialogInterface dialog, int whichButton) {
+
+						String value = input.getText().toString();
+						try {
+							Manager.instance().newPlaylist(getActivity().getApplicationContext(), new PlaylistOld(value));
+						} catch (DBException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+						//refresh the ViewList with recent added playlist
+						refreshListPlayLists ();
+					}
+				});
+				//Cancel button
+				alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						// Canceled.
+					}
+				});
+
+				alert.show();  
+			}        
+
+		});
+>>>>>>> decd2c463fec42b8b5ab27b6ec760833b7bd1696
 
 		//Refresh the List View (List of Playlists)
 		refreshListPlayLists ();
@@ -204,7 +249,7 @@ public class MainPlaylistListFragment extends Fragment {
 
 					String newName = input.getText().toString();
 					
-					Playlist editedPlaylist = null;
+					PlaylistOld editedPlaylist = null;
 					
 					try {
 						editedPlaylist = Manager.instance().getSimplePlaylist(getActivity(), listItemName);
@@ -248,7 +293,7 @@ public class MainPlaylistListFragment extends Fragment {
 		if(menuItemIndex == 2 ){
 			
 			
-			Playlist playlist = null;
+			PlaylistOld playlist = null;
 			StubGPS location = new StubGPS();
 			
 			try {
@@ -287,7 +332,7 @@ public class MainPlaylistListFragment extends Fragment {
 			} else {
 				names = new String[playlists.size()];
 				int i = 0;
-				for (Playlist p : playlists) {
+				for (PlaylistOld p : playlists) {
 					names[i++] = p.getName();
 				}
 				
@@ -307,12 +352,16 @@ public class MainPlaylistListFragment extends Fragment {
 		            
 		            //Get the selected playlist name!
 		            String selectedPlaylistName = (String) parent.getItemAtPosition(position);
+<<<<<<< HEAD
 		            
 		            //Log de qual PlayList foi clicada
 		            Log.i("PlayList: ", selectedPlaylistName+" Clicada.");
 		            
 		            Playlist recoveredPlaylist = null;	
 		            
+=======
+		            PlaylistOld recoveredPlaylist = null;		
+>>>>>>> decd2c463fec42b8b5ab27b6ec760833b7bd1696
 		            try {
 						recoveredPlaylist = Manager.instance().getSimplePlaylist(getActivity().getApplicationContext(), selectedPlaylistName);
 					} catch (DBException e) {

@@ -2,8 +2,8 @@ package br.unb.mobileMedia.core.db;
 
 import java.util.List;
 
-import br.unb.mobileMedia.core.domain.Audio;
-import br.unb.mobileMedia.core.domain.Playlist;
+import br.unb.mobileMedia.core.domain.AudioOld;
+import br.unb.mobileMedia.core.domain.PlaylistOld;
 
 /**
  * A Data Access Object for handling the persistence 
@@ -11,7 +11,7 @@ import br.unb.mobileMedia.core.domain.Playlist;
  *  
  * @author willian
  */
-public interface PlaylistDAO {
+public interface PlaylistDAOOld {
 
 	/**
 	 * Create a new empty playlist on the database. 
@@ -19,7 +19,7 @@ public interface PlaylistDAO {
 	 * @param playlist - the playlist that will be persisted. 
 	 * @throws DBException if anything goes wrong with the database query
 	 */
-	void newPlaylist(Playlist playlist) throws DBException;
+	void newPlaylist(PlaylistOld playlist) throws DBException;
 	
 	/**
 	 * Add a list of medias to a playlist
@@ -34,14 +34,14 @@ public interface PlaylistDAO {
 	 * @return list of playlists.
 	 * @throws DBException if anything goes wrong with the database query
 	 */
-	List<Playlist> listPlaylists() throws DBException;
+	List<PlaylistOld> listPlaylists() throws DBException;
 	
 	/**
 	 * List all playlists from the MMUnB database. The playlist returned do not have any media
 	 * @return list of playlists.
 	 * @throws DBException if anything goes wrong with the database query
 	 */
-	List<Playlist> listSimplePlaylists() throws DBException;
+	List<PlaylistOld> listSimplePlaylists() throws DBException;
 	
 	/**
 	 * Get a playlist by id. The playlist returned do not have any media 
@@ -49,7 +49,7 @@ public interface PlaylistDAO {
 	 * @return a playlist.
 	 * @throws DBException if anything goes wrong with the database query
 	 */
-	Playlist getSimplePlaylist(int idPlaylist) throws DBException;
+	PlaylistOld getSimplePlaylist(int idPlaylist) throws DBException;
 	
 	/**
 	 * Get a playlist by name. The playlist returned do not have any media
@@ -57,7 +57,7 @@ public interface PlaylistDAO {
 	 * @return a playlist.
 	 * @throws DBException if anything goes wrong with the database query
 	 */
-	Playlist getSimplePlaylist(String name) throws DBException;
+	PlaylistOld getSimplePlaylist(String name) throws DBException;
 	
 	/**
 	 * Get a playlist by id. 
@@ -65,7 +65,7 @@ public interface PlaylistDAO {
 	 * @return a playlist.
 	 * @throws DBException if anything goes wrong with the database query
 	 */
-	Playlist getPlaylist(int idPlaylist) throws DBException;
+	PlaylistOld getPlaylist(int idPlaylist) throws DBException;
 	
 	/**
 	 * Get a playlist by name.
@@ -73,7 +73,7 @@ public interface PlaylistDAO {
 	 * @return a playlist.
 	 * @throws DBException if anything goes wrong with the database query
 	 */
-	Playlist getPlaylist(String name) throws DBException;
+	PlaylistOld getPlaylist(String name) throws DBException;
 
 	
 	/**
@@ -89,16 +89,16 @@ public interface PlaylistDAO {
 	 * to be edited and the other fields with the new values
 	 * @throws DBException if anything goes wrong with the database query
 	 */
-	void editPlaylist(Playlist editedPlaylist) throws DBException;
+	void editPlaylist(PlaylistOld editedPlaylist) throws DBException;
 	
 	/**
 	 * Add a geographical position a plalist.
-	 * @param Playlist  - a Playlist object containing the id from the playlist
+	 * @param PlaylistOld  - a Playlist object containing the id from the playlist
 	 * @param latitude
 	 * @param longitude
 	 * @throws DBException if anything goes wrong with the database query
 	 */
-	void addPositionPlaylist(Playlist playlist, double latitude, double longitude) throws DBException;
+	void addPositionPlaylist(PlaylistOld playlist, double latitude, double longitude) throws DBException;
 	
 	/**
 	 * Remove a list of medias from a playlist
@@ -114,5 +114,5 @@ public interface PlaylistDAO {
 	 * @param idPlaylist - the id from the playlist which contains the list of musics
 	 * @throws DBException if anything goes wrong with the database query
 	 */
-	List<Audio> getMusicFromPlaylist(int idPlaylist) throws DBException;
+	List<AudioOld> getMusicFromPlaylist(int idPlaylist) throws DBException;
 }

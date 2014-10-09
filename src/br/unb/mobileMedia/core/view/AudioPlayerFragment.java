@@ -25,13 +25,13 @@ import android.widget.Toast;
 import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.FileChooser.*;
 import br.unb.mobileMedia.core.audioPlayer.AudioPlayerList;
-import br.unb.mobileMedia.core.domain.Audio;
+import br.unb.mobileMedia.core.domain.AudioOld;
 import br.unb.mobileMedia.playlist.PlayListManager;
 
 public class AudioPlayerFragment extends Fragment implements PlayListManager, SeekBar.OnSeekBarChangeListener{
 
 	public static final String EXECUTION_LIST = "EXECUTION_LIST";
-	private List<Audio> musicList = new ArrayList<Audio>();
+	private List<AudioOld> musicList = new ArrayList<AudioOld>();
 
 	private AudioPlayerList player;
 	private Audio[] music;
@@ -101,6 +101,7 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager, Se
 
 	private void createUI() {
 		Log.i("AudioPlayerFragment", "Creating UI...");
+<<<<<<< HEAD
 		
 		player = AudioPlayerList.getInstance(getActivity().getApplicationContext());
 
@@ -123,6 +124,18 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager, Se
 			updateProgressBar();
 		    
 		}catch (RuntimeException e){
+=======
+		try {
+			AudioPlayerList player = AudioPlayerList.getInstance(getActivity().getApplicationContext());
+			if (player.isPlaying()){ 
+				player.stop();
+				player.killPLaylist();
+			}
+			AudioOld[] music = musicList.toArray(new AudioOld[musicList.size()]);
+			player.newPlaylist(music);
+			player.play();
+		} catch (RuntimeException e) {
+>>>>>>> decd2c463fec42b8b5ab27b6ec760833b7bd1696
 			e.printStackTrace();
 			Toast.makeText(getActivity().getApplicationContext(), "Exception: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
 		}
@@ -278,9 +291,14 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager, Se
 	 */
 	private void initAudioList() {
 		Log.i("AudioPlayerFragment", "init audio list...");
+<<<<<<< HEAD
 
 		if (getArguments() == null) {
 			musicList = new ArrayList<Audio>();
+=======
+		if(getArguments()==null){
+			musicList = new ArrayList<AudioOld>();
+>>>>>>> decd2c463fec42b8b5ab27b6ec760833b7bd1696
 			Log.i("AudioPlayerFragment", "getArguments() is null");
 			return;
 		}
@@ -289,11 +307,16 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager, Se
 
 		if (ps != null) {
 			Log.i("AudioPlayerFragment", "getParcelableArray(EXECUTION_LIST) has " + ps.length + " itens");
-			musicList = new ArrayList<Audio>();
+			musicList = new ArrayList<AudioOld>();
 
 			for (int i = 0; i < ps.length; i++) {
+<<<<<<< HEAD
 				musicList.add((Audio) ps[i]);
 				Log.i("AudioPlayerFragment", "Add music to musicList: "	+ (Audio) ps[i]);
+=======
+				musicList.add((AudioOld) ps[i]);
+				Log.i("AudioPlayerFragment", "Add music to musicList: " + (AudioOld) ps[i]);
+>>>>>>> decd2c463fec42b8b5ab27b6ec760833b7bd1696
 			}
 		}
 	}
@@ -303,11 +326,19 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager, Se
 	 */
 	private void updateAudioListView() {
 		Log.i("AudioPlayerFragment", "Updateding audio list view...");
+<<<<<<< HEAD
 //		ListView listView = (ListView) getActivity().findViewById(R.id.list_audio_player);
 		music = musicList.toArray(new Audio[musicList.size()]);
 
 //		listView.setAdapter(new AudioPlayerArrayAdapter(getActivity().getApplicationContext(), music));
 //		listView.setItemChecked(0, true);
+=======
+		ListView listView = (ListView) getActivity().findViewById(R.id.list_audio_player);
+		AudioOld[] music = musicList.toArray(new AudioOld[musicList.size()]);
+		
+		listView.setAdapter(new AudioPlayerArrayAdapter(getActivity().getApplicationContext(), music));
+		listView.setItemChecked(0, true);
+>>>>>>> decd2c463fec42b8b5ab27b6ec760833b7bd1696
 	}
 
 	@Override
@@ -319,7 +350,7 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager, Se
 	/**
 	 * Add a audio to audio list Doesn't updated the list view
 	 */
-	public void addMusic(Audio audio) {
+	public void addMusic(AudioOld audio) {
 		// TODO Auto-generated method stub
 		Log.i("AudioPlayerFragment", "Adding music..." + audio);
 		musicList.add(audio);

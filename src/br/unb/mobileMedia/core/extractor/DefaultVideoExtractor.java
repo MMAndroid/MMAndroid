@@ -12,9 +12,9 @@ import android.media.MediaMetadataRetriever;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.util.Log;
-import br.unb.mobileMedia.core.domain.Audio;
-import br.unb.mobileMedia.core.domain.Author;
-import br.unb.mobileMedia.core.domain.Video;
+import br.unb.mobileMedia.core.domain.AudioOld;
+import br.unb.mobileMedia.core.domain.AuthorOld;
+import br.unb.mobileMedia.core.domain.VideoOld;
 
 /**
  * A default implementation of an video extractor.
@@ -50,8 +50,8 @@ public class DefaultVideoExtractor implements MediaExtractor {
 	/**
 	 * @see MediaExtractor#processFile(File[])
 	 */
-	public List<Author> processFiles(List<File> videoFiles) {
-		Map<Integer, Author> authors = new HashMap<Integer, Author>();
+	public List<AuthorOld> processFiles(List<File> videoFiles) {
+		Map<Integer, AuthorOld> authors = new HashMap<Integer, AuthorOld>();
 
 		MediaMetadataRetriever mmr = new MediaMetadataRetriever();
 
@@ -84,17 +84,17 @@ public class DefaultVideoExtractor implements MediaExtractor {
 			Log.i("titleKey: ", titleKey);
 			Log.i("album: ", album);
 
-			Author author = authors.get(authorId);
+			AuthorOld author = authors.get(authorId);
 
 			if(author == null) {
-				author = new  Author(authorId.hashCode(), authorName);
+				author = new  AuthorOld(authorId.hashCode(), authorName);
 			}
 			Integer id = titleKey.hashCode();
-			author.addProduction(new Video(id, id, album, u));
+			author.addProduction(new VideoOld(id, id, album, u));
 
 			authors.put(author.getId(), author);
 		}
-		return new ArrayList<Author>(authors.values());
+		return new ArrayList<AuthorOld>(authors.values());
 	}
 
 }

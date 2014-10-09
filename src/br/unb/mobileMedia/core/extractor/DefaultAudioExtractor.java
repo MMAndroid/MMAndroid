@@ -12,8 +12,8 @@ import android.media.MediaScannerConnection;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.util.Log;
-import br.unb.mobileMedia.core.domain.Audio;
-import br.unb.mobileMedia.core.domain.Author;
+import br.unb.mobileMedia.core.domain.AudioOld;
+import br.unb.mobileMedia.core.domain.AuthorOld;
 
 /**
  * A defaul implementation of an audio extractor.
@@ -43,8 +43,8 @@ public class DefaultAudioExtractor implements MediaExtractor {
 	/**
 	 * @see MediaExtractor#processFile(File[])
 	 */
-	public List<Author> processFiles(List<File> audioFiles) {
-		Map<Integer, Author> authors = new HashMap<Integer, Author>();
+	public List<AuthorOld> processFiles(List<File> audioFiles) {
+		Map<Integer, AuthorOld> authors = new HashMap<Integer, AuthorOld>();
 
 		MediaMetadataRetriever mmr = new MediaMetadataRetriever();
 
@@ -77,17 +77,17 @@ public class DefaultAudioExtractor implements MediaExtractor {
 		   Log.i("titleKey: ", titleKey);
 		   Log.i("album: ", album);
 
-		   Author author = authors.get(authorId);
+		   AuthorOld author = authors.get(authorId);
 		   
 		   if(author == null) {
-			   author = new  Author(authorId.hashCode(), authorName);
+			   author = new  AuthorOld(authorId.hashCode(), authorName);
 		   }
 		   
-		   author.addProduction(new Audio(titleKey.hashCode(), title, u, album));
+		   author.addProduction(new AudioOld(titleKey.hashCode(), title, u, album));
 		   
 		   authors.put(author.getId(), author);
 		}
-		return new ArrayList<Author>(authors.values());
+		return new ArrayList<AuthorOld>(authors.values());
 	}
 
 	private MediaScannerConnection createMediaScanner(final List<File> audioFiles) {

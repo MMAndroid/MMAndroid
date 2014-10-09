@@ -15,12 +15,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.db.DBException;
-import br.unb.mobileMedia.core.domain.Audio;
+import br.unb.mobileMedia.core.domain.AudioOld;
 import br.unb.mobileMedia.core.manager.Manager;
 
 public class MusicSelectFragment extends Fragment {
 
-    List<Audio> musicas = new ArrayList<Audio>();
+    List<AudioOld> musicas = new ArrayList<AudioOld>();
     List<Integer> musicasAdicionadasId = new ArrayList<Integer>();
     private String names[];
     private int playListId; 
@@ -64,7 +64,7 @@ public class MusicSelectFragment extends Fragment {
     	
     	names = new String[musicas.size()];
     	int i=0;
-    	for (Audio aux : musicas){names[i++]=aux.getTitle();}
+    	for (AudioOld aux : musicas){names[i++]=aux.getTitle();}
     	
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), 
 				android.R.layout.simple_list_item_1, 
@@ -78,7 +78,7 @@ public class MusicSelectFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)  {
             
             	try{
-					Audio aux = musicas.get(position);
+					AudioOld aux = musicas.get(position);
 					musicasAdicionadasId.add(aux.getId());
 					
 					Manager.instance().addMediaToPlaylist(getActivity().getBaseContext(), playListId, musicasAdicionadasId);

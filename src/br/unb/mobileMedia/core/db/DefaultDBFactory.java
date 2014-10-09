@@ -13,12 +13,12 @@ public class DefaultDBFactory extends DBFactory {
 	}
 
 	@Override
-	public AuthorDAO createAuthorDAO() {
+	public AuthorDAOOld createAuthorDAO() {
 		return new DefaultAuthorDAO(context);
 	}
 
 	@Override
-	public PlaylistDAO createPlaylistDAO() {
+	public PlaylistDAOOld createPlaylistDAO() {
 		return new DefaultPlaylistDAO(context);
 	}
 

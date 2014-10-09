@@ -14,17 +14,17 @@ import java.util.TreeMap;
 import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
-import br.unb.mobileMedia.core.db.AuthorDAO;
+import br.unb.mobileMedia.core.db.AuthorDAOOld;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.db.DBFactory;
 import br.unb.mobileMedia.core.db.DefaultAuthorDAO;
-import br.unb.mobileMedia.core.db.PlaylistDAO;
-import br.unb.mobileMedia.core.domain.Audio;
+import br.unb.mobileMedia.core.db.PlaylistDAOOld;
+import br.unb.mobileMedia.core.domain.AudioOld;
 import br.unb.mobileMedia.core.domain.AudioFormats;
-import br.unb.mobileMedia.core.domain.Author;
+import br.unb.mobileMedia.core.domain.AuthorOld;
 import br.unb.mobileMedia.core.domain.MultimediaContent;
-import br.unb.mobileMedia.core.domain.Playlist;
-import br.unb.mobileMedia.core.domain.Video;
+import br.unb.mobileMedia.core.domain.PlaylistOld;
+import br.unb.mobileMedia.core.domain.VideoOld;
 import br.unb.mobileMedia.core.domain.VideoFormats;
 import br.unb.mobileMedia.core.extractor.DefaultAudioExtractor;
 import br.unb.mobileMedia.core.extractor.DefaultVideoExtractor;
@@ -83,7 +83,7 @@ public class Manager {
 		}
 		MediaExtractor extractor = new DefaultVideoExtractor(context);
 
-		List<Author> authors = (List<Author>) extractor.processFiles(allVideos);
+		List<AuthorOld> authors = (List<AuthorOld>) extractor.processFiles(allVideos);
 
 		saveAuthor(context, authors);
 
@@ -100,14 +100,14 @@ public class Manager {
 
 		MediaExtractor extractor = new DefaultAudioExtractor(context);
 
-		List<Author> authors = (List<Author>) extractor.processFiles(allMusics);
+		List<AuthorOld> authors = (List<AuthorOld>) extractor.processFiles(allMusics);
 
 		saveAuthor(context, authors);
 	}
 
-	private void saveAuthor(Context context, List<Author> authors) throws DBException {
-		for(Author author: authors) {
-			AuthorDAO dao = DBFactory.factory(context).createAuthorDAO();
+	private void saveAuthor(Context context, List<AuthorOld> authors) throws DBException {
+		for(AuthorOld author: authors) {
+			AuthorDAOOld dao = DBFactory.factory(context).createAuthorDAO();
 			dao.saveAuthor(author);
 			List<MultimediaContent> production = new ArrayList<MultimediaContent>();
 			for(int i = 0; i < author.sizeOfProduction(); i++) {
@@ -124,8 +124,8 @@ public class Manager {
 	 * @param authorPK the primary key of the author
 	 * @return the author production.
 	 */
-	public List<Audio> listProductionByAuthorPK(Context context, Integer authorPK) throws DBException {
-		AuthorDAO dao = DBFactory.factory(context).createAuthorDAO();
+	public List<AudioOld> listProductionByAuthorPK(Context context, Integer authorPK) throws DBException {
+		AuthorDAOOld dao = DBFactory.factory(context).createAuthorDAO();
 
 		return dao.findAudioProductionByAuthorKey(authorPK);
 	}
@@ -136,8 +136,8 @@ public class Manager {
 	 * @return all authors in the database
 	 * @throws DBException
 	 */
-	public List<Author> listAuthors(Context context) throws DBException {
-		AuthorDAO dao = DBFactory.factory(context).createAuthorDAO();
+	public List<AuthorOld> listAuthors(Context context) throws DBException {
+		AuthorDAOOld dao = DBFactory.factory(context).createAuthorDAO();
 
 		return dao.listAuthors();
 	}
@@ -147,8 +147,8 @@ public class Manager {
 	 * @param context the application context
 	 * @return a list with all production synchronized at the database.
 	 */
-	public List<Audio> listAllProduction(Context context) throws DBException {
-		AuthorDAO dao = DBFactory.factory(context).createAuthorDAO();
+	public List<AudioOld> listAllProduction(Context context) throws DBException {
+		AuthorDAOOld dao = DBFactory.factory(context).createAuthorDAO();
 		return dao.listAllProduction();
 	}
 
@@ -166,10 +166,10 @@ public class Manager {
 	 * 
 	 * @return a list with the most recently played musics. 
 	 */
-	public Map<Author, Map<Audio, List<Date>>> recently(Context context, Date start) throws DBException {
+	public Map<AuthorOld, Map<AudioOld, List<Date>>> recently(Context context, Date start) throws DBException {
 		Date today = Calendar.getInstance().getTime();
 		if(start.before(today)) {
-			Map<Author, Map<Audio, List<Date>>> executionHistory = DBFactory.factory(context).createAuthorDAO().executionHistory(start, today);
+			Map<AuthorOld, Map<AudioOld, List<Date>>> executionHistory = DBFactory.factory(context).createAuthorDAO().executionHistory(start, today);
 
 
 			return executionHistory;
@@ -183,7 +183,7 @@ public class Manager {
 	 * @param context the application context.
 	 * @param audio the audio that has just been executed
 	 */
-	public void registerExecution(Context context, Audio audio) throws DBException {
+	public void registerExecution(Context context, AudioOld audio) throws DBException {
 		Log.v(Manager.class.getCanonicalName(), "PK: "  + audio.getPrimaryKey());
 		DBFactory.factory(context).createAuthorDAO().saveExecutionHistory(audio, Calendar.getInstance().getTime());
 	}
@@ -198,18 +198,18 @@ public class Manager {
 	 * @return the list of the top <i>size</i> artists
 	 * @throws DBException
 	 */
-	public List<Author> topArtistsFromPeriod(Context context, Date start, Date end, int size) throws DBException {
-		Map<Author, Map<Audio, List<Date>>> executionHistory = DBFactory.factory(context).createAuthorDAO().executionHistory(start, end);
+	public List<AuthorOld> topArtistsFromPeriod(Context context, Date start, Date end, int size) throws DBException {
+		Map<AuthorOld, Map<AudioOld, List<Date>>> executionHistory = DBFactory.factory(context).createAuthorDAO().executionHistory(start, end);
 
-		Map<Author, Integer> summary = summarize(executionHistory);
+		Map<AuthorOld, Integer> summary = summarize(executionHistory);
 
-		Map<Author, Integer> sortedMap = new TreeMap<Author, Integer>(new SummaryOfExecutionHistoryComparator(summary));
+		Map<AuthorOld, Integer> sortedMap = new TreeMap<AuthorOld, Integer>(new SummaryOfExecutionHistoryComparator(summary));
 
 		sortedMap.putAll(summary);
 
-		Iterator<Author> it = sortedMap.keySet().iterator();
+		Iterator<AuthorOld> it = sortedMap.keySet().iterator();
 
-		List<Author> result = new ArrayList<Author>();
+		List<AuthorOld> result = new ArrayList<AuthorOld>();
 		for(int i = 0; i < sortedMap.keySet().size() && i < 5 ; i++) {
 			result.add(it.next());
 		}
@@ -223,9 +223,9 @@ public class Manager {
 	 * @param playlist to be created
 	 * @throws DBException
 	 */
-	public void newPlaylist(Context context, Playlist playlist) throws DBException {
+	public void newPlaylist(Context context, PlaylistOld playlist) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final PlaylistDAO playlistDAO = factory.createPlaylistDAO();
+		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
 		playlistDAO.newPlaylist(playlist);
 	}
 
@@ -239,9 +239,9 @@ public class Manager {
 	 * @param playlist to be edited
 	 * @throws DBException
 	 */
-	public void editPlaylist(Context context, Playlist editedPlaylist) throws DBException {
+	public void editPlaylist(Context context, PlaylistOld editedPlaylist) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final PlaylistDAO playlistDAO = factory.createPlaylistDAO();
+		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
 		playlistDAO.editPlaylist(editedPlaylist);
 	}
 
@@ -254,7 +254,7 @@ public class Manager {
 	 */
 	public void removePlaylist(Context context, String namePlaylist) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final PlaylistDAO playlistDAO = factory.createPlaylistDAO();
+		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
 		playlistDAO.deletePlaylist(namePlaylist);
 	}
 	
@@ -267,9 +267,9 @@ public class Manager {
 	 * @param longitude
 	 * @throws DBException
 	 */
-	public void addPositionPlaylist(Context context, Playlist playlist, double latitude, double longitude) throws DBException {
+	public void addPositionPlaylist(Context context, PlaylistOld playlist, double latitude, double longitude) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final PlaylistDAO playlistDAO = factory.createPlaylistDAO();
+		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
 		playlistDAO.addPositionPlaylist(playlist,latitude,longitude);
 	}
 	
@@ -281,9 +281,9 @@ public class Manager {
 	 * @return a playlist object
 	 * @throws DBException
 	 */
-	public Playlist getSimplePlaylist(Context context, int id) throws DBException {
+	public PlaylistOld getSimplePlaylist(Context context, int id) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final PlaylistDAO playlistDAO = factory.createPlaylistDAO();
+		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
 		return playlistDAO.getSimplePlaylist(id);
 	}
 	
@@ -295,9 +295,9 @@ public class Manager {
 	 * @return a playlist object
 	 * @throws DBException
 	 */
-	public Playlist getSimplePlaylist(Context context, String name) throws DBException {
+	public PlaylistOld getSimplePlaylist(Context context, String name) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final PlaylistDAO playlistDAO = factory.createPlaylistDAO();
+		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
 		return playlistDAO.getSimplePlaylist(name);
 	}
 	
@@ -309,9 +309,9 @@ public class Manager {
 	 * @return a playlist object
 	 * @throws DBException
 	 */
-	public Playlist getPlaylist(Context context, int id) throws DBException {
+	public PlaylistOld getPlaylist(Context context, int id) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final PlaylistDAO playlistDAO = factory.createPlaylistDAO();
+		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
 		return playlistDAO.getPlaylist(id);
 	}
 	
@@ -323,9 +323,9 @@ public class Manager {
 	 * @return a playlist object
 	 * @throws DBException
 	 */
-	public Playlist getPlaylist(Context context, String name) throws DBException {
+	public PlaylistOld getPlaylist(Context context, String name) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final PlaylistDAO playlistDAO = factory.createPlaylistDAO();
+		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
 		return playlistDAO.getPlaylist(name);
 	}
 	
@@ -336,9 +336,9 @@ public class Manager {
 	 * @return the list of all playlists
 	 * @throws DBException
 	 */
-	public List<Playlist> listSimplePlaylists(Context context) throws DBException {
+	public List<PlaylistOld> listSimplePlaylists(Context context) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final PlaylistDAO playlistDAO = factory.createPlaylistDAO();
+		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
 		return playlistDAO.listSimplePlaylists();
 	}
 	
@@ -349,9 +349,9 @@ public class Manager {
 	 * @return the list of all playlists
 	 * @throws DBException
 	 */
-	public List<Playlist> listPlaylists(Context context) throws DBException {
+	public List<PlaylistOld> listPlaylists(Context context) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final PlaylistDAO playlistDAO = factory.createPlaylistDAO();
+		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
 		return playlistDAO.listPlaylists();
 	}
 	
@@ -365,7 +365,7 @@ public class Manager {
 	 */
 	public void addMediaToPlaylist(Context context, int idPlaylist, List<Integer> mediaList) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final PlaylistDAO playlistDAO = factory.createPlaylistDAO();
+		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
 		playlistDAO.addToPlaylist(idPlaylist, mediaList);
 	}
 	
@@ -379,7 +379,7 @@ public class Manager {
 	 */
 	public void removeMediaFromPlaylist(Context context, int idPlaylist, List<Integer> mediaList) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final PlaylistDAO playlistDAO = factory.createPlaylistDAO();
+		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
 		playlistDAO.removeMedias(idPlaylist, mediaList);
 	}
 	
@@ -390,18 +390,18 @@ public class Manager {
 	 * @param id from the playlist
 	 * @throws DBException
 	 */
-	public List<Audio> getMusicFromPlaylist(Context context, int idPlaylist) throws DBException {
+	public List<AudioOld> getMusicFromPlaylist(Context context, int idPlaylist) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final PlaylistDAO playlistDAO = factory.createPlaylistDAO();
+		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
 		return playlistDAO.getMusicFromPlaylist(idPlaylist);
 	}
 	
 	
-	private Map<Author, Integer> summarize(Map<Author, Map<Audio, List<Date>>> executionHistory) {
-		Map<Author, Integer> result = new HashMap<Author, Integer>();
-		for(Author author : executionHistory.keySet()) {
+	private Map<AuthorOld, Integer> summarize(Map<AuthorOld, Map<AudioOld, List<Date>>> executionHistory) {
+		Map<AuthorOld, Integer> result = new HashMap<AuthorOld, Integer>();
+		for(AuthorOld author : executionHistory.keySet()) {
 			int totalOfExecution = 0;
-			for(Audio audio : executionHistory.get(author).keySet()) {
+			for(AudioOld audio : executionHistory.get(author).keySet()) {
 				totalOfExecution += executionHistory.get(author).get(audio).size();
 			}
 			result.put(author, totalOfExecution);
@@ -413,14 +413,14 @@ public class Manager {
 	 * A comparator for ordering the execution history of an author 
 	 * (a map<Author, Integer).
 	 */
-	class SummaryOfExecutionHistoryComparator implements Comparator<Author> {
-		private Map<Author, Integer> map;
+	class SummaryOfExecutionHistoryComparator implements Comparator<AuthorOld> {
+		private Map<AuthorOld, Integer> map;
 
-		public SummaryOfExecutionHistoryComparator(Map<Author, Integer> map) {
+		public SummaryOfExecutionHistoryComparator(Map<AuthorOld, Integer> map) {
 			this.map = map;
 		}
 
-		public int compare(Author key1, Author key2) {
+		public int compare(AuthorOld key1, AuthorOld key2) {
 			if(map.containsKey(key1) && map.containsKey(key2)) {
 				return map.get(key1).compareTo(map.get(key2));
 			}

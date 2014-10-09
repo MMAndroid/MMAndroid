@@ -4,8 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import br.unb.mobileMedia.core.domain.Audio;
-import br.unb.mobileMedia.core.domain.Author;
+import br.unb.mobileMedia.core.domain.AudioOld;
+import br.unb.mobileMedia.core.domain.AuthorOld;
 import br.unb.mobileMedia.core.domain.MultimediaContent;
 
 /**
@@ -14,28 +14,28 @@ import br.unb.mobileMedia.core.domain.MultimediaContent;
  *  
  * @author rbonifacio
  */
-public interface AuthorDAO {
+public interface AuthorDAOOld {
 
 	/**
 	 * Save an author in the author's database.
 	 * 
 	 * @param author - the author that will be persisted. 
 	 */
-	public void saveAuthor(Author author) throws DBException;
+	public void saveAuthor(AuthorOld author) throws DBException;
 	
 	/**
 	 * Persist an media and relates it to author in the database
 	 * @param author the author
 	 * @param audio the media that will be saved
 	 */
-	public void saveAuthorProduction(Author author, List<MultimediaContent> listOfMedia) throws DBException;
+	public void saveAuthorProduction(AuthorOld author, List<MultimediaContent> listOfMedia) throws DBException;
 	
 	/**
 	 * List all authors of the MMUnB database.
 	 * @return list of registered authors.
 	 * @throws DBException if anything goes wrong with the database query
 	 */
-	public List<Author> listAuthors() throws DBException;
+	public List<AuthorOld> listAuthors() throws DBException;
 	
 	/**
 	 * Query an author by name
@@ -43,7 +43,7 @@ public interface AuthorDAO {
 	 * @return an author from the database whose name is <i>name</i>
 	 * @throws DBException if anything goes wrong with the database query
 	 */
-	public Author findByName(String name) throws DBException;
+	public AuthorOld findByName(String name) throws DBException;
 	
 	/**
 	 * Return the audio production of an author.
@@ -52,14 +52,14 @@ public interface AuthorDAO {
 	 * @return the audio production of the author whose primary key equals <i>keys</i>
 	 * @throws DBException if anything goes wrong with the database query
 	 */
-	public List<Audio> findAudioProductionByAuthorKey(Integer key) throws DBException;
+	public List<AudioOld> findAudioProductionByAuthorKey(Integer key) throws DBException;
 
 	/**
 	 * Return the production of the whole database
 	 * 
 	 * @return A list with all audio data within the database
 	 */
-	public List<Audio> listAllProduction() throws DBException;
+	public List<AudioOld> listAllProduction() throws DBException;
 	
 	/**
 	 * Returns the execution history starting from <i>start</i> until 
@@ -71,7 +71,7 @@ public interface AuthorDAO {
 	 * specific audio and the values entry is a list with the date time of 
 	 * in which the audio was executed
 	 */
-	public abstract Map<Author, Map<Audio, List<Date>>> executionHistory(Date start, Date end) throws DBException;
+	public abstract Map<AuthorOld, Map<AudioOld, List<Date>>> executionHistory(Date start, Date end) throws DBException;
 
 	/**
 	 * Register (or save) the execution of an audio
@@ -79,5 +79,5 @@ public interface AuthorDAO {
 	 * @param audio the audio that been executed
 	 * @param time the time of the execution
 	 */
-	public void saveExecutionHistory(Audio audio, Date time) throws DBException;
+	public void saveExecutionHistory(AudioOld audio, Date time) throws DBException;
 }

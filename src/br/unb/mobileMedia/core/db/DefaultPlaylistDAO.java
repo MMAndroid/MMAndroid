@@ -9,8 +9,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
-import br.unb.mobileMedia.core.domain.Audio;
-import br.unb.mobileMedia.core.domain.Playlist;
+import br.unb.mobileMedia.core.domain.AudioOld;
+import br.unb.mobileMedia.core.domain.PlaylistOld;
 
 /**
  * Default implementation of PlaylistDAO.
@@ -18,7 +18,7 @@ import br.unb.mobileMedia.core.domain.Playlist;
  * @author willian
  */
 
-public class DefaultPlaylistDAO implements PlaylistDAO {
+public class DefaultPlaylistDAO implements PlaylistDAOOld {
 	
 	private Context context;
 	private SQLiteDatabase db;
@@ -36,9 +36,9 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
 	}
 	
 	/**
-	 * @see PlaylistDAO#newPlaylist(Playlist playlist)
+	 * @see PlaylistDAOOld#newPlaylist(PlaylistOld playlist)
 	 */
-	public void newPlaylist(Playlist playlist) throws DBException {
+	public void newPlaylist(PlaylistOld playlist) throws DBException {
 		try {
 			db = dbHelper.getWritableDatabase();
 
@@ -121,21 +121,21 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
 
 	}
 
-	public List<Playlist> listPlaylists() throws DBException {
+	public List<PlaylistOld> listPlaylists() throws DBException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<Playlist> listSimplePlaylists() throws DBException {
+	public List<PlaylistOld> listSimplePlaylists() throws DBException {
 		try {
 			db = dbHelper.getReadableDatabase();
 			Cursor cursor = db.rawQuery(DBConstants.SELECT_SIMPLE_PLAYLIST, null);
 
-			List<Playlist> playlists = new ArrayList<Playlist>();
+			List<PlaylistOld> playlists = new ArrayList<PlaylistOld>();
 
 			if (cursor.moveToFirst()) {
 				do {
-					Playlist playlist = cursorToPlaylist(cursor);
+					PlaylistOld playlist = cursorToPlaylist(cursor);
 					playlists.add(playlist);
 				} while (cursor.moveToNext());
 			}
@@ -149,7 +149,7 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
 		return null;
 	}
 	
-	public Playlist getSimplePlaylist(int idPlaylist) throws DBException {
+	public PlaylistOld getSimplePlaylist(int idPlaylist) throws DBException {
 		db = dbHelper.getReadableDatabase();
 		
 		//Converts the playlist id to string to the SQL query
@@ -168,9 +168,9 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
 	}
 	
 	/**
-	 * @see PlaylistDAO#getPlaylist(String name)
+	 * @see PlaylistDAOOld#getPlaylist(String name)
 	 */
-	public Playlist getSimplePlaylist(String name) throws DBException {
+	public PlaylistOld getSimplePlaylist(String name) throws DBException {
 		db = dbHelper.getReadableDatabase();
 		Cursor cursor = db.rawQuery(DBConstants.SELECT_SIMPLE_PLAYLIST_BY_NAME,
 				new String[] { name });
@@ -185,18 +185,18 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
 		return cursorToPlaylist(cursor);
 	}
 	
-	public Playlist getPlaylist(int idPlaylist) throws DBException {
+	public PlaylistOld getPlaylist(int idPlaylist) throws DBException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
-	public Playlist getPlaylist(String name) throws DBException {
+	public PlaylistOld getPlaylist(String name) throws DBException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	/**
-	 * @see PlaylistDAO#deletePlaylist(String namePlaylist)
+	 * @see PlaylistDAOOld#deletePlaylist(String namePlaylist)
 	 */
 	public void deletePlaylist(String namePlaylist) throws DBException {
 		db = dbHelper.getReadableDatabase();
@@ -219,7 +219,7 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
 		}
 	}
 
-	public void editPlaylist(Playlist editedPlaylist) throws DBException {
+	public void editPlaylist(PlaylistOld editedPlaylist) throws DBException {
 		
 		try {
 			db = dbHelper.getWritableDatabase();
@@ -256,7 +256,7 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
 		
 	}
 	
-	public void addPositionPlaylist(Playlist Playlist, double latitude, double longitude) throws DBException {
+	public void addPositionPlaylist(PlaylistOld Playlist, double latitude, double longitude) throws DBException {
 		
 		try {
 			db = dbHelper.getWritableDatabase();
@@ -339,17 +339,17 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
 	/*
 	 * Converts a cursor into an Playlist.
 	 */
-	private Playlist cursorToPlaylist(Cursor cursor) {
+	private PlaylistOld cursorToPlaylist(Cursor cursor) {
 		int id = cursor.getInt(cursor
 				.getColumnIndex(DBConstants.PLAYLIST_ID_COLUMN));
 		String name = cursor.getString(cursor
 				.getColumnIndex(DBConstants.PLAYLIST_NAME_COLUMN));
-		Playlist playlist = new Playlist(name);
+		PlaylistOld playlist = new PlaylistOld(name);
 		playlist.setId(id);
 		return playlist;
 	}
 
-	public List<Audio> getMusicFromPlaylist(int idPlaylist) throws DBException {
+	public List<AudioOld> getMusicFromPlaylist(int idPlaylist) throws DBException {
 		List<Integer> mediaList = new ArrayList<Integer>();;
 		
 		//Retrieve the list of MusicIDs from the table TB_MEDIA_FROM_PLAYLIST from a certain playlist.
@@ -382,7 +382,7 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
 		
 		//Then Retrive the Audio file from each of those musicIDS
 		
-		List<Audio> musics = new ArrayList<Audio>();
+		List<AudioOld> musics = new ArrayList<AudioOld>();
 
 			
 			
@@ -396,7 +396,7 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
 				
 				if (cursor.moveToFirst()) {
 					do {
-						Audio audio = DefaultAuthorDAO.cursorToAudio(cursor);;
+						AudioOld audio = DefaultAuthorDAO.cursorToAudio(cursor);;
 						musics.add(audio);
 					} while (cursor.moveToNext());
 				}

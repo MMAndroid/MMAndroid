@@ -9,7 +9,13 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.util.Log;
+<<<<<<< HEAD
 import br.unb.mobileMedia.core.domain.Audio;
+=======
+import br.unb.mobileMedia.core.db.DBException;
+import br.unb.mobileMedia.core.domain.AudioOld;
+import br.unb.mobileMedia.core.manager.Manager;
+>>>>>>> decd2c463fec42b8b5ab27b6ec760833b7bd1696
 
 public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 
@@ -17,7 +23,12 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 
 	private Context context;
 	private MediaPlayer player;
+<<<<<<< HEAD
 	private List<Audio> audioList;
+=======
+	private List<AudioOld> audioList;
+	private int current;
+>>>>>>> decd2c463fec42b8b5ab27b6ec760833b7bd1696
 	private boolean repeat = false;
 	private boolean shuffle = false;
 	private boolean isPlaying = false;
@@ -37,8 +48,13 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 
 		
 		player = new MediaPlayer();
+<<<<<<< HEAD
 		
 		audioList = new ArrayList<Audio>();
+=======
+		current = 0;
+		audioList = new ArrayList<AudioOld>();
+>>>>>>> decd2c463fec42b8b5ab27b6ec760833b7bd1696
 
 		setRepeat(false);
 
@@ -51,20 +67,33 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	 * @param context the application context.
 	 * @param audioArray an array of musics that the user might choose to play
 	 */
-	private AudioPlayerList(Context context, Audio[] audioArray) {
+	private AudioPlayerList(Context context, AudioOld[] audioArray) {
 		this(context);
 
+<<<<<<< HEAD
 		if (audioArray == null) {
 			audioList = new ArrayList<Audio>();
 		}
 
 		for (Audio audio : audioArray) {
+=======
+		if (audioArray == null){
+			audioList = new ArrayList<AudioOld>();
+		}
+
+		for(AudioOld audio : audioArray)  {
+>>>>>>> decd2c463fec42b8b5ab27b6ec760833b7bd1696
 			audioList.add(audio);
 		}
 	}
 
+<<<<<<< HEAD
 	public static AudioPlayerList getInstance(Context context, Audio[] audioArray) {
 		if (uniqueInstance == null) {
+=======
+	public static AudioPlayerList getInstance (Context context, AudioOld[] audioArray) {
+		if (uniqueInstance == null){
+>>>>>>> decd2c463fec42b8b5ab27b6ec760833b7bd1696
 			synchronized (AudioPlayerList.class) {
 				if (uniqueInstance == null) {
 					uniqueInstance = new AudioPlayerList(context, audioArray);
@@ -85,8 +114,62 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 		return uniqueInstance;
 	}
 
+<<<<<<< HEAD
 
 	public void play(int indexFile){
+=======
+	/**
+	 * Return the number of elements of the list.
+	 * @return the number of elements of the list.
+	 */
+	public int size() {
+		return audioList.size();
+	}
+
+	/**
+	 * Returns an iterator on the elements of the list. 
+	 * @return an iterator on the elements of the list.
+	 */
+	public Iterator<AudioOld> iterator() {
+		return audioList.iterator();
+	}
+
+	public int current() {
+		return current;
+	}
+
+	/**
+	 * Play the current audio on the audio play list.
+	 */
+	public void play() throws RuntimeException {
+		if(current >= 0 && current < audioList.size()) {
+			if (isPlaying) {
+				return; 
+			} else if (isPaused) {
+				player.start();
+				isPaused = false;
+				isPlaying = true;
+				return;
+			}else {				
+				AudioOld audio = audioList.get(current);
+				try {
+					player.setDataSource(context, Uri.parse(audio.getURI().toString()));
+					player.prepare();
+					player.start();
+					isPlaying = true;
+				}
+				catch(Exception e) {
+					Log.v(AudioPlayerList.class.getCanonicalName(), e.getMessage());
+					throw new RuntimeException(e);
+				}
+			}
+		} 
+	}
+
+
+	public void onCompletion(MediaPlayer mp) {
+		//TODO: this is a poor example of exception handling.
+>>>>>>> decd2c463fec42b8b5ab27b6ec760833b7bd1696
 		try {
 			
 			Log.i("Player: ", audioList.get(indexFile).getURI().toString() );
@@ -152,8 +235,16 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 		audioList.removeAll(audioList);
 	}
 
+<<<<<<< HEAD
 	public void newPlaylist(List<Audio> executionList) {
 		audioList = executionList;
+=======
+	public void newPlaylist(AudioOld[] executionList) {
+		for(AudioOld audio : executionList)  {
+			audioList.add(audio);
+		}
+		current = 0;
+>>>>>>> decd2c463fec42b8b5ab27b6ec760833b7bd1696
 	}
 
 	public void playPause() {
@@ -196,12 +287,17 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 			play(currentSongIndex);
 		}
 	}
+<<<<<<< HEAD
 
 	public void reset() {
 		player.reset();
 	}
 
 	public void addMusic(Audio newMusic) {
+=======
+	
+	public void addMusic (AudioOld newMusic) {
+>>>>>>> decd2c463fec42b8b5ab27b6ec760833b7bd1696
 		audioList.add(newMusic);
 	}
 

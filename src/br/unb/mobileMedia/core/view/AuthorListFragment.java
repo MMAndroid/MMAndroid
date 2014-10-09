@@ -12,7 +12,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.db.DBException;
-import br.unb.mobileMedia.core.domain.Author;
+import br.unb.mobileMedia.core.domain.AuthorOld;
 import br.unb.mobileMedia.core.manager.Manager;
 
 /**
@@ -25,7 +25,7 @@ public class AuthorListFragment extends ListFragment {
 		super.onCreate(savedInstanceState);
 		getActivity().setTitle("All artists");
 		try {
-			List<Author> authors = Manager.instance().listAuthors(getActivity().getApplicationContext());
+			List<AuthorOld> authors = Manager.instance().listAuthors(getActivity().getApplicationContext());
 
 			if (authors == null || authors.size() == 0) {
 				String[] values = new String[] { "No author found." };
@@ -51,7 +51,7 @@ public class AuthorListFragment extends ListFragment {
 	 */
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		Author item = (Author) getListAdapter().getItem(position);
+		AuthorOld item = (AuthorOld) getListAdapter().getItem(position);
 		
 		Bundle args = new Bundle();
 		args.putInt(AudioExpandableListFragment.SELECTED_ARTIST_ID, item.getId());

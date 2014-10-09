@@ -17,8 +17,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.text.format.DateFormat;
 import android.util.Log;
-import br.unb.mobileMedia.core.domain.Audio;
-import br.unb.mobileMedia.core.domain.Author;
+import br.unb.mobileMedia.core.domain.AudioOld;
+import br.unb.mobileMedia.core.domain.AuthorOld;
 import br.unb.mobileMedia.core.domain.MultimediaContent;
 import br.unb.mobileMedia.core.manager.Manager;
 import br.unb.mobileMedia.util.MMConstants;
@@ -28,7 +28,7 @@ import br.unb.mobileMedia.util.MMConstants;
  * 
  * @author rbonifacio
  */
-public class DefaultAuthorDAO implements AuthorDAO {
+public class DefaultAuthorDAO implements AuthorDAOOld {
 
 	private Context context;
 	private SQLiteDatabase db;
@@ -47,9 +47,9 @@ public class DefaultAuthorDAO implements AuthorDAO {
 	}
 
 	/**
-	 * @see AuthorDAO#saveAuthor(Author author)
+	 * @see AuthorDAOOld#saveAuthor(AuthorOld author)
 	 */
-	public void saveAuthor(Author author) throws DBException {
+	public void saveAuthor(AuthorOld author) throws DBException {
 		try {
 			db = dbHelper.getWritableDatabase();
 
@@ -82,18 +82,18 @@ public class DefaultAuthorDAO implements AuthorDAO {
 	}
 
 	/**
-	 * @see AuthorDAO#listAuthors()
+	 * @see AuthorDAOOld#listAuthors()
 	 */
-	public List<Author> listAuthors() throws DBException {
+	public List<AuthorOld> listAuthors() throws DBException {
 		try {
 			db = dbHelper.getReadableDatabase();
 			Cursor cursor = db.rawQuery(DBConstants.SELECT_AUTHORS, null);
 
-			List<Author> authors = new ArrayList<Author>();
+			List<AuthorOld> authors = new ArrayList<AuthorOld>();
 
 			if (cursor.moveToFirst()) {
 				do {
-					Author author = cursorToAuthor(cursor);
+					AuthorOld author = cursorToAuthor(cursor);
 					authors.add(author);
 				} while (cursor.moveToNext());
 			}
@@ -110,9 +110,9 @@ public class DefaultAuthorDAO implements AuthorDAO {
 	}
 
 	/**
-	 * @see AuthorDAO#findByName(String)
+	 * @see AuthorDAOOld#findByName(String)
 	 */
-	public Author findByName(String name) {
+	public AuthorOld findByName(String name) {
 		db = dbHelper.getReadableDatabase();
 		Cursor cursor = db.rawQuery(DBConstants.SELECT_AUTHORS_BY_NAME,
 				new String[] { name });
@@ -130,10 +130,10 @@ public class DefaultAuthorDAO implements AuthorDAO {
 	/**
 	 * @see AuthorDAO#saveAuthorProduction(Author, List<MultimediaContent>)
 	 */
-	public void saveAuthorProduction(Author author, List<MultimediaContent> listOfMedia)
+	public void saveAuthorProduction(AuthorOld author, List<MultimediaContent> listOfMedia)
 			throws DBException {
 		try {
-			Author dbAuthor = findByName(author.getName());
+			AuthorOld dbAuthor = findByName(author.getName());
 
 			// if the author does not exist, we must first save
 			// his data on the database.
@@ -164,8 +164,8 @@ public class DefaultAuthorDAO implements AuthorDAO {
 					values.put(DBConstants.AUDIO_TITLE_COLUMN, media.getTitle());
 
 					// TODO: This is not cool...
-					if (media instanceof Audio){
-						Audio audio = (Audio)media;
+					if (media instanceof AudioOld){
+						AudioOld audio = (AudioOld)media;
 						values.put(DBConstants.AUDIO_ALBUM_COLUMN, audio.getAlbum());
 					}
 
@@ -196,9 +196,9 @@ public class DefaultAuthorDAO implements AuthorDAO {
 	}
 
 	/**
-	 * @see AuthorDAO#findAudioProductionByAuthorKey(Integer)
+	 * @see AuthorDAOOld#findAudioProductionByAuthorKey(Integer)
 	 */
-	public List<Audio> findAudioProductionByAuthorKey(Integer key)
+	public List<AudioOld> findAudioProductionByAuthorKey(Integer key)
 			throws DBException {
 		try {
 			db = dbHelper.getReadableDatabase();
@@ -206,7 +206,7 @@ public class DefaultAuthorDAO implements AuthorDAO {
 					DBConstants.SELECT_AUDIO_PRODUCTION_BY_AUTHOR_KEY,
 					new String[] { key.toString() });
 
-			List<Audio> production = iterateOverAudioCursor(cursor);
+			List<AudioOld> production = iterateOverAudioCursor(cursor);
 			cursor.close();
 			return production;
 		} catch (SQLiteException e) {
@@ -222,13 +222,13 @@ public class DefaultAuthorDAO implements AuthorDAO {
 	/**
 	 * @see DefaultAuthorDAO#listAllProduction()
 	 */
-	public List<Audio> listAllProduction() throws DBException {
+	public List<AudioOld> listAllProduction() throws DBException {
 		try {
 			db = dbHelper.getReadableDatabase();
 
 			Cursor cursor = db
 					.rawQuery(DBConstants.LIST_AUDIO_PRODUCTION, null);
-			List<Audio> production = iterateOverAudioCursor(cursor);
+			List<AudioOld> production = iterateOverAudioCursor(cursor);
 			cursor.close();
 			return production;
 		} catch (SQLiteException e) {
@@ -244,7 +244,7 @@ public class DefaultAuthorDAO implements AuthorDAO {
 	/**
 	 * @see DefaultAuthorDAO#executionHistory(Date, Date)
 	 */
-	public Map<Author, Map<Audio, List<Date>>> executionHistory(Date start, Date end) throws DBException {
+	public Map<AuthorOld, Map<AudioOld, List<Date>>> executionHistory(Date start, Date end) throws DBException {
 		db = dbHelper.getReadableDatabase();
 
 		String startStr = DateFormat.format(MMConstants.DATA_FORMAT, start).toString();
@@ -252,15 +252,15 @@ public class DefaultAuthorDAO implements AuthorDAO {
 
 		Cursor cursor = db.rawQuery(DBConstants.SELECT_EXECUTION_HISTORY, new String[] { startStr, endStr });
 
-		Map<Author, Map<Audio, List<Date>>> groupByAuthor = new HashMap<Author, Map<Audio, List<Date>>>();
+		Map<AuthorOld, Map<AudioOld, List<Date>>> groupByAuthor = new HashMap<AuthorOld, Map<AudioOld, List<Date>>>();
 
 		if (cursor.getCount() > 0 && cursor.moveToFirst()) {
 			do {
-				Author author = cursorToAuthor(cursor);
-				Audio audio = cursorToAudio(cursor);
+				AuthorOld author = cursorToAuthor(cursor);
+				AudioOld audio = cursorToAudio(cursor);
 				Date dateExecution = createDateExecution(cursor.getString(cursor.getColumnIndex(DBConstants.EH_DATE_TIME_EXECUTION_COLUMN)));
 
-				Map<Audio, List<Date>> groupByAudio = createGoupByAudio(groupByAuthor, author);
+				Map<AudioOld, List<Date>> groupByAudio = createGoupByAudio(groupByAuthor, author);
 				
 				List<Date> executionDates = createExecutionDates(groupByAudio, audio);
 				
@@ -284,7 +284,7 @@ public class DefaultAuthorDAO implements AuthorDAO {
 		}
 	}
 
-	private List<Date> createExecutionDates(Map<Audio, List<Date>> groupByAudio, Audio audio) {
+	private List<Date> createExecutionDates(Map<AudioOld, List<Date>> groupByAudio, AudioOld audio) {
 		if(groupByAudio.containsKey(audio)) {
 			return groupByAudio.get(audio);
 		}
@@ -293,18 +293,18 @@ public class DefaultAuthorDAO implements AuthorDAO {
 		}
 	}
 
-	private Map<Audio, List<Date>> createGoupByAudio(Map<Author, Map<Audio, List<Date>>> groupByAuthor, Author author) {
+	private Map<AudioOld, List<Date>> createGoupByAudio(Map<AuthorOld, Map<AudioOld, List<Date>>> groupByAuthor, AuthorOld author) {
 		if (groupByAuthor.containsKey(author)) {
 			return groupByAuthor.get(author);
 		} else {
-			return new HashMap<Audio, List<Date>>();
+			return new HashMap<AudioOld, List<Date>>();
 		}
 	}
 
 	/**
-	 * @see AuthorDAO#saveExecutionHistory(Audio, Date)
+	 * @see AuthorDAOOld#saveExecutionHistory(AudioOld, Date)
 	 */
-	public void saveExecutionHistory(Audio audio, Date time) throws DBException {
+	public void saveExecutionHistory(AudioOld audio, Date time) throws DBException {
 		try {
 			Log.v(Manager.class.getCanonicalName(), "PK: "  + audio.getPrimaryKey());
 
@@ -332,12 +332,12 @@ public class DefaultAuthorDAO implements AuthorDAO {
 		}
 	}
 
-	private List<Audio> iterateOverAudioCursor(Cursor cursor) {
-		List<Audio> production = new ArrayList<Audio>();
+	private List<AudioOld> iterateOverAudioCursor(Cursor cursor) {
+		List<AudioOld> production = new ArrayList<AudioOld>();
 
 		if (cursor.getCount() > 0 && cursor.moveToFirst()) {
 			do {
-				Audio audio = cursorToAudio(cursor);
+				AudioOld audio = cursorToAudio(cursor);
 				production.add(audio);
 			} while (cursor.moveToNext());
 		}
@@ -348,7 +348,7 @@ public class DefaultAuthorDAO implements AuthorDAO {
 	 * Converts a cursor into an Audio.
 	 * Its public and static because DefaultPlaylist uses this method! Needs Refactoring!!!!!!
 	 */
-	public static Audio cursorToAudio(Cursor cursor) {
+	public static AudioOld cursorToAudio(Cursor cursor) {
 		Integer pk = cursor.getInt(cursor
 				.getColumnIndex(DBConstants.AUDIO_KEY_COLUMN));
 		Integer id = cursor.getInt(cursor
@@ -369,7 +369,7 @@ public class DefaultAuthorDAO implements AuthorDAO {
 			uri = null;
 		}
 
-		Audio audio = new Audio(pk, id, title, uri, album);
+		AudioOld audio = new AudioOld(pk, id, title, uri, album);
 
 		return audio;
 	}
@@ -377,14 +377,14 @@ public class DefaultAuthorDAO implements AuthorDAO {
 	/*
 	 * Converts a cursor into an Author.
 	 */
-	private Author cursorToAuthor(Cursor cursor) {
+	private AuthorOld cursorToAuthor(Cursor cursor) {
 		Integer key = cursor.getInt(cursor
 				.getColumnIndex(DBConstants.AUTHOR_KEY_COLUMN));
 		Integer id = cursor.getInt(cursor
 				.getColumnIndex(DBConstants.AUTHOR_ID_COLUMN));
 		String name = cursor.getString(cursor
 				.getColumnIndex(DBConstants.AUTHOR_NAME_COLUMN));
-		Author author = new Author(id, name);
+		AuthorOld author = new AuthorOld(id, name);
 		author.setKey(key);
 		return author;
 	}

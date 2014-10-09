@@ -18,13 +18,13 @@ import android.widget.ListView;
 import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.audioPlayer.AudioPlayerList;
 import br.unb.mobileMedia.core.db.DBException;
-import br.unb.mobileMedia.core.domain.Audio;
+import br.unb.mobileMedia.core.domain.AudioOld;
 import br.unb.mobileMedia.core.manager.Manager;
 import br.unb.mobileMedia.playlist.PlayListManager;
 
 public class AudioSelectFragment extends Fragment{
 
-	List<Audio> musicas = new ArrayList<Audio>();
+	List<AudioOld> musicas = new ArrayList<AudioOld>();
 	List<Integer> musicasAdicionadasId = new ArrayList<Integer>();
 	private String names[];
 
@@ -64,7 +64,7 @@ public class AudioSelectFragment extends Fragment{
 
 		names = new String[musicas.size()];
 		int i=0;
-		for (Audio aux : musicas){names[i++]=aux.getTitle();}
+		for (AudioOld aux : musicas){names[i++]=aux.getTitle();}
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), 
 				android.R.layout.simple_list_item_1, 
@@ -77,7 +77,7 @@ public class AudioSelectFragment extends Fragment{
 
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id)  {
 
-				Audio aux = musicas.get(position);
+				AudioOld aux = musicas.get(position);
 				musicasAdicionadasId.add(aux.getId());
 
 				AudioPlayerList.getInstance(getActivity().getApplicationContext()).addMusic(aux);
