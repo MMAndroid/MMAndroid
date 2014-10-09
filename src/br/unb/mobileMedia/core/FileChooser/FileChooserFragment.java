@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 import br.unb.mobileMedia.R;
+import br.unb.mobileMedia.core.domain.AudioFormats;
 import br.unb.mobileMedia.core.view.AudioPlayerFragment;
 import android.os.Bundle;
 import android.os.Environment;
@@ -27,7 +28,6 @@ public class FileChooserFragment extends ListFragment {
 	private File sdcard, extSdcard;
 	private List<FileDetail> result = new ArrayList<FileDetail>();
 	private FileArrayAdapter adapter;
-	private String[] extensionsAccepteds;
 	private ArrayList<FileDetail> fileSelecteds = new ArrayList<FileDetail>();
 	private int playListId;
 
@@ -53,17 +53,12 @@ public class FileChooserFragment extends ListFragment {
 
 		getActivity().setTitle("File Chooser Fragment");
 
-		extensionsAccepteds = getResources().getStringArray(
-				R.array.extensions_accepteds);
-
-		sdcard = new File(Environment.getExternalStorageDirectory()
-				.getAbsolutePath());
+		sdcard = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
 		extSdcard = new File("/mnt/extSdCard/");
 
 		CreateUI();
 
-		return inflater.inflate(R.layout.activity_list_file_chooser, container,
-				false);
+		return inflater.inflate(R.layout.activity_list_file_chooser, container,	false);
 	}
 
 	@Override
@@ -131,9 +126,9 @@ public class FileChooserFragment extends ListFragment {
 							ff.getName(), "Folder", ff.getAbsolutePath()));
 					// Log.i("### Dir ###: ", ff.getName());
 				} else {
-					// Loop Para Comparar as extensões de arquivos válidas
-					for (int i = 0; i < extensionsAccepteds.length; i++) {
-						if (ff.getName().endsWith(extensionsAccepteds[i])) {
+					// Loop Para Comparar as extensï¿½es de arquivos vï¿½lidas
+					for (AudioFormats extensionAccepted : AudioFormats.values()) {
+						if (ff.getName().endsWith(extensionAccepted.getFormatAsString())) {
 							fls.add(new FileDetail(R.drawable.icon_audio, ff.getName(), "File Size: "
 									+ (ff.length() / 1000000) + "Mb", ff.getAbsolutePath()));
 							// Log.i("### FILE ###: ", ff.getName());
@@ -182,9 +177,7 @@ public class FileChooserFragment extends ListFragment {
 		l.setItemChecked(position, true);
 		// v.setBackgroundColor("#FF0000");
 		FileDetail o = adapter.getItem(position);
-		if (o.getData().equalsIgnoreCase("folder")
-				|| o.getData().equalsIgnoreCase("parent directory")) {
-			currentDir = new File(o.getPath());
+		if (o.getData().equalsIgnoreCase("folder")|| o.getData().equalsIgnoreCase("parent directory")) {			currentDir = new File(o.getPath());
 			listAllDirs(currentDir);
 		} else {
 			onFileClick(o);
@@ -194,8 +187,7 @@ public class FileChooserFragment extends ListFragment {
 	// Metodo gatilho para que os itens selecionados na PL seja adicionado em
 	// Memoria ou no DB
 	private void onFileClick(FileDetail f) {
-		Toast.makeText(getActivity(), "Item Adicionado: " + f.getName(),
-				Toast.LENGTH_SHORT).show();
+		Toast.makeText(getActivity(), "Item Adicionado: " + f.getName(),Toast.LENGTH_SHORT).show();
 
 		this.fileSelecteds.add(f);
 	}

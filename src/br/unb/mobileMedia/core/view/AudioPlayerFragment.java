@@ -23,18 +23,19 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import br.unb.mobileMedia.R;
-import br.unb.mobileMedia.core.FileChooser.*;
+import br.unb.mobileMedia.core.FileChooser.FileChooserFragment;
+import br.unb.mobileMedia.core.FileChooser.FileDetail;
 import br.unb.mobileMedia.core.audioPlayer.AudioPlayerList;
 import br.unb.mobileMedia.core.domain.AudioOld;
 import br.unb.mobileMedia.playlist.PlayListManager;
 
-public class AudioPlayerFragment extends Fragment implements PlayListManager, SeekBar.OnSeekBarChangeListener{
+public class AudioPlayerFragment extends Fragment implements PlayListManager,
+		SeekBar.OnSeekBarChangeListener {
 
 	public static final String EXECUTION_LIST = "EXECUTION_LIST";
-	private List<AudioOld> musicList = new ArrayList<AudioOld>();
 
 	private AudioPlayerList player;
-	private Audio[] music;
+	private List<AudioOld> musicList = new ArrayList<AudioOld>();
 
 	private ImageButton btnPlayPause;
 	private ImageButton btnNext;
@@ -52,14 +53,14 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager, Se
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// Log.i("AudioPlayerFragment", "OnCreate...");
+		Log.i("AudioPlayerFragment", "OnCreate...");
 		initAudioList();
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,	Bundle savedInstanceState) {
 
-		View v = inflater.inflate(R.layout.activity_audio_player, container, false);
+		View v = inflater.inflate(R.layout.activity_audio_player, container,false);
 
 		Log.i("AudioPlayerFragment", "OnCreateView...");
 
@@ -75,272 +76,216 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager, Se
 		btnRepeat = (ImageButton) v.findViewById(R.id.btnRepeat);
 		btnShuffle = (ImageButton) v.findViewById(R.id.btnShuffle);
 		songProgressBar = (SeekBar) v.findViewById(R.id.songProgressBar);
-
 		utils = new Utilities();
 		songProgressBar.setOnSeekBarChangeListener(this);
 
 		// set Progress bar values
 		songProgressBar.setProgress(0);
 		songProgressBar.setMax(100);
-	
 		getActivity().setTitle(R.string.title_activity_audio_player);
-
 		return v;
 	}
 
-		
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
 		Log.i("AudioPlayerFragment", "OnActivityCreated...");
 		createUI();
 		updateAudioListView();
-
 	}
 
 	private void createUI() {
 		Log.i("AudioPlayerFragment", "Creating UI...");
-<<<<<<< HEAD
-		
-		player = AudioPlayerList.getInstance(getActivity().getApplicationContext());
-
-		try {		
-			
-            if(musicList.size() > 0){
-            	player.newPlaylist(musicList);
-            	player.play(0);
-            }else{
-            	player.stop();
-            }
-            
-            
-            if(player.isPlaying()){
-        		btnPlayPause.setImageResource(R.drawable.btn_pause);
-            }else{
-        		btnPlayPause.setImageResource(R.drawable.btn_play);
-            }
-            
-			updateProgressBar();
-		    
-		}catch (RuntimeException e){
-=======
 		try {
-			AudioPlayerList player = AudioPlayerList.getInstance(getActivity().getApplicationContext());
-			if (player.isPlaying()){ 
+			
+			player = AudioPlayerList.getInstance(getActivity().getApplicationContext());
+			
+			if (musicList.size() > 0) {
+				player.newPlaylist(musicList);
+				player.play(0);
+			} else {
 				player.stop();
-				player.killPLaylist();
 			}
-			AudioOld[] music = musicList.toArray(new AudioOld[musicList.size()]);
-			player.newPlaylist(music);
-			player.play();
+
+			if (player.isPlaying()) {
+				btnPlayPause.setImageResource(R.drawable.btn_pause);
+			} else {
+				btnPlayPause.setImageResource(R.drawable.btn_play);
+			}
+
+			updateProgressBar();
+
 		} catch (RuntimeException e) {
->>>>>>> decd2c463fec42b8b5ab27b6ec760833b7bd1696
 			e.printStackTrace();
-			Toast.makeText(getActivity().getApplicationContext(), "Exception: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity().getApplicationContext(),
+					"Exception: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT)
+					.show();
 		}
-
-
+		
 		btnPlayPause.setOnClickListener(new OnClickListener() {
-
 			public void onClick(View v) {
 				player.playPause();
-				
-				if(player.isPlaying()){
+				if (player.isPlaying()) {
 					btnPlayPause.setImageResource(R.drawable.btn_pause);
-				}else{
+				} else {
 					btnPlayPause.setImageResource(R.drawable.btn_play);
 				}
-					
-				
 			}
 		});
-
+		
 		btnNext.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-                player.nextTrack();
+				player.nextTrack();
 			}
 		});
-
+		
 		btnPrevious.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				player.previousTrack();
- 			}
+			}
 		});
 		
 		/**
-		 * Button Click event for Repeat button
-		 * Enables repeat flag to true
+		 * Button Click event for Repeat button Enables repeat flag to true
 		 * */
-		btnRepeat.setOnClickListener(new View.OnClickListener() {	
+		btnRepeat.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View arg0) {
-				if(player.isRepeat()){
+				if (player.isRepeat()) {
 					player.setRepeat(false);
-//					Toast.makeText(getApplicationContext(), "Repeat is OFF", Toast.LENGTH_SHORT).show();
+					// Toast.makeText(getApplicationContext(), "Repeat is OFF",
+					// Toast.LENGTH_SHORT).show();
 					btnRepeat.setImageResource(R.drawable.btn_repeat);
-				}else{
+				} else {
 					player.setRepeat(true);
 					player.setShuffle(false);
 					btnRepeat.setImageResource(R.drawable.btn_repeat_focused);
 					btnShuffle.setImageResource(R.drawable.btn_shuffle);
-				}	
+				}
 			}
 		});
-		
 		/**
-		 * Button Click event for Shuffle button
-		 * Enables shuffle flag to true
+		 * Button Click event for Shuffle button Enables shuffle flag to true
 		 * */
 		btnShuffle.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View arg0) {
-				
-				if(player.isShuffle()){
+				if (player.isShuffle()) {
 					player.setShuffle(false);
 					btnShuffle.setImageResource(R.drawable.btn_shuffle);
-				}else{
+				} else {
 					player.setShuffle(true);
 					player.setRepeat(false);
 					btnShuffle.setImageResource(R.drawable.btn_shuffle_focused);
 					btnRepeat.setImageResource(R.drawable.btn_repeat);
 				}
-				
-				
 			}
 		});
-		
-		
-		
-		//Click no botao para adicionar uma musica Chamando o FileChooser
-		getActivity().findViewById(R.id.btnPlaylist).setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View v) {
-				// TODO Extract this to a method (repeated in MMUnBActivity too)				
-				Fragment newFragment =  new FileChooserFragment(); //AudioSelectFragment();
-				newFragment.setTargetFragment(AudioPlayerFragment.this, -1);
-				
-				FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-				if(getActivity().findViewById(R.id.main) != null){
-					transaction.replace(R.id.main, newFragment);
-					transaction.addToBackStack(null);
-				}else{
-					transaction.replace(R.id.content, newFragment);
-					transaction.addToBackStack(null);
-				}
-				
-				transaction.commit();
+
+		// Click no botao para adicionar uma musica Chamando o FileChooser
+		getActivity().findViewById(R.id.btnPlaylist).setOnClickListener(
+			new OnClickListener() {
+				public void onClick(View v) {
+					// TODO Extract this to a method (repeated in
+					// MMUnBActivity too)
+					Fragment newFragment = new FileChooserFragment(); // AudioSelectFragment();
+					newFragment.setTargetFragment(AudioPlayerFragment.this,-1);
+					FragmentTransaction transaction = getActivity()
+							.getSupportFragmentManager().beginTransaction();
+					if (getActivity().findViewById(R.id.main) != null) {
+						transaction.replace(R.id.main, newFragment);
+						transaction.addToBackStack(null);
+					} else {
+						transaction.replace(R.id.content, newFragment);
+						transaction.addToBackStack(null);
+					}
+					transaction.commit();
 			}
 		});
 		
 	}
-
+	
+		
+		
 	public void updateProgressBar() {
 		mHandler.postDelayed(mUpdateTimeTask, 100);
 	}
-
+		
 	/*
-	 * Background Runnable thread
-	 */
+	* Background Runnable thread
+	*/
 	private Runnable mUpdateTimeTask = new Runnable() {
-		public void run() {		
+		public void run() {	
 			if(player.isPlaying()){
 				long totalDuration = player.getDuration();
 				long currentDuration = player.getCurrentPosition();
-			
 				songTotalDurationLabel.setText(""+ utils.milliSecondsToTimer(totalDuration));
 				songCurrentDurationLabel.setText(""+ utils.milliSecondsToTimer(currentDuration));
-	
 				songTitleLabel.setText(player.getTitleSong());
-				
 				int progress = (int) (utils.getProgressPercentage(currentDuration,totalDuration));
-				// Log.d("Progress", ""+progress);
+		// Log.d("Progress", ""+progress);
 				songProgressBar.setProgress(progress);
-				
 			}
-			
 			mHandler.postDelayed(this, 100);
 		}
 	};
-
 	
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
+	
 	}
-
+	
 	public void onStartTrackingTouch(SeekBar seekBar) {
 		mHandler.removeCallbacks(mUpdateTimeTask);
 	}
-
+		
 	public void onStopTrackingTouch(SeekBar seekBar) {
-		
 		mHandler.removeCallbacks(mUpdateTimeTask);
-		
 		int totalDuration = player.getDuration();
-		
 		int currentPosition = utils.progressToTimer(seekBar.getProgress(), totalDuration);
-
 		// forward or backward to certain seconds
 		player.seekTo(currentPosition);
-		
 		// update timer progress again
 		updateProgressBar();
-
 	}
+
 
 	/**
 	 * Initialize the audio list with arguments passed to fragment
 	 */
 	private void initAudioList() {
 		Log.i("AudioPlayerFragment", "init audio list...");
-<<<<<<< HEAD
-
 		if (getArguments() == null) {
-			musicList = new ArrayList<Audio>();
-=======
-		if(getArguments()==null){
 			musicList = new ArrayList<AudioOld>();
->>>>>>> decd2c463fec42b8b5ab27b6ec760833b7bd1696
 			Log.i("AudioPlayerFragment", "getArguments() is null");
 			return;
 		}
-
+		
 		Parcelable[] ps = getArguments().getParcelableArray(EXECUTION_LIST);
-
+		
 		if (ps != null) {
-			Log.i("AudioPlayerFragment", "getParcelableArray(EXECUTION_LIST) has " + ps.length + " itens");
+			
+			Log.i("AudioPlayerFragment","getParcelableArray(EXECUTION_LIST) has " + ps.length+ " itens");
+			
 			musicList = new ArrayList<AudioOld>();
-
+			
 			for (int i = 0; i < ps.length; i++) {
-<<<<<<< HEAD
-				musicList.add((Audio) ps[i]);
-				Log.i("AudioPlayerFragment", "Add music to musicList: "	+ (Audio) ps[i]);
-=======
 				musicList.add((AudioOld) ps[i]);
-				Log.i("AudioPlayerFragment", "Add music to musicList: " + (AudioOld) ps[i]);
->>>>>>> decd2c463fec42b8b5ab27b6ec760833b7bd1696
+				Log.i("AudioPlayerFragment", "Add music to musicList: "
+						+ (AudioOld) ps[i]);
 			}
 		}
 	}
 
+
 	/**
 	 * Update the list view with audio list
 	 */
-	private void updateAudioListView() {
+	private void updateAudioListView(){
 		Log.i("AudioPlayerFragment", "Updateding audio list view...");
-<<<<<<< HEAD
 //		ListView listView = (ListView) getActivity().findViewById(R.id.list_audio_player);
-		music = musicList.toArray(new Audio[musicList.size()]);
-
+		AudioOld[] music = musicList.toArray(new AudioOld[musicList.size()]);
 //		listView.setAdapter(new AudioPlayerArrayAdapter(getActivity().getApplicationContext(), music));
 //		listView.setItemChecked(0, true);
-=======
-		ListView listView = (ListView) getActivity().findViewById(R.id.list_audio_player);
-		AudioOld[] music = musicList.toArray(new AudioOld[musicList.size()]);
-		
-		listView.setAdapter(new AudioPlayerArrayAdapter(getActivity().getApplicationContext(), music));
-		listView.setItemChecked(0, true);
->>>>>>> decd2c463fec42b8b5ab27b6ec760833b7bd1696
 	}
-
+	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		Log.i("AudioPlayerFragment", "OnCreateOptionsMenu...");
@@ -360,18 +305,16 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager, Se
 	 * Receive the files selecetds in FileChooser
 	 */
 	public void receiveFileChooser(ArrayList<FileDetail> files) {
-
-		Toast.makeText(getActivity(), "AudioPlayerFragment Receive " + files.size()	+ " Files of FileChooser", Toast.LENGTH_SHORT).show();
+		Toast.makeText(getActivity(), "AudioPlayerFragment Receive " + files.size()+" Files of FileChooser", Toast.LENGTH_SHORT).show();
 		String url = null;
-		for (int i = 0; i < files.size(); i++) {
+		for (FileDetail file : files) {
 			try {
+				url = file.getPath();
 				
-				url = files.get(i).getPath().toString();
-				
-				musicList.add(new Audio(files.get(i).getName().toString(), new URI(Uri.encode(url))));
+				addMusic(new AudioOld(file.getName().toString(),new URI(Uri.encode(url))));
 			} catch (URISyntaxException e) {
 				// TODO Auto-generated catch block
-				Log.i("Exception", "receiveFileChooser()");
+				Log.i("Exception", "receiveFileChooser() - URISyntaxException");
 				e.printStackTrace();
 			}
 		}
@@ -379,10 +322,10 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager, Se
 
 	@Override
 	public void onDestroy() {
+		// TODO Auto-generated method stub
 		super.onDestroy();
+		player = AudioPlayerList.getInstance(getActivity().getApplicationContext());
 		player.stop();
 		player.killPLaylist();
-
 	}
-
 }
