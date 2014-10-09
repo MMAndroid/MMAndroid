@@ -4,7 +4,7 @@ public interface DBConstants {
 	public String DATABASE_NAME = "MMUnBDB";
 	
 
-	//String repetida em várias partes do código
+	//String repetida em v��rias partes do c��digo
 	public String DEFINICAO_PK = "PK INTEGER PRIMARY KEY AUTOINCREMENT";
 
 	public int DATABASE_VERSION = 24;
@@ -49,6 +49,8 @@ public interface DBConstants {
 	public String SELECT_AUDIO_BY_AUTHOR_KEY_TITLE = "SELECT PK, ID FROM AUDIO WHERE FK_AUTHOR = ? AND TITLE = ?";
 	public String SELECT_AUDIO_BY_ID = "SELECT PK, ID, TITLE, ALBUM, URL FROM AUDIO WHERE ID = ?";
 	public String SELECT_SIMPLE_PLAYLIST = "SELECT ID, NAME FROM TB_PLAYLIST";
+	public String SELECT_SIMPLE_ALL_AUDIOS = "SELECT * FROM AUDIO";
+	public String SELECT_SIMPLE_TEST_IN_AUDIO = "INSERT INTO AUDIO (TITLE,URL,ALBUM) VALUES ('1','2','3')";
 	public String SELECT_SIMPLE_PLAYLIST_BY_ID = "SELECT ID, NAME FROM TB_PLAYLIST WHERE ID = ?";
 	public String SELECT_SIMPLE_PLAYLIST_BY_NAME = "SELECT ID, NAME FROM TB_PLAYLIST WHERE NAME = ?";
 	public String LIST_AUDIO_PRODUCTION = "SELECT PK, ID, TITLE, ALBUM, URL FROM AUDIO";

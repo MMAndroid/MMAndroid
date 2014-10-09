@@ -1,12 +1,19 @@
 package br.unb.mobileMedia;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import br.unb.mobileMedia.core.db.DBException;
+import br.unb.mobileMedia.core.db.DefaultAudioListDAO;
+import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.manager.Manager;
 import br.unb.mobileMedia.core.view.AudioPlayerFragment;
 import br.unb.mobileMedia.core.view.AuthorListFragment;
 import br.unb.mobileMedia.core.view.ShareListFragment;
 import br.unb.mobileMedia.playlist.MainPlaylistListFragment;
 import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -18,10 +25,50 @@ import android.widget.Toast;
 
 public class MMUnBActivity extends FragmentActivity implements OnItemClickedCallBack{
 	
+	private AlertDialog alerta;
+	
+	private void mensagemSincronizarVazio() { 
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		
+		builder.setTitle("Você não tem músicas para executar."); 
+		
+		builder.setMessage("Gostaria de sincronizar suas músicas?"); 
+		
+		builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() { 
+			
+			public void onClick(DialogInterface arg0, int arg1) { 
+				sincronizarTudo();
+			} 
+		}); 
+		
+		builder.setNegativeButton("Não", new DialogInterface.OnClickListener() { 
+			
+			public void onClick(DialogInterface arg0, int arg1) { 
+				//Não quer sincronizar
+			}
+		}); 
+		
+		alerta = builder.create(); 
+		alerta.show();
+		
+		
+	}
+	
+	private void sincronizarTudo(){
+		
+		Toast.makeText(MMUnBActivity.this, "Sincronizar Tudo.", Toast.LENGTH_SHORT).show(); 
+
+	}
+
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceStace){
+		
 		super.onCreate(savedInstanceStace);
 		setContentView(R.layout.main);
+		
+		int countAudioInt = 0;
 		
 		ActionBar actionBar = getActionBar();
 		actionBar.setTitle("MMAndroid"); 
@@ -37,6 +84,28 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
 			transaction.add(R.id.menu, menuFrag);
 			transaction.add(R.id.content, new ContentFragment());
 		}
+		
+		
+		//Possibilidade de sincronizar tudo
+		DefaultAudioListDAO countAudio = new DefaultAudioListDAO(getApplicationContext());
+		
+		try {
+			
+			countAudioInt = countAudio.countListAudioBanco();
+			
+			if(countAudioInt == 0){
+
+				mensagemSincronizarVazio();
+				
+			}
+			
+		} catch (DBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//Fim possibilidade de sincronizar tudo
+		
 		transaction.commit();
 	}
 
