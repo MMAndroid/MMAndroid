@@ -1,13 +1,13 @@
 package br.unb.mobileMedia.playlist;
 
 import java.util.List;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -18,14 +18,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.db.DBException;
+import br.unb.mobileMedia.core.domain.Playlist;
 import br.unb.mobileMedia.core.domain.PlaylistOld;
 import br.unb.mobileMedia.core.manager.Manager;
-import br.unb.mobileMedia.core.view.AudioExpandableListFragment;
 
 /**
  * The main activity of the playlist feature.
@@ -50,6 +49,7 @@ public class MainPlaylistListFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		setHasOptionsMenu(true);
 		getActivity().setTitle(R.string.title_activity_play_list);
 		return inflater.inflate(R.layout.activity_play_list, container, false);
 	}
@@ -63,18 +63,68 @@ public class MainPlaylistListFragment extends Fragment {
 
 	private void configureUI() {
 		// ListView to show all playlists in a scrollable view
-		ListView listPlayLists = (ListView) getActivity().findViewById(R.id.list_playlist);
+		ListView listPlayLists = (ListView) getActivity().findViewById(
+				R.id.list_playlist);
 		// Associar a ListView ao ContextMenu
 		registerForContextMenu(listPlayLists);
-		// Add playlist button
-
-//		// Refresh the List View (List of Playlists)
+		// Refresh the List View (List of Playlists)
 		refreshListPlayLists();
 	}
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.activity_play_list, menu);
+		menu.clear();
+		inflater.inflate(R.menu.activity_playlist_action_bar, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.refreshActionBar:
+			// To do insert animate rotate in this item of action bar
+			refreshListPlayLists();
+			break;
+		case R.id.AddPlayListActionBar:
+			createPlayList();
+			break;
+		default:
+			Log.i("Message PL", "nao Implementado");
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	private void createPlayList() {
+		// Dialog (Alert) to get the information of the new playlist
+		AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+		alert.setTitle(R.string.btn_addPlaylist);
+		alert.setMessage(R.string.name);
+		// Set an EditText view to get user input
+		final EditText input = new EditText(getActivity());
+		alert.setView(input);
+		// Ok button
+		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				// get name new playlist
+				String newPlayListName = input.getText().toString();
+				try {
+					Manager.instance().newPlaylist(
+							getActivity().getApplicationContext(),
+							new PlaylistOld(newPlayListName));
+				} catch (DBException e) {
+					Log.i("Create PL Exception", e.getMessage());
+				}
+				// refresh the ViewList with recent added playlist
+				refreshListPlayLists();
+			}
+		});
+		// Cancel button
+		alert.setNegativeButton("Cancel",
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						// Canceled.
+					}
+				});
+		alert.show();
 	}
 
 	@Override
@@ -92,8 +142,7 @@ public class MainPlaylistListFragment extends Fragment {
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
-				.getMenuInfo();
+		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 		// Index number of the selected option from the context menu
 		int menuItemIndex = item.getItemId();
 		// Retrieve the name of all of the options from the context menu
@@ -126,9 +175,8 @@ public class MainPlaylistListFragment extends Fragment {
 							String newName = input.getText().toString();
 							PlaylistOld editedPlaylist = null;
 							try {
-								editedPlaylist = Manager.instance()
-										.getSimplePlaylist(getActivity(),
-												listItemName);
+								editedPlaylist = Manager.instance().getSimplePlaylist(getActivity(), listItemName);
+										
 								// playlist with new values
 								editedPlaylist.setName(newName);
 								Manager.instance().editPlaylist(getActivity(),
@@ -205,6 +253,8 @@ public class MainPlaylistListFragment extends Fragment {
 						getActivity(), android.R.layout.simple_list_item_1,
 						android.R.id.text1, names);
 				listPlayLists.setAdapter(adapter);
+				// ##############################################################################################
+				// ##############################################################################################
 				// Calls the Playlist Editor when a playlist is pressed.
 				listPlayLists
 						.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -214,6 +264,9 @@ public class MainPlaylistListFragment extends Fragment {
 								// Get the selected playlist name!
 								String selectedPlaylistName = (String) parent
 										.getItemAtPosition(position);
+								// Log de qual PlayList foi clicada
+								Log.i("PlayList: ", selectedPlaylistName
+										+ " Clicada.");
 								PlaylistOld recoveredPlaylist = null;
 								try {
 									recoveredPlaylist = Manager

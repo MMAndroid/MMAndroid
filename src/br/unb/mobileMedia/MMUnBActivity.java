@@ -3,8 +3,10 @@ package br.unb.mobileMedia;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.unb.mobileMedia.core.FileChooser.FileDetail;
+import br.unb.mobileMedia.core.db.AudioDAOOld;
 import br.unb.mobileMedia.core.db.DBException;
+import br.unb.mobileMedia.core.db.DBFactory;
+import br.unb.mobileMedia.core.domain.AudioOld;
 import br.unb.mobileMedia.core.manager.Manager;
 import br.unb.mobileMedia.core.view.AudioPlayerFragment;
 import br.unb.mobileMedia.core.view.AuthorListFragment;
@@ -13,6 +15,7 @@ import br.unb.mobileMedia.playlist.MainPlaylistListFragment;
 import br.unb.mobileMedia.util.ListAllFiles;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -30,6 +33,7 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
 	private MenuItem menuItem;
 	private ActionBar actionBar;
 	private SyncFiles syncFiles;
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceStace){
@@ -40,13 +44,14 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
 		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_CUSTOM);
 		actionBar.setTitle("MMAndroid"); 
 		actionBar.setSubtitle("mobile media");
-
+	
+		
 		//Menu com os botoes
 		MenuFragment menuFrag = new MenuFragment();
 		
 		//SyncFile auto
-		syncFiles = new SyncFiles();
-		syncFiles.execute(new ListAllFiles());
+		syncFiles = new SyncFiles(this);
+		syncFiles.execute();
 		
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		if (findViewById(R.id.main)!=null){
@@ -83,7 +88,7 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
 				menuItem.expandActionView();
 				
 				//Sync files when is clicked
-				new SyncFiles().execute(new ListAllFiles());
+				new SyncFiles(this).execute();
 
 				
 				break;
@@ -177,46 +182,47 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
 	
 	
 											//Parametro, Progresso, Resultado
-	private class SyncFiles extends AsyncTask<ListAllFiles, Integer, Integer> {
+	private class SyncFiles extends AsyncTask<Void, Void, Void> {
 				
-		int num_music = -1;
-		List<FileDetail> list = new ArrayList<FileDetail>();
-		
-		public SyncFiles(){}
+		private AudioDAOOld daoSync;
+		private List<AudioOld> list = new ArrayList<AudioOld>();
+		private Context context;
+		private ListAllFiles listFiles;
+
+		public SyncFiles(Context c){
+			context = c;
+			daoSync = DBFactory.factory(context).createAudioDAO();
+			listFiles =  new ListAllFiles();
+		}
 		
 		@Override
-        protected Integer doInBackground(ListAllFiles... f){
-              try{
-                  Thread.sleep(3000);                  
-                  
-                  list.addAll(f[0].getAllMusic());
-        
-                  num_music = list.size();
-                  
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            
-            return num_music;
+        protected Void doInBackground(Void... v){
+			
+			try{
+        	  list.addAll(listFiles.getAllMusic());
+        	  
+        	  Log.i("Music In AVD", ""+list.size());
+        	  
+        	  for(AudioOld audio : list){
+        		  daoSync.saveAudio(audio);
+        	  }
+        	  
+        	  Log.i("Music in DB:", ""+daoSync.listAudio().size());
+        	  
+			} catch (Exception e) {
+				Log.i("Exception", e.getMessage());
+			}
+              return null;
         }
 
 		
 		@Override
-        protected void onPostExecute(Integer result) {
+        protected void onPostExecute(Void v) {
 			
 			if (menuItem != null && menuItem.getActionView() != null){
 				menuItem.collapseActionView();
 				menuItem.setActionView(null);
-				
-				actionBar.setSubtitle("Loading complete.");
-				
-				//TODO: create a List<Audio> to reveive all files and call DAO to persist all Musics in DB
-				//Is necessary change a return type in ListAllFiles -> getAllMusic to List<Audio>.
-				
             }
-			
-
-//			Log.i("N° músicas Post: ", ""+num_music + " - "+ list.size());
 
         }
 		

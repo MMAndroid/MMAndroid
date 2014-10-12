@@ -22,6 +22,14 @@ public abstract class DBFactory {
 		this.context = context;
 	}
 	
+	
+	/**
+	 * Returns an instance of AudioDao.
+	 * @return an instance of AudioDao
+	 */
+	public abstract AudioDAOOld createAudioDAO();
+	
+	
 	/**
 	 * Returns an instance of AuthorDAO.
 	 * @return an instance of AuthorDAO.

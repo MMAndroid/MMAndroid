@@ -305,19 +305,25 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager,
 	 * Receive the files selecetds in FileChooser
 	 */
 	public void receiveFileChooser(ArrayList<FileDetail> files) {
+		
 		Toast.makeText(getActivity(), "AudioPlayerFragment Receive " + files.size()+" Files of FileChooser", Toast.LENGTH_SHORT).show();
+		
 		String url = null;
+		
 		for (FileDetail file : files) {
 			try {
-				url = file.getPath();
 				
-				addMusic(new AudioOld(file.getName().toString(),new URI(Uri.encode(url))));
+				url = Uri.encode(file.getPath());
+				
+				addMusic(new AudioOld(file.getName().toString(),new URI(url)));
+				
 			} catch (URISyntaxException e) {
 				// TODO Auto-generated catch block
 				Log.i("Exception", "receiveFileChooser() - URISyntaxException");
 				e.printStackTrace();
 			}
 		}
+		
 	}
 
 	@Override

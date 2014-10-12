@@ -65,8 +65,10 @@ public class DefaultAuthorDAO implements AuthorDAOOld {
 
 				db.beginTransaction();
 				db.insert(DBConstants.AUTHOR_TABLE, null, values);
-				db.setTransactionSuccessful();
 			}
+
+			db.setTransactionSuccessful();
+
 		} catch (SQLiteException e) {
 			e.printStackTrace();
 			Log.e(DefaultAuthorDAO.class.getCanonicalName(),

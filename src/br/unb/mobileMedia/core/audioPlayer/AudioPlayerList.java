@@ -1,6 +1,8 @@
 package br.unb.mobileMedia.core.audioPlayer;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -28,8 +30,8 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	 * Default constructor expecting just the application context.
 	 * @param context the application context.
 	 */
-	private AudioPlayerList(Context context) {
-		this.context = context;
+	private AudioPlayerList(Context c) {
+		this.context = c;
 		player = new MediaPlayer();
 		audioList = new ArrayList<AudioOld>();
 		setRepeat(false);
@@ -79,7 +81,7 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 			
 			Log.i("UriEncode: ", audioList.get(indexFile).getURI().toString() );
 			Log.i("UriDecode: ", Uri.decode(audioList.get(indexFile).getURI().toString()));
-			
+			 
 			player.reset();
 			player.setDataSource(context, Uri.parse(audioList.get(indexFile).getURI().toString()));
 			player.prepare();

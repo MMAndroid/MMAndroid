@@ -2,39 +2,42 @@ package br.unb.mobileMedia.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
-import br.unb.mobileMedia.R;
-import br.unb.mobileMedia.core.FileChooser.FileDetail;
 import br.unb.mobileMedia.core.domain.AudioFormats;
+import br.unb.mobileMedia.core.domain.AudioOld;
 
 public class ListAllFiles {
 
 	private File sdcard, extSdcard;
-	private List<FileDetail> result;
+	private List<AudioOld> result;
 
 	public ListAllFiles() {
 		
-		result = new ArrayList<FileDetail>();
+		result = new ArrayList<AudioOld>();
 		sdcard = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
 		extSdcard = new File("/mnt/extSdCard/");
 	
 	}
 
 	
-	public List<FileDetail> getAllMusic() {
+	public List<AudioOld> getAllMusic(){
 		
 		try {
 			listAllDirs(sdcard);
 			listAllDirs(extSdcard);
-
 		} catch (IOException e) {
-			Log.i("IOException", e.getMessage());
+			Log.e(ListAllFiles.class.getCanonicalName(),
+					e.getLocalizedMessage());
 		} catch (Exception e) {
-			e.getStackTrace();
+			Log.e(ListAllFiles.class.getCanonicalName(),
+					e.getLocalizedMessage());
 		}
 
 		return result;
@@ -42,8 +45,8 @@ public class ListAllFiles {
 	}
 	
 	
-	private void listAllDirs(File file) throws IOException {
-
+	private void listAllDirs(File file) throws IOException, URISyntaxException {
+		
 		if (!file.exists()) {
 			throw new IOException("File " + file.getAbsolutePath() + " not exists.");
 		} else if (!file.canRead()) {
@@ -55,8 +58,13 @@ public class ListAllFiles {
 				} else {
 					for (AudioFormats extensionAccepted : AudioFormats.values()) {
 						if (temp.getAbsolutePath().endsWith(extensionAccepted.getFormatAsString()) && !temp.isHidden()) {
-							Log.i("", temp.getAbsolutePath());	
-							result.add(new FileDetail(R.drawable.icon_audio, temp.getName(), "File Size: " + (temp.length() / 1000000) + "Mb", temp.getAbsolutePath()));
+							try{
+								result.add(new AudioOld(null, temp.getName(), new URI(Uri.encode(temp.getPath()))));	
+							}catch(URISyntaxException e){
+								throw e;
+							}
+								
+							
 						}
 					}
 				}
