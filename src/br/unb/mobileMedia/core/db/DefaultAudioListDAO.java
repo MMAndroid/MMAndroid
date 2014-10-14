@@ -76,6 +76,42 @@ public class DefaultAudioListDAO {
 		}
 		return 0;
 	}
+
+
+
+	public int adicionaAudio(String title, String url) throws DBException {
+
+		try {
+			db = dbHelper.getWritableDatabase();
+			
+			ContentValues values = new ContentValues();
+			
+			values.put(DBConstants.AUDIO_TITLE_COLUMN, title);
+			values.put(DBConstants.AUDIO_URL_COLUMN, url);
+
+			db.beginTransaction();
+			db.insert(DBConstants.AUDIO_TABLE, null, values);
+			db.setTransactionSuccessful();
+				
+		} catch (SQLiteException e) {
+			
+			e.printStackTrace();
+			Log.e(DefaultAuthorDAO.class.getCanonicalName(),
+					e.getLocalizedMessage());
+			throw new DBException();
+			
+		} finally {
+		
+			if (db.inTransaction()) {
+				db.endTransaction();
+			}
+			db.close();
+			dbHelper.close();
+			
+		}
+		
+		return 1;
+	}
 	
 	
 	

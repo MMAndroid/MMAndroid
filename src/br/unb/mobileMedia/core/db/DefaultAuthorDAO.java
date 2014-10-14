@@ -218,6 +218,8 @@ public class DefaultAuthorDAO implements AuthorDAO {
 			dbHelper.close();
 		}
 	}
+	
+	
 
 	/**
 	 * @see DefaultAuthorDAO#listAllProduction()

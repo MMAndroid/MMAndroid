@@ -1,14 +1,15 @@
 package br.unb.mobileMedia;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-<<<<<<< HEAD
-=======
 import br.unb.mobileMedia.core.FileChooser.FileDetail;
->>>>>>> 2ca3e6833ef601d90c1ad19f361f9a33ba2fd754
+import br.unb.mobileMedia.core.db.DBConstants;
 import br.unb.mobileMedia.core.db.DBException;
+import br.unb.mobileMedia.core.db.DBHelper;
 import br.unb.mobileMedia.core.db.DefaultAudioListDAO;
+import br.unb.mobileMedia.core.db.DefaultAuthorDAO;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.manager.Manager;
 import br.unb.mobileMedia.core.view.AudioPlayerFragment;
@@ -18,12 +19,11 @@ import br.unb.mobileMedia.playlist.MainPlaylistListFragment;
 import br.unb.mobileMedia.util.ListAllFiles;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
-<<<<<<< HEAD
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-=======
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
->>>>>>> 2ca3e6833ef601d90c1ad19f361f9a33ba2fd754
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -37,7 +37,6 @@ import android.widget.Toast;
 @SuppressLint("NewApi")
 public class MMUnBActivity extends FragmentActivity implements OnItemClickedCallBack{
 	
-<<<<<<< HEAD
 	private AlertDialog alerta;
 	
 	private void mensagemSincronizarVazio() { 
@@ -51,7 +50,12 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
 		builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() { 
 			
 			public void onClick(DialogInterface arg0, int arg1) { 
-				sincronizarTudo();
+				try {
+					sincronizarTudo();
+				} catch (DBException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			} 
 		}); 
 		
@@ -68,17 +72,10 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
 		
 	}
 	
-	private void sincronizarTudo(){
-		
-		Toast.makeText(MMUnBActivity.this, "Sincronizar Tudo.", Toast.LENGTH_SHORT).show(); 
 
-	}
-
-=======
 	private MenuItem menuItem;
 	private ActionBar actionBar;
-	private SyncFiles syncFiles;
->>>>>>> 2ca3e6833ef601d90c1ad19f361f9a33ba2fd754
+	private SyncFiles syncFiles;	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceStace){
@@ -86,14 +83,11 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
 		super.onCreate(savedInstanceStace);
 		setContentView(R.layout.main);
 		
-<<<<<<< HEAD
 		int countAudioInt = 0;
 		
 		ActionBar actionBar = getActionBar();
-=======
 		actionBar = getActionBar();
 		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_CUSTOM);
->>>>>>> 2ca3e6833ef601d90c1ad19f361f9a33ba2fd754
 		actionBar.setTitle("MMAndroid"); 
 		actionBar.setSubtitle("mobile media");
 
@@ -111,6 +105,7 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
 			transaction.add(R.id.menu, menuFrag);
 			transaction.add(R.id.content, new ContentFragment());
 		}
+		
 		
 		
 		//Possibilidade de sincronizar tudo
@@ -282,6 +277,7 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
 		@Override
         protected void onPostExecute(Integer result) {
 			
+			
 			if (menuItem != null && menuItem.getActionView() != null){
 				menuItem.collapseActionView();
 				menuItem.setActionView(null);
@@ -294,13 +290,44 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
             }
 			
 
-//			Log.i("N° músicas Post: ", ""+num_music + " - "+ list.size());
+//			Log.i("Nao musicas Post: ", ""+num_music + " - "+ list.size());
 
         }
 		
 
 		
 	  };
+	  
+	  private void sincronizarTudo() throws DBException{
+		  
+
+
+		    ListAllFiles listaDeMusicas = new ListAllFiles();
+		    List<FileDetail> lista;
+		    
+		    lista = listaDeMusicas.getAllMusic();
+		    
+	    	DefaultAudioListDAO includeInBank = new DefaultAudioListDAO(getApplicationContext());
+
+	    	
+		    		    		    
+		    for( FileDetail item : lista )  
+		    {  
+		    	
+		    	//Adiciono todas as musicas da pilhas
+		    	try {
+					
+		    		includeInBank.adicionaAudio(item.getName(),item.getPath());
+					
+					
+				} catch (DBException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		    }
+		    
+
+	  }
 	
 	
 	
