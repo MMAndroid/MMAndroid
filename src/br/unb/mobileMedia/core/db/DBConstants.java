@@ -16,7 +16,7 @@ public interface DBConstants {
 
 	public String CREATE_TABLE_STATEMENTS[] = {
 			"CREATE TABLE AUTHOR(" +  DEFINICAO_PK +", "
-					+ "ID INTEGER, " + "NAME VARCHAR(50) NOT NULL);",
+					+ "ID INTEGER, " + "NAME VARCHAR(50) NOT NULL);" + "NAMEUNIC VARCHAR(50) NOT NULL);",
 			
 			//TODO: here, we are only considering audio. we must generalize!
 			"CREATE TABLE AUDIO ( " + DEFINICAO_PK +", "

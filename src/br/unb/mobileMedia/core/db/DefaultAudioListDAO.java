@@ -53,7 +53,11 @@ public class DefaultAudioListDAO {
 		throw new DBException();
 	}
 	
-	
+	/**
+	 * 
+	 * @return the quantity of audio have in bank
+	 * @throws DBException
+	 */
 	public int countListAudioBanco() throws DBException {
 		
 		int count = 0;
@@ -78,8 +82,17 @@ public class DefaultAudioListDAO {
 	}
 
 
-
-	public int adicionaAudio(String title, String url) throws DBException {
+    /**
+     * 
+     * @param audioId
+     * @param title
+     * @param url
+     * @param album
+     * @return
+     * @throws DBException
+     * include in the bank the recieve audio informations
+     */
+	public int adicionaAudio(Integer audioId,String title, String url, String album, Integer fkAuthor) throws DBException {
 
 		try {
 			db = dbHelper.getWritableDatabase();
@@ -88,7 +101,10 @@ public class DefaultAudioListDAO {
 			
 			values.put(DBConstants.AUDIO_TITLE_COLUMN, title);
 			values.put(DBConstants.AUDIO_URL_COLUMN, url);
-
+			values.put(DBConstants.AUDIO_ALBUM_COLUMN, album);
+			values.put(DBConstants.AUDIO_ID_COLUMN, audioId);
+			values.put(DBConstants.AUDIO_FK_AUTHOR_COLUMN, fkAuthor);
+			
 			db.beginTransaction();
 			db.insert(DBConstants.AUDIO_TABLE, null, values);
 			db.setTransactionSuccessful();

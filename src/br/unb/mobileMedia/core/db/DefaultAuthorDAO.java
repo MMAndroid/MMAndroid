@@ -33,6 +33,21 @@ public class DefaultAuthorDAO implements AuthorDAO {
 	private Context context;
 	private SQLiteDatabase db;
 	private DBHelper dbHelper;
+	
+	private void fechaConexao(){
+		if (db.inTransaction()) {
+			db.endTransaction();
+		}
+		db.close();
+		dbHelper.close();
+	}
+	
+	private void trataException(SQLiteException e) throws DBException{
+		e.printStackTrace();
+		Log.e(DefaultAudioListDAO.class.getCanonicalName(),
+				e.getLocalizedMessage());
+		throw new DBException();
+	}
 
 	/**
 	 * Constructor of DefaultAuthorDAO.
@@ -45,7 +60,99 @@ public class DefaultAuthorDAO implements AuthorDAO {
 		dbHelper = new DBHelper(context, DBConstants.DATABASE_NAME, null,
 				DBConstants.DATABASE_VERSION);
 	}
+	
+	/*
+	 * Verify if already exist an idAuthor (nome_sem_acento_sem_espaco_caixa_alta)
+	 * If already exist, return the author pk
+	 */
+	public Integer haveAuthor (String idAuthor) throws DBException{
+		
+		try {
+			db = dbHelper.getReadableDatabase();
+			Cursor cursor = db.rawQuery(DBConstants.SELECT_AUTHORS_BY_ID, new String[] { idAuthor });
 
+			if (cursor.moveToFirst()) {
+				do {
+					
+					Integer fk = Integer.parseInt(cursor.getString(cursor.getColumnIndex("PK")));					
+					return fk;
+							
+				} while (cursor.moveToNext());
+			}
+			cursor.close();
+			
+			return 0;
+			
+		} catch (SQLiteException e) {
+			trataException(e);
+		} finally {
+			fechaConexao();
+		}
+		
+		return 0;
+		
+	}
+	
+	/*
+	 * add an author in the bank
+	 */
+	public int adicionaAuthor(String idAuthor,String nameAuthor) throws DBException {
+
+		try {
+			db = dbHelper.getWritableDatabase();
+			
+			ContentValues values = new ContentValues();
+			
+			values.put(DBConstants.AUTHOR_ID_COLUMN, idAuthor);
+			values.put(DBConstants.AUTHOR_NAME_COLUMN, nameAuthor);
+			
+			db.beginTransaction();
+			db.insert(DBConstants.AUTHOR_TABLE, null, values);
+			db.setTransactionSuccessful();
+				
+		} catch (SQLiteException e) {
+			
+			e.printStackTrace();
+			Log.e(DefaultAuthorDAO.class.getCanonicalName(),
+					e.getLocalizedMessage());
+			throw new DBException();
+			
+		} finally {
+		
+			if (db.inTransaction()) {
+				db.endTransaction();
+			}
+			db.close();
+			dbHelper.close();
+			
+		}
+		
+		return 1;
+	}
+	
+	/*
+	 * Control author: if exist author, return author pk, else register the new, and return the new pk
+	 */
+
+	public Integer ManageAuthor (String idAuthor, String nameAuthor) throws DBException{
+		
+		Integer fk;
+		
+		fk = haveAuthor(idAuthor);
+		
+		if(fk == 0){
+			
+			//Cadastra novo author 
+			adicionaAuthor(idAuthor,nameAuthor);
+			fk = haveAuthor(idAuthor);
+		}
+		
+		
+		return fk;
+		
+	}
+	
+	
 	/**
 	 * @see AuthorDAO#saveAuthor(Author author)
 	 */

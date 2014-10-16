@@ -11,6 +11,7 @@ import br.unb.mobileMedia.core.db.DBHelper;
 import br.unb.mobileMedia.core.db.DefaultAudioListDAO;
 import br.unb.mobileMedia.core.db.DefaultAuthorDAO;
 import br.unb.mobileMedia.core.domain.Audio;
+import br.unb.mobileMedia.core.extractor.DefaultAudioExtractor;
 import br.unb.mobileMedia.core.manager.Manager;
 import br.unb.mobileMedia.core.view.AudioPlayerFragment;
 import br.unb.mobileMedia.core.view.AuthorListFragment;
@@ -39,6 +40,9 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
 	
 	private AlertDialog alerta;
 	
+	/*
+	 * Alert with question: Do you like Sync yours musics?
+	 */
 	private void mensagemSincronizarVazio() { 
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -115,8 +119,10 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
 			
 			countAudioInt = countAudio.countListAudioBanco();
 			
+			//if bank is void, sync all files
 			if(countAudioInt == 0){
-
+				
+				//Alert
 				mensagemSincronizarVazio();
 				
 			}
@@ -298,30 +304,48 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
 		
 	  };
 	  
+	  /*
+	   * Get the audio list from ListAllFiles and register in the bank
+	   */
 	  private void sincronizarTudo() throws DBException{
 		  
-
-
 		    ListAllFiles listaDeMusicas = new ListAllFiles();
 		    List<FileDetail> lista;
-		    
-		    lista = listaDeMusicas.getAllMusic();
-		    
-	    	DefaultAudioListDAO includeInBank = new DefaultAudioListDAO(getApplicationContext());
-
+		    DefaultAudioListDAO includeAudioInBank = new DefaultAudioListDAO(getApplicationContext());
+	    	DefaultAudioExtractor extrator = new DefaultAudioExtractor(getApplicationContext());
+	    	DefaultAuthorDAO adjustAuthor = new DefaultAuthorDAO(getApplicationContext());
 	    	
-		    		    		    
+	    	String[] author;
+	    	String album;
+	    	Integer fkAuthor;
+	    	
+		    lista = listaDeMusicas.getAllMusic();
+		    	    	
 		    for( FileDetail item : lista )  
 		    {  
 		    	
-		    	//Adiciono todas as musicas da pilhas
+		    	//Adiciono todas as musicas da pilha
 		    	try {
 					
-		    		includeInBank.adicionaAudio(item.getName(),item.getPath());
+		    		author = extrator.nameOfAuthor(item.getPath());
+		    		album = extrator.nameOfAlbum(item.getPath());
+		    		
+		    		Integer audioId = item.getName().hashCode();
+		    		if(audioId < 0){
+		    			audioId = audioId*(-1);
+		    		}
 					
+		    		
+		    		Log.i("ALBUM: ","Nome: "+author[0]+" UnicName: "+author[1]);
+		    		
+		    		fkAuthor = adjustAuthor.ManageAuthor(author[1], author[0]);
+					
+		    		includeAudioInBank.adicionaAudio(audioId,item.getName(),item.getPath(),album,fkAuthor);
 					
 				} catch (DBException e) {
-					// TODO Auto-generated catch block
+					
+					Log.i("Ocorreu um erro de sincronização.", null);
+					
 					e.printStackTrace();
 				}
 		    }
