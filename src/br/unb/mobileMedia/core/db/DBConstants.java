@@ -7,8 +7,8 @@ public interface DBConstants {
 	//String repetida em várias partes do código
 	public String DEFINICAO_PK = "PK INTEGER PRIMARY KEY AUTOINCREMENT";
 
-	public int DATABASE_VERSION = 24;
-
+//	public int DATABASE_VERSION = 24;
+	public int DATABASE_VERSION = 1; 
 
 	public String DROP_TABLE_STATEMENTS[] = { "DROP TABLE IF EXISTS AUTHOR",
 			"DROP TABLE IF EXISTS AUDIO", "DROP TABLE IF EXISTS EXECUTION_HISTORY", "DROP TABLE IF EXISTS TB_PLAYLIST",

@@ -18,7 +18,11 @@ public class DefaultDBFactory extends DBFactory {
 		return new DefaultAudioDao(context);
 	}
 	
-
+	@Override
+	public IPlayListDao createPlaylistDao() {
+		return new DefaultPlaylistDao(context);
+	}
+	
 
 	@Override
 	public AuthorDAOOld createAuthorDAO() {
@@ -29,6 +33,9 @@ public class DefaultDBFactory extends DBFactory {
 	public PlaylistDAOOld createPlaylistDAO() {
 		return new DefaultPlaylistDAO(context);
 	}
+
+
+
 
 
 

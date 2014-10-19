@@ -33,6 +33,12 @@ public abstract class DBFactory{
 	 */
 	public abstract IAudioDao createAudioDAO();
 	
+	
+	/**
+	 * Returns an instance of PlaylistDao.
+	 * @return an instance of PlaylistDao
+	 */
+	public abstract IPlayListDao createPlaylistDao();
 
 	
 	/**

@@ -32,7 +32,7 @@ import br.unb.mobileMedia.core.view.AudioPlayerFragment;
 
 public class PlayListEditorFragment extends Fragment {
 	private int playListId;
-	PlaylistOld playlist;
+	Playlist playlist;
 	List<AudioOld> musicList = null;
 	private String names[];
 	int result = 1;
