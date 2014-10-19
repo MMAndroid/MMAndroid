@@ -7,7 +7,10 @@ import android.content.Context;
  * 
  * @author rbonifacio
  */
-public abstract class DBFactory {
+
+//DBFactory.factory(context).createAudioDAO();
+
+public abstract class DBFactory{
 	protected Context context;
 	
 	public static DBFactory factory(Context context) {
@@ -22,13 +25,15 @@ public abstract class DBFactory {
 		this.context = context;
 	}
 	
+
 	
 	/**
 	 * Returns an instance of AudioDao.
 	 * @return an instance of AudioDao
 	 */
-	public abstract AudioDAOOld createAudioDAO();
+	public abstract IAudioDao createAudioDAO();
 	
+
 	
 	/**
 	 * Returns an instance of AuthorDAO.
@@ -42,5 +47,7 @@ public abstract class DBFactory {
 	 */
 	public abstract PlaylistDAOOld createPlaylistDAO();
 
+	
+	
 	
 }

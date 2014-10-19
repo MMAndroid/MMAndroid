@@ -2,17 +2,16 @@ package br.unb.mobileMedia.core.db;
 
 import java.util.List;
 import java.util.ArrayList;
+
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
-
 import de.greenrobot.dao.AbstractDao;
 import de.greenrobot.dao.Property;
 import de.greenrobot.dao.internal.SqlUtils;
 import de.greenrobot.dao.internal.DaoConfig;
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
-
 import br.unb.mobileMedia.core.domain.Album;
 import br.unb.mobileMedia.core.domain.Audio;
 
@@ -31,7 +30,8 @@ public class AudioDao extends AbstractDao<Audio, Long> {
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Title = new Property(1, String.class, "title", false, "TITLE");
-        public final static Property AlbumId = new Property(2, long.class, "albumId", false, "ALBUM_ID");
+        public final static Property Url = new Property(2, String.class, "url", false, "URL");
+        public final static Property AlbumId = new Property(3, long.class, "albumId", false, "ALBUM_ID");
     };
 
     private DaoSession daoSession;
@@ -53,7 +53,8 @@ public class AudioDao extends AbstractDao<Audio, Long> {
         db.execSQL("CREATE TABLE " + constraint + "'AUDIO' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
                 "'TITLE' TEXT," + // 1: title
-                "'ALBUM_ID' INTEGER NOT NULL );"); // 2: albumId
+                "'URL' TEXT," + // 2: url
+                "'ALBUM_ID' INTEGER NOT NULL );"); // 3: albumId
     }
 
     /** Drops the underlying database table. */
@@ -76,7 +77,12 @@ public class AudioDao extends AbstractDao<Audio, Long> {
         if (title != null) {
             stmt.bindString(2, title);
         }
-        stmt.bindLong(3, entity.getAlbumId());
+ 
+        String url = entity.getUrl();
+        if (url != null) {
+            stmt.bindString(3, url);
+        }
+        stmt.bindLong(4, entity.getAlbumId());
     }
 
     @Override
@@ -97,7 +103,8 @@ public class AudioDao extends AbstractDao<Audio, Long> {
         Audio entity = new Audio( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // title
-            cursor.getLong(offset + 2) // albumId
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // url
+            cursor.getLong(offset + 3) // albumId
         );
         return entity;
     }
@@ -107,7 +114,8 @@ public class AudioDao extends AbstractDao<Audio, Long> {
     public void readEntity(Cursor cursor, Audio entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setTitle(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setAlbumId(cursor.getLong(offset + 2));
+        entity.setUrl(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setAlbumId(cursor.getLong(offset + 3));
      }
     
     /** @inheritdoc */

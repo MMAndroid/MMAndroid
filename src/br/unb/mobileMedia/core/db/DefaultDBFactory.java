@@ -11,12 +11,15 @@ public class DefaultDBFactory extends DBFactory {
 	public DefaultDBFactory(Context context) {
 		super(context);
 	}
-
+	
+	
 	@Override
-	public AudioDAOOld createAudioDAO(){
-		return new DefaultAudioDAO(context);
+	public IAudioDao createAudioDAO() {
+		return new DefaultAudioDao(context);
 	}
 	
+
+
 	@Override
 	public AuthorDAOOld createAuthorDAO() {
 		return new DefaultAuthorDAO(context);
@@ -26,5 +29,9 @@ public class DefaultDBFactory extends DBFactory {
 	public PlaylistDAOOld createPlaylistDAO() {
 		return new DefaultPlaylistDAO(context);
 	}
+
+
+
+
 
 }

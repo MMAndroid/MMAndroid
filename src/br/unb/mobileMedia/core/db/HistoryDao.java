@@ -2,17 +2,16 @@ package br.unb.mobileMedia.core.db;
 
 import java.util.List;
 import java.util.ArrayList;
+
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
-
 import de.greenrobot.dao.AbstractDao;
 import de.greenrobot.dao.Property;
 import de.greenrobot.dao.internal.SqlUtils;
 import de.greenrobot.dao.internal.DaoConfig;
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
-
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.History;
 import br.unb.mobileMedia.core.domain.Video;

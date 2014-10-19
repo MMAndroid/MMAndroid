@@ -1,7 +1,7 @@
 package br.unb.mobileMedia.core.db;
 
 public interface DBConstants {
-	public String DATABASE_NAME = "MMUnBDB";
+	public String DATABASE_NAME = "MMAndroid";
 	
 
 	//String repetida em várias partes do código
@@ -20,7 +20,7 @@ public interface DBConstants {
 			
 			//TODO: here, we are only considering audio. we must generalize!
 			"CREATE TABLE AUDIO ( " + DEFINICAO_PK +", "
-					+ "ID INTEGER, " + "TITLE VARCHAR(50) NOT NULL,"
+					+ "ID INTEGER , " + "TITLE VARCHAR(50) NOT NULL,"
 					+ "URL VARCHAR(255) NOT NULL, " + "ALBUM VARCHAR(50),"
 					+ "FK_AUTHOR INTEGER);",
 
@@ -48,7 +48,7 @@ public interface DBConstants {
 	public String SELECT_AUDIOS = "SELECT PK, ID, TITLE, URL, ALBUM, FK_AUTHOR FROM AUDIO";
 	public String SELECT_AUDIO_PRODUCTION_BY_AUTHOR_KEY = "SELECT PK, ID, TITLE, ALBUM, URL FROM AUDIO WHERE FK_AUTHOR = ?";
 	public String SELECT_AUDIO_BY_AUTHOR_KEY_TITLE = "SELECT PK, ID FROM AUDIO WHERE FK_AUTHOR = ? AND TITLE = ?";
-	public String SELECT_AUDIO_BY_PATH = "SELECT PK, ID, TITLE, URL, ALBUM, FK_AUTHOR FROM AUDIO WHERE URL = ?";
+	public String SELECT_AUDIO_BY_PATH = "WHERE URL = ?";
 	public String SELECT_AUDIO_BY_ID = "SELECT PK, ID, TITLE, ALBUM, URL FROM AUDIO WHERE ID = ?";
 	public String SELECT_SIMPLE_PLAYLIST = "SELECT ID, NAME FROM TB_PLAYLIST";
 	public String SELECT_SIMPLE_PLAYLIST_BY_ID = "SELECT ID, NAME FROM TB_PLAYLIST WHERE ID = ?";

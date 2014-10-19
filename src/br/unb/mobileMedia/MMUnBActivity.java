@@ -3,10 +3,10 @@ package br.unb.mobileMedia;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.unb.mobileMedia.core.db.AudioDAOOld;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.db.DBFactory;
-import br.unb.mobileMedia.core.domain.AudioOld;
+import br.unb.mobileMedia.core.db.IAudioDao;
+import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.manager.Manager;
 import br.unb.mobileMedia.core.view.AudioPlayerFragment;
 import br.unb.mobileMedia.core.view.AuthorListFragment;
@@ -33,26 +33,25 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
 	private MenuItem menuItem;
 	private ActionBar actionBar;
 	private SyncFiles syncFiles;
-
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceStace){
 		super.onCreate(savedInstanceStace);
 		setContentView(R.layout.main);
+
 		
 		actionBar = getActionBar();
 		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_CUSTOM);
 		actionBar.setTitle("MMAndroid"); 
 		actionBar.setSubtitle("mobile media");
 	
-		
 		//Menu com os botoes
 		MenuFragment menuFrag = new MenuFragment();
 		
 		//SyncFile auto
 		syncFiles = new SyncFiles(this);
 		syncFiles.execute();
-		
+//		
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		if (findViewById(R.id.main)!=null){
 			transaction.add(R.id.main, menuFrag);
@@ -102,7 +101,7 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
 				break;
 				
 		}
-		
+	
 		
 		if (newFragment !=null){
 			FragmentManager manager = getSupportFragmentManager();
@@ -122,7 +121,7 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
 	}
 
 
-	  
+	 
 	
 	public void onItemClicked(int menuItem){
 		Fragment newFragment = null;
@@ -167,7 +166,7 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
 		
 	}
 
-	
+
 	private void exit(){
 		try {
 			Manager.instance().synchronizeMedia(getApplicationContext());
@@ -178,39 +177,54 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
 		} 
 	}
 
-
 	
 	
 											//Parametro, Progresso, Resultado
 	private class SyncFiles extends AsyncTask<Void, Void, Void> {
 				
-		private AudioDAOOld daoSync;
-		private List<AudioOld> list = new ArrayList<AudioOld>();
+		private IAudioDao dao;
+		private List<Audio> list = new ArrayList<Audio>();
 		private Context context;
 		private ListAllFiles listFiles;
 
 		public SyncFiles(Context c){
 			context = c;
-			daoSync = DBFactory.factory(context).createAudioDAO();
+			dao = DBFactory.factory(context).createAudioDAO();
 			listFiles =  new ListAllFiles();
 		}
 		
 		@Override
         protected Void doInBackground(Void... v){
-			
+		
 			try{
-        	  list.addAll(listFiles.getAllMusic());
-        	  
-        	  Log.i("Music In AVD", ""+list.size());
-        	  
-        	  for(AudioOld audio : list){
-        		  daoSync.saveAudio(audio);
-        	  }
-        	  
-        	  Log.i("Music in DB:", ""+daoSync.listAudio().size());
+			
+				list = listFiles.getAllMusic();
+				Log.i("Music In AVD", ""+list.size());
+			
+				for(Audio audio : list){
+	   			  Log.i("Path", audio.getUrl());
+	   			  dao.saveAudio(audio);
+				}
+				
+				//Tests OK
+//				Log.i("Music in DB:", ""+dao.listAllAudio().size());
+//				
+//				dao.deleteAudio(dao.listAllAudio().get(0));
+//				
+//				Log.i("Music in DB:", ""+dao.listAllAudio().size());
+//				
+//				Log.i("Before Update:", ""+dao.listAllAudio().get(0).getId() +" "+dao.listAllAudio().get(0).getUrl());
+//				Audio a = dao.listAllAudio().get(0);
+//				a.setUrl("New path");
+//				
+//				dao.updateAudio(a);
+//				
+//				Log.i("After Update:", ""+dao.listAllAudio().get(0).getId() +" "+dao.listAllAudio().get(0).getUrl());				
+				
         	  
 			} catch (Exception e) {
-				Log.i("Exception", e.getMessage());
+				Log.i("Exception", e.getCause().toString());
+				e.getStackTrace();
 			}
               return null;
         }
