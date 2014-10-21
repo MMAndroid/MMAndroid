@@ -43,7 +43,7 @@ public interface IPlayListDao {
 	 * @return a playlist.
 	 * @throws DBException if anything goes wrong with the database query
 	 */
-	Playlist getSimplePlaylist(int idPlaylist) throws DBException;
+	Playlist getPlaylistById(int idPlaylist) throws DBException;
 	
 	/**
 	 * Get a playlist by name. The playlist returned do not have any media
@@ -51,7 +51,7 @@ public interface IPlayListDao {
 	 * @return a playlist.
 	 * @throws DBException if anything goes wrong with the database query
 	 */
-	Playlist getSimplePlaylist(String name) throws DBException;
+	Playlist getPlaylistByName(String name) throws DBException;
 	
 	/**
 	 * Get a playlist by id. 

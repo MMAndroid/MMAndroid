@@ -15,21 +15,25 @@ import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 import br.unb.mobileMedia.core.db.AuthorDAOOld;
+import br.unb.mobileMedia.core.db.DBConstants;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.db.DBFactory;
-import br.unb.mobileMedia.core.db.DefaultAuthorDAO;
-import br.unb.mobileMedia.core.db.PlaylistDAOOld;
+import br.unb.mobileMedia.core.db.DaoMaster;
+import br.unb.mobileMedia.core.db.DaoMaster.DevOpenHelper;
+import br.unb.mobileMedia.core.db.IAudioDao;
+import br.unb.mobileMedia.core.db.IPlayListDao;
+import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.AudioOld;
 import br.unb.mobileMedia.core.domain.AudioFormats;
 import br.unb.mobileMedia.core.domain.AuthorOld;
 import br.unb.mobileMedia.core.domain.MultimediaContent;
-import br.unb.mobileMedia.core.domain.PlaylistOld;
-import br.unb.mobileMedia.core.domain.VideoOld;
+import br.unb.mobileMedia.core.domain.Playlist;
 import br.unb.mobileMedia.core.domain.VideoFormats;
 import br.unb.mobileMedia.core.extractor.DefaultAudioExtractor;
 import br.unb.mobileMedia.core.extractor.DefaultVideoExtractor;
 import br.unb.mobileMedia.core.extractor.MediaExtractor;
 import br.unb.mobileMedia.util.FileUtility;
+import br.unb.mobileMedia.util.ListAllFiles;
 
 /**
  * A facade class for the MMUnB application.
@@ -45,7 +49,7 @@ public class Manager {
 	 * Private constructor according to the single 
 	 * design pattern
 	 */
-	private Manager() {}; 
+	private Manager(){}; 
 
 	/**
 	 * Single method to obtain an instance of the Manager class. 
@@ -68,9 +72,9 @@ public class Manager {
 	 * @param context the application context.
 	 */
 	public void synchronizeMedia(Context context) throws DBException {
+		
 		sync_audio(context);
-
-		sync_video(context);
+//		sync_video(context);
 	}
 
 	private void sync_video(Context context) throws DBException{
@@ -85,24 +89,39 @@ public class Manager {
 
 		List<AuthorOld> authors = (List<AuthorOld>) extractor.processFiles(allVideos);
 
-		saveAuthor(context, authors);
+		
+//		saveAuthor(context, authors);
 
 	}
 
 	private void sync_audio(Context context) throws DBException {
-		final List<File> allMusics = new ArrayList<File>();
-
-		for(AudioFormats format : AudioFormats.values()) {
-			allMusics.addAll(FileUtility.listFiles(new File(Environment
-					.getExternalStorageDirectory().getPath() + "/Music/"),
-					format.getFormatAsString()));
+		List<File> allMusics = new ArrayList<File>();
+		ListAllFiles audios = new ListAllFiles();
+		
+		List<Audio> listAudios = audios.getAllMusic();
+		
+		Log.i("listAudios", ""+listAudios.size());
+		
+		for(Audio audio : listAudios){
+			allMusics.add(new File(audio.getUrl()));
 		}
-
+	
+		Log.i("allMusics##", ""+allMusics.size());
+		
+//		for(AudioFormats format : AudioFormats.values()) {
+//			allMusics.addAll(FileUtility.listFiles(new File(Environment
+//					.getExternalStorageDirectory().getPath() + "/Music/"),
+//					format.getFormatAsString()));
+//		}
+		
 		MediaExtractor extractor = new DefaultAudioExtractor(context);
+		extractor.processFiles(allMusics);
+		
+//		List<AuthorOld> authors = (List<AuthorOld>) extractor.processFiles(allMusics);
 
-		List<AuthorOld> authors = (List<AuthorOld>) extractor.processFiles(allMusics);
+		AuthorDAOOld dao = DBFactory.factory(context).createAuthorDAO();
 
-		saveAuthor(context, authors);
+//		saveAuthor(context, null);
 	}
 
 	private void saveAuthor(Context context, List<AuthorOld> authors) throws DBException {
@@ -151,6 +170,17 @@ public class Manager {
 		AuthorDAOOld dao = DBFactory.factory(context).createAuthorDAO();
 		return dao.listAllProduction();
 	}
+	
+	
+	public List<Audio> listAllAudio(Context context) throws DBException {
+		DBFactory factory = DBFactory.factory(context);
+		final IAudioDao audioDao = factory.createAudioDAO();
+		return audioDao.listAllAudio();
+//		DBFactory factory = DBFactory.factory(context);
+//		final IPlayListDao playlistDao = factory.createPlaylistDao();
+//		playlistDao.deletePlaylist(namePlaylist);
+	}
+	
 
 	/**
 	 * List the recently played musics, considering the period 
@@ -223,10 +253,12 @@ public class Manager {
 	 * @param playlist to be created
 	 * @throws DBException
 	 */
-	public void newPlaylist(Context context, PlaylistOld playlist) throws DBException {
+	public void newPlaylist(Context context, Playlist playlist) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
-		playlistDAO.newPlaylist(playlist);
+		final IPlayListDao playlistDao = factory.createPlaylistDao();
+		playlistDao.newPlaylist(playlist);
+//		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
+//		playlistDAO.newPlaylist(playlist);
 	}
 
 	/**
@@ -239,10 +271,10 @@ public class Manager {
 	 * @param playlist to be edited
 	 * @throws DBException
 	 */
-	public void editPlaylist(Context context, PlaylistOld editedPlaylist) throws DBException {
+	public void editPlaylist(Context context, Playlist editedPlaylist) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
-		playlistDAO.editPlaylist(editedPlaylist);
+		final IPlayListDao playlistDao = factory.createPlaylistDao();
+		playlistDao.editPlaylist(editedPlaylist);
 	}
 
 	/**
@@ -254,8 +286,8 @@ public class Manager {
 	 */
 	public void removePlaylist(Context context, String namePlaylist) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
-		playlistDAO.deletePlaylist(namePlaylist);
+		final IPlayListDao playlistDao = factory.createPlaylistDao();
+		playlistDao.deletePlaylist(namePlaylist);
 	}
 	
 	/**
@@ -267,10 +299,13 @@ public class Manager {
 	 * @param longitude
 	 * @throws DBException
 	 */
-	public void addPositionPlaylist(Context context, PlaylistOld playlist, double latitude, double longitude) throws DBException {
+	public void addPositionPlaylist(Context context, Playlist playlist, double latitude, double longitude) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
-		playlistDAO.addPositionPlaylist(playlist,latitude,longitude);
+		final IPlayListDao playlistDao = factory.createPlaylistDao();
+		playlistDao.addPositionPlaylist(playlist,latitude,longitude);
+//		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
+//		playlistDAO.addPositionPlaylist(playlist,latitude,longitude);
+		
 	}
 	
 	/**
@@ -281,10 +316,10 @@ public class Manager {
 	 * @return a playlist object
 	 * @throws DBException
 	 */
-	public PlaylistOld getSimplePlaylist(Context context, int id) throws DBException {
+	public Playlist getPlaylistById(Context context, int id) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
-		return playlistDAO.getSimplePlaylist(id);
+		final IPlayListDao playlistDao = factory.createPlaylistDao();
+		return playlistDao.getPlaylistById(id);
 	}
 	
 	/**
@@ -295,10 +330,12 @@ public class Manager {
 	 * @return a playlist object
 	 * @throws DBException
 	 */
-	public PlaylistOld getSimplePlaylist(Context context, String name) throws DBException {
+	public Playlist getPlaylistByName(Context context, String name) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
-		return playlistDAO.getSimplePlaylist(name);
+		final IPlayListDao playlistDao = factory.createPlaylistDao();
+		return playlistDao.getPlaylistByName(name);
+//		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
+//		return playlistDAO.getSimplePlaylist(name);
 	}
 	
 	/**
@@ -309,10 +346,12 @@ public class Manager {
 	 * @return a playlist object
 	 * @throws DBException
 	 */
-	public PlaylistOld getPlaylist(Context context, int id) throws DBException {
+	public Playlist getPlaylist(Context context, int id) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
-		return playlistDAO.getPlaylist(id);
+		final IPlayListDao playlistDao = factory.createPlaylistDao();
+		return playlistDao.getPlaylist(id);
+//		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
+//		return playlistDAO.getPlaylist(id);
 	}
 	
 	/**
@@ -323,10 +362,12 @@ public class Manager {
 	 * @return a playlist object
 	 * @throws DBException
 	 */
-	public PlaylistOld getPlaylist(Context context, String name) throws DBException {
+	public Playlist getPlaylist(Context context, String name) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
-		return playlistDAO.getPlaylist(name);
+		final IPlayListDao playlistDao = factory.createPlaylistDao();
+		return playlistDao.getPlaylist(name);
+//		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
+//		return playlistDAO.getPlaylist(name);
 	}
 	
 	/**
@@ -336,10 +377,13 @@ public class Manager {
 	 * @return the list of all playlists
 	 * @throws DBException
 	 */
-	public List<PlaylistOld> listSimplePlaylists(Context context) throws DBException {
+	public List<Playlist> listSimplePlaylists(Context context) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
-		return playlistDAO.listSimplePlaylists();
+		final IPlayListDao playlistDao = factory.createPlaylistDao();
+		return playlistDao.listSimplePlaylists();
+		
+//		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
+//		return playlistDAO.listSimplePlaylists();
 	}
 	
 	/**
@@ -349,10 +393,12 @@ public class Manager {
 	 * @return the list of all playlists
 	 * @throws DBException
 	 */
-	public List<PlaylistOld> listPlaylists(Context context) throws DBException {
+	public List<Playlist> listPlaylists(Context context) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
-		return playlistDAO.listPlaylists();
+		final IPlayListDao playlistDao = factory.createPlaylistDao();
+		return playlistDao.listPlaylists();
+//		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
+//		return playlistDAO.listPlaylists();
 	}
 	
 	/**
@@ -365,8 +411,8 @@ public class Manager {
 	 */
 	public void addMediaToPlaylist(Context context, int idPlaylist, List<Integer> mediaList) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
-		playlistDAO.addToPlaylist(idPlaylist, mediaList);
+		final IPlayListDao playlistDao = factory.createPlaylistDao();
+		playlistDao.addToPlaylist(idPlaylist, mediaList);
 	}
 	
 	/**
@@ -379,8 +425,8 @@ public class Manager {
 	 */
 	public void removeMediaFromPlaylist(Context context, int idPlaylist, List<Integer> mediaList) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
-		playlistDAO.removeMedias(idPlaylist, mediaList);
+		final IPlayListDao playlistDao = factory.createPlaylistDao();
+		playlistDao.removeMedias(idPlaylist, mediaList);
 	}
 	
 	/**
@@ -390,10 +436,10 @@ public class Manager {
 	 * @param id from the playlist
 	 * @throws DBException
 	 */
-	public List<AudioOld> getMusicFromPlaylist(Context context, int idPlaylist) throws DBException {
+	public List<Audio> getMusicFromPlaylist(Context context, int idPlaylist) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
-		return playlistDAO.getMusicFromPlaylist(idPlaylist);
+		final IPlayListDao playlistDao = factory.createPlaylistDao();
+		return playlistDao.getMusicFromPlaylist(idPlaylist);
 	}
 	
 	

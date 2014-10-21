@@ -23,7 +23,6 @@ import android.widget.ListView;
 import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.domain.Playlist;
-import br.unb.mobileMedia.core.domain.PlaylistOld;
 import br.unb.mobileMedia.core.manager.Manager;
 
 /**
@@ -36,7 +35,7 @@ import br.unb.mobileMedia.core.manager.Manager;
 public class MainPlaylistListFragment extends Fragment {
 	// Store the Playlists names to display in the ListView
 	private String names[];
-	List<PlaylistOld> playlists;
+	List<Playlist> playlists;
 	// String containing the playlist id that will be passed on to another
 	// activity through an intent.
 	public final static String SELECTED_PLAYLIST_ID = "idPlaylist";
@@ -47,8 +46,7 @@ public class MainPlaylistListFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		setHasOptionsMenu(true);
 		getActivity().setTitle(R.string.title_activity_play_list);
 		return inflater.inflate(R.layout.activity_play_list, container, false);
@@ -63,10 +61,11 @@ public class MainPlaylistListFragment extends Fragment {
 
 	private void configureUI() {
 		// ListView to show all playlists in a scrollable view
-		ListView listPlayLists = (ListView) getActivity().findViewById(
-				R.id.list_playlist);
+		ListView listPlayLists = (ListView) getActivity().findViewById(R.id.list_playlist);
+		
 		// Associar a ListView ao ContextMenu
 		registerForContextMenu(listPlayLists);
+		
 		// Refresh the List View (List of Playlists)
 		refreshListPlayLists();
 	}
@@ -107,9 +106,7 @@ public class MainPlaylistListFragment extends Fragment {
 				// get name new playlist
 				String newPlayListName = input.getText().toString();
 				try {
-					Manager.instance().newPlaylist(
-							getActivity().getApplicationContext(),
-							new PlaylistOld(newPlayListName));
+					Manager.instance().newPlaylist(getActivity().getApplicationContext(), new Playlist(null ,newPlayListName));
 				} catch (DBException e) {
 					Log.i("Create PL Exception", e.getMessage());
 				}
@@ -173,12 +170,12 @@ public class MainPlaylistListFragment extends Fragment {
 						public void onClick(DialogInterface dialog,
 								int whichButton) {
 							String newName = input.getText().toString();
-							PlaylistOld editedPlaylist = null;
+							Playlist editedPlaylist = null;
 							try {
-								editedPlaylist = Manager.instance().getSimplePlaylist(getActivity(), listItemName);
+								editedPlaylist = Manager.instance().getPlaylistByName(getActivity(), listItemName);
 										
 								// playlist with new values
-								editedPlaylist.setName(newName);
+								editedPlaylist.setTitle(newName);
 								Manager.instance().editPlaylist(getActivity(),
 										editedPlaylist);
 							} catch (DBException e1) {
@@ -210,11 +207,10 @@ public class MainPlaylistListFragment extends Fragment {
 		}
 		// Add geographical position
 		if (menuItemIndex == 2) {
-			PlaylistOld playlist = null;
+			Playlist playlist = null;
 			StubGPS location = new StubGPS();
 			try {
-				playlist = Manager.instance().getSimplePlaylist(getActivity(),
-						listItemName);
+				playlist = Manager.instance().getPlaylistByName(getActivity(), listItemName);
 				// playlist with new values
 				Manager.instance().addPositionPlaylist(getActivity(), playlist,
 						location.getLatitude(), location.getLongitude());
@@ -229,8 +225,7 @@ public class MainPlaylistListFragment extends Fragment {
 
 	private void refreshListPlayLists() {
 		// Update the List View
-		ListView listPlayLists = (ListView) getActivity().findViewById(
-				R.id.list_playlist);
+		ListView listPlayLists = (ListView) getActivity().findViewById(R.id.list_playlist);
 		playlists = null;
 		try {
 			playlists = Manager.instance().listSimplePlaylists(getActivity());
@@ -246,13 +241,12 @@ public class MainPlaylistListFragment extends Fragment {
 			} else {
 				names = new String[playlists.size()];
 				int i = 0;
-				for (PlaylistOld p : playlists) {
-					names[i++] = p.getName();
+				for (Playlist p : playlists) {
+					names[i++] = p.getTitle();
 				}
-				ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-						getActivity(), android.R.layout.simple_list_item_1,
-						android.R.id.text1, names);
+				ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,	android.R.id.text1, names);
 				listPlayLists.setAdapter(adapter);
+				
 				// ##############################################################################################
 				// ##############################################################################################
 				// Calls the Playlist Editor when a playlist is pressed.
@@ -262,24 +256,20 @@ public class MainPlaylistListFragment extends Fragment {
 									View view, int position, long id) {
 								// if(position == 1) {
 								// Get the selected playlist name!
-								String selectedPlaylistName = (String) parent
-										.getItemAtPosition(position);
+								String selectedPlaylistName = (String) parent.getItemAtPosition(position);
+								
 								// Log de qual PlayList foi clicada
-								Log.i("PlayList: ", selectedPlaylistName
-										+ " Clicada.");
-								PlaylistOld recoveredPlaylist = null;
+								Log.i("PlayList: ", selectedPlaylistName + " Clicada.");
+								Playlist recoveredPlaylist = null;
 								try {
 									recoveredPlaylist = Manager
 											.instance()
-											.getSimplePlaylist(
-													getActivity()
-															.getApplicationContext(),
-													selectedPlaylistName);
+											.getPlaylistByName(getActivity().getApplicationContext(), selectedPlaylistName);
 								} catch (DBException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
-								int message = recoveredPlaylist.getId();
+								int message = recoveredPlaylist.getId().intValue();
 								Bundle args = new Bundle();
 								args.putInt(SELECTED_PLAYLIST_ID, message);
 								// TODO Extract this to a method (repeated in

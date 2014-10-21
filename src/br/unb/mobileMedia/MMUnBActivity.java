@@ -1,18 +1,18 @@
 package br.unb.mobileMedia;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import br.unb.mobileMedia.core.db.DBConstants;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.db.DBFactory;
+import br.unb.mobileMedia.core.db.DaoMaster;
+import br.unb.mobileMedia.core.db.DatabaseOpenHelper;
 import br.unb.mobileMedia.core.db.IAudioDao;
-import br.unb.mobileMedia.core.domain.Audio;
+import br.unb.mobileMedia.core.db.DaoMaster.DevOpenHelper;
+import br.unb.mobileMedia.core.db.DefaultDBFactory;
 import br.unb.mobileMedia.core.manager.Manager;
 import br.unb.mobileMedia.core.view.AudioPlayerFragment;
 import br.unb.mobileMedia.core.view.AuthorListFragment;
 import br.unb.mobileMedia.core.view.ShareListFragment;
 import br.unb.mobileMedia.playlist.MainPlaylistListFragment;
-import br.unb.mobileMedia.util.ListAllFiles;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.Context;
@@ -22,6 +22,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Editable.Factory;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,7 +45,10 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
 		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_CUSTOM);
 		actionBar.setTitle("MMAndroid"); 
 		actionBar.setSubtitle("mobile media");
-	
+		
+		DBFactory fac = DefaultDBFactory.factory(this);
+		IAudioDao dao = fac.createAudioDAO();
+		
 		//Menu com os botoes
 		MenuFragment menuFrag = new MenuFragment();
 		
@@ -181,47 +185,20 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
 	
 											//Parametro, Progresso, Resultado
 	private class SyncFiles extends AsyncTask<Void, Void, Void> {
-				
-		private IAudioDao dao;
-		private List<Audio> list = new ArrayList<Audio>();
+		
 		private Context context;
-		private ListAllFiles listFiles;
-
+		
 		public SyncFiles(Context c){
-			context = c;
-			dao = DBFactory.factory(context).createAudioDAO();
-			listFiles =  new ListAllFiles();
+			context = c;	
 		}
 		
 		@Override
         protected Void doInBackground(Void... v){
 		
-			try{
-			
-				list = listFiles.getAllMusic();
-				Log.i("Music In AVD", ""+list.size());
-			
-				for(Audio audio : list){
-	   			  Log.i("Path", audio.getUrl());
-	   			  dao.saveAudio(audio);
-				}
+			try{ 
 				
-				//Tests OK
-//				Log.i("Music in DB:", ""+dao.listAllAudio().size());
-//				
-//				dao.deleteAudio(dao.listAllAudio().get(0));
-//				
-//				Log.i("Music in DB:", ""+dao.listAllAudio().size());
-//				
-//				Log.i("Before Update:", ""+dao.listAllAudio().get(0).getId() +" "+dao.listAllAudio().get(0).getUrl());
-//				Audio a = dao.listAllAudio().get(0);
-//				a.setUrl("New path");
-//				
-//				dao.updateAudio(a);
-//				
-//				Log.i("After Update:", ""+dao.listAllAudio().get(0).getId() +" "+dao.listAllAudio().get(0).getUrl());				
-				
-        	  
+				Manager.instance().synchronizeMedia(context);
+
 			} catch (Exception e) {
 				Log.i("Exception", e.getCause().toString());
 				e.getStackTrace();

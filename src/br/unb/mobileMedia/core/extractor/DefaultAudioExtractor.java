@@ -1,7 +1,6 @@
 package br.unb.mobileMedia.core.extractor;
 
 import java.io.File;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +11,6 @@ import android.media.MediaScannerConnection;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.util.Log;
-import br.unb.mobileMedia.core.domain.AudioOld;
 import br.unb.mobileMedia.core.domain.AuthorOld;
 
 /**
@@ -51,12 +49,14 @@ public class DefaultAudioExtractor implements MediaExtractor {
 		Log.i("Audio files to process: ", String.valueOf(audioFiles.size()));
 		for(File file: audioFiles){
 
-	       URI u =  file.getAbsoluteFile().toURI();
-	       
-	       Log.i("URI: ", u.getPath());
-	       
-	       mmr.setDataSource(u.getPath());
-	       
+	      try{
+	       mmr.setDataSource(context, Uri.parse(Uri.encode(file.getAbsolutePath())));
+	      }catch(RuntimeException e){
+	    	  e.getStackTrace();
+	    	  //Exibir alert para informar sobre acentuação no arquivo
+		       Log.i("RuntimeExeption f: ", file.getAbsolutePath());
+	      }
+	      
 	       String authorName = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST); 
 	       authorName = authorName == null || authorName.equals("") ? UNKNOWN : authorName;
 	       
@@ -77,13 +77,14 @@ public class DefaultAudioExtractor implements MediaExtractor {
 		   Log.i("titleKey: ", titleKey);
 		   Log.i("album: ", album);
 
+		   
 		   AuthorOld author = authors.get(authorId);
 		   
 		   if(author == null) {
 			   author = new  AuthorOld(authorId.hashCode(), authorName);
 		   }
 		   
-		   author.addProduction(new AudioOld(titleKey.hashCode(), title, u, album));
+//		   author.addProduction(new AudioOld(titleKey.hashCode(), title, u, album));
 		   
 		   authors.put(author.getId(), author);
 		}

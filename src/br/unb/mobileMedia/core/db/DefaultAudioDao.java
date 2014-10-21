@@ -17,11 +17,13 @@ public class DefaultAudioDao implements IAudioDao {
 	private DaoMaster daoMaster;
 	private DaoSession daoSession;
 	private AudioDao audioDao;
-	private DevOpenHelper openHelper;
+//	private DevOpenHelper openHelper;
 	
 	public DefaultAudioDao(Context c){
 		this.context = c;
-		this.openHelper = new DaoMaster.DevOpenHelper(this.context, DBConstants.DATABASE_NAME, null);
+		
+//		this.openHelper = new DaoMaster.DevOpenHelper(this.context, DBConstants.DATABASE_NAME, null);
+		DatabaseOpenHelper openHelper = new DatabaseOpenHelper(context, DBConstants.DATABASE_NAME, null);
 		this.db = openHelper.getWritableDatabase();
 		this.daoMaster = new DaoMaster(db);
 		this.daoSession = daoMaster.newSession();

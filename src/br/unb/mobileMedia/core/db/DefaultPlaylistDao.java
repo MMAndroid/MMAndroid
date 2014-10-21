@@ -86,7 +86,7 @@ public class DefaultPlaylistDao implements IPlayListDao {
 		return playlistDao.loadAll();
 	}
 
-	public Playlist getSimplePlaylist(int idPlaylist) throws DBException {
+	public Playlist getPlaylistById(int idPlaylist) throws DBException {
 	
 		QueryBuilder<Playlist> qb = playlistDao.queryBuilder();
 		qb.where(Properties.Id.eq(idPlaylist));
@@ -94,7 +94,7 @@ public class DefaultPlaylistDao implements IPlayListDao {
 		return qb.list().get(0);
 	}
 	
-	public Playlist getSimplePlaylist(String name) throws DBException {
+	public Playlist getPlaylistByName(String name) throws DBException {
 		QueryBuilder<Playlist> qb = playlistDao.queryBuilder();
 		qb.where(Properties.Title.eq(name));
 		
@@ -115,7 +115,7 @@ public class DefaultPlaylistDao implements IPlayListDao {
 	public void deletePlaylist(String namePlaylist) throws DBException {
 		
 		try{
-			Playlist playlist = getSimplePlaylist(namePlaylist);
+			Playlist playlist = getPlaylistByName(namePlaylist);
 			
 			if(playlist != null)
 				playlistDao.delete(playlist);

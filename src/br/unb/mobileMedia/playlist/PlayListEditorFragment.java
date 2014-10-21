@@ -21,19 +21,17 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import br.unb.mobileMedia.R;
-import br.unb.mobileMedia.core.FileChooser.FileChooserFragment;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.AudioOld;
 import br.unb.mobileMedia.core.domain.Playlist;
-import br.unb.mobileMedia.core.domain.PlaylistOld;
 import br.unb.mobileMedia.core.manager.Manager;
 import br.unb.mobileMedia.core.view.AudioPlayerFragment;
 
 public class PlayListEditorFragment extends Fragment {
 	private int playListId;
 	Playlist playlist;
-	List<AudioOld> musicList = null;
+	List<Audio> musicList = null;
 	private String names[];
 	int result = 1;
 	// String containing the playlist id that will be passed on to another
@@ -111,7 +109,7 @@ public class PlayListEditorFragment extends Fragment {
 	}
 
 	private void executePlayList() {
-		List<AudioOld> listTmp = musicList;
+		List<Audio> listTmp = musicList;
 		AudioOld[] executionList = new AudioOld[listTmp.size()];
 		listTmp.toArray(executionList);
 		Bundle args = new Bundle();
@@ -136,7 +134,7 @@ public class PlayListEditorFragment extends Fragment {
 		ListView listMusicLists = (ListView) getActivity().findViewById(R.id.list_musiclist);
 		registerForContextMenu(listMusicLists);
 		try {
-			playlist = Manager.instance().getSimplePlaylist(getActivity(), playListId);
+			playlist = Manager.instance().getPlaylistById(getActivity(), playListId);
 			if (playlist != null) {
 				musicList = Manager.instance().getMusicFromPlaylist(getActivity(), playListId);
 			}
@@ -153,7 +151,7 @@ public class PlayListEditorFragment extends Fragment {
 			} else {
 				names = new String[musicList.size()];
 				int i = 0;
-				for (AudioOld p : musicList) {
+				for (Audio p : musicList) {
 					names[i++] = p.getTitle();
 				}
 				ArrayAdapter<String> adapter = new ArrayAdapter<String>(
@@ -193,7 +191,7 @@ public class PlayListEditorFragment extends Fragment {
 		// Index number of the selected option from the context menu
 		int menuItemIndex = item.getItemId();
 		List<Integer> song = new ArrayList<Integer>();
-		song.add(musicList.get(info.position).getId());
+		song.add(musicList.get(info.position).getId().intValue());
 		// Option - REMOVE
 		if (menuItemIndex == 0) {
 			try {

@@ -12,6 +12,7 @@ import android.media.MediaMetadataRetriever;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.util.Log;
+import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.AudioOld;
 import br.unb.mobileMedia.core.domain.AuthorOld;
 import br.unb.mobileMedia.core.domain.VideoOld;

@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,20 +16,19 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.db.DBException;
-import br.unb.mobileMedia.core.domain.AudioOld;
+import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.manager.Manager;
 
 public class MusicSelectFragment extends Fragment {
 
-    List<AudioOld> musicas = new ArrayList<AudioOld>();
+    List<Audio> musicas = new ArrayList<Audio>();
     List<Integer> musicasAdicionadasId = new ArrayList<Integer>();
     private String names[];
     private int playListId; 
     
         
     @Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     	super.onCreateView(inflater, container, savedInstanceState);
     	getActivity().setTitle(R.string.title_activity_music_select);
 		return inflater.inflate(R.layout.activity_playlist_music_select, container, false);
@@ -44,6 +44,9 @@ public class MusicSelectFragment extends Fragment {
         playListId = extras.getInt(MainPlaylistListFragment.SELECTED_PLAYLIST_ID);
         
         refreshListMusicLists();
+        
+    	Log.i("Choose music to ", "Playlist "+playListId);
+
 	}
 
 	@Override
@@ -57,19 +60,18 @@ public class MusicSelectFragment extends Fragment {
     	ListView listMusicLists = (ListView) getActivity().findViewById(R.id.list_musiclistselect);
     	
     	try {
-    		musicas = Manager.instance().listAllProduction(getActivity());
-    		
-    		}
-    	catch (DBException e) {e.printStackTrace();}
+    		musicas = Manager.instance().listAllAudio(getActivity());
+    	}catch (DBException e) {
+    		e.printStackTrace();
+    	}
     	
     	names = new String[musicas.size()];
     	int i=0;
-    	for (AudioOld aux : musicas){names[i++]=aux.getTitle();}
+    	for (Audio aux : musicas){names[i++]=aux.getTitle();}
     	
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), 
 				android.R.layout.simple_list_item_1, 
-				android.R.id.text1, 
-				names);
+				android.R.id.text1, names);
     	listMusicLists.setAdapter(adapter);
     
     	//Calls the Playlist Editor when a playlist is pressed.
@@ -78,8 +80,8 @@ public class MusicSelectFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)  {
             
             	try{
-					AudioOld aux = musicas.get(position);
-					musicasAdicionadasId.add(aux.getId());
+					Audio aux = musicas.get(position);
+					musicasAdicionadasId.add(aux.getId().intValue());
 					
 					Manager.instance().addMediaToPlaylist(getActivity().getBaseContext(), playListId, musicasAdicionadasId);
 					//Closes the activity. Only one music can be added per time.
