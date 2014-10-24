@@ -5,9 +5,7 @@ import java.util.List;
 import br.unb.mobileMedia.core.domain.Audio;
 
 public interface IAudioDao {
-	
-	public void createDb() throws DBException;
-	
+		
 	/**
 	 * Save an audio in the audio's database.
 	 * 
@@ -20,7 +18,7 @@ public interface IAudioDao {
 	 * List all audio of the MMUAndroid database.
 	 * @return list of registered audios.
 	 */
-	public List<Audio> listAudioById(Audio audio);
+	public Audio listAudioById(Audio audio);
 	
 	
 	/**

@@ -1,7 +1,9 @@
 package br.unb.mobileMedia.playlist;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,19 +14,25 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.db.DBException;
+import br.unb.mobileMedia.core.db.DBFactory;
+import br.unb.mobileMedia.core.db.IPlaylistMediaDao;
 import br.unb.mobileMedia.core.domain.Audio;
+import br.unb.mobileMedia.core.domain.Author;
+import br.unb.mobileMedia.core.domain.Playlist;
 import br.unb.mobileMedia.core.manager.Manager;
 
 public class MusicSelectFragment extends Fragment {
 
     List<Audio> musicas = new ArrayList<Audio>();
+    List<Author> authors = new ArrayList<Author>();
+    Map<Long, String> mapIdNameAuthor = new HashMap<Long, String>();
+    
     List<Integer> musicasAdicionadasId = new ArrayList<Integer>();
-    private String names[];
     private int playListId; 
+    private ArrayAdapterMusic adapterMusic;
     
         
     @Override
@@ -58,42 +66,58 @@ public class MusicSelectFragment extends Fragment {
     private void refreshListMusicLists(){
     	
     	ListView listMusicLists = (ListView) getActivity().findViewById(R.id.list_musiclistselect);
+    	listMusicLists.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
     	
     	try {
     		musicas = Manager.instance().listAllAudio(getActivity());
+    		authors = Manager.instance().listAuthors(getActivity().getApplicationContext());
     	}catch (DBException e) {
     		e.printStackTrace();
     	}
+
+    	for(Author author : authors){
+    		mapIdNameAuthor.put(author.getId(), author.getName());
+    	}
     	
-    	names = new String[musicas.size()];
-    	int i=0;
-    	for (Audio aux : musicas){names[i++]=aux.getTitle();}
+
+    	this.adapterMusic = new ArrayAdapterMusic(getActivity().getApplicationContext(),
+				R.layout.playlist_music_row, musicas, mapIdNameAuthor);
     	
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), 
-				android.R.layout.simple_list_item_1, 
-				android.R.id.text1, names);
-    	listMusicLists.setAdapter(adapter);
+    	listMusicLists.setAdapter(adapterMusic);
+    	
     
     	//Calls the Playlist Editor when a playlist is pressed.
     	listMusicLists.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)  {
-            
+            	
+//            	   String texto = musicas.get(position).getTitle();   
+//                   Toast toast = Toast.makeText(getActivity().getApplicationContext(), texto, Toast.LENGTH_SHORT);
+//                   toast.show();
+
             	try{
-					Audio aux = musicas.get(position);
-					musicasAdicionadasId.add(aux.getId().intValue());
-					
-					Manager.instance().addMediaToPlaylist(getActivity().getBaseContext(), playListId, musicasAdicionadasId);
-					//Closes the activity. Only one music can be added per time.
+            		DBFactory factory = DBFactory.factory(getActivity().getApplicationContext());
+            		IPlaylistMediaDao plMediaDao = factory.createPlaylistMediaDao();
+            		
+            		plMediaDao.addAudioToPlaylist(musicas.get(position), new Playlist((long)playListId));
+            		
+            		//Chamar o manager...
+            		
+//					Audio aux = musicas.get(position);
+//					musicasAdicionadasId.add(aux.getId().intValue());
+//					
+//					Manager.instance().addMediaToPlaylist(getActivity().getBaseContext(), playListId, musicasAdicionadasId);
+//					
+
+            		//Closes the activity. Only one music can be added per time.
 					getActivity().getSupportFragmentManager().popBackStack();
 					
-            		} catch (DBException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 		}
+            		} catch (Exception e) {
+            			// 	TODO Auto-generated catch block
+            			e.printStackTrace();
+            		} 		
+            	}
             });
-    
-    
     
     }
     

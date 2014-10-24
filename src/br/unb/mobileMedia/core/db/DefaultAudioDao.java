@@ -17,13 +17,12 @@ public class DefaultAudioDao implements IAudioDao {
 	private DaoMaster daoMaster;
 	private DaoSession daoSession;
 	private AudioDao audioDao;
-//	private DevOpenHelper openHelper;
+	private DevOpenHelper openHelper;
 	
 	public DefaultAudioDao(Context c){
 		this.context = c;
 		
-//		this.openHelper = new DaoMaster.DevOpenHelper(this.context, DBConstants.DATABASE_NAME, null);
-		DatabaseOpenHelper openHelper = new DatabaseOpenHelper(context, DBConstants.DATABASE_NAME, null);
+		this.openHelper = new DaoMaster.DevOpenHelper(this.context, DBConstants.DATABASE_NAME, null);
 		this.db = openHelper.getWritableDatabase();
 		this.daoMaster = new DaoMaster(db);
 		this.daoSession = daoMaster.newSession();
@@ -31,9 +30,6 @@ public class DefaultAudioDao implements IAudioDao {
 	}
 
 	
-	public void createDb() throws DBException {
-		throw new DBException();
-	}
 
 	
 	public void saveAudio(Audio audio) throws DBException {
@@ -60,12 +56,16 @@ public class DefaultAudioDao implements IAudioDao {
 	}
 	
 	
-	public List<Audio> listAudioById(Audio audio){
+	public Audio listAudioById(Audio audio){
 		
 		QueryBuilder<Audio>qb = audioDao.queryBuilder();
 		qb.where(Properties.Id.eq(audio.getId()));
 		
-		return qb.list();
+		if(qb.list().size() > 0){
+			return qb.list().get(0);
+		}
+		
+		return null;
 	}
 	
 
@@ -87,11 +87,11 @@ public class DefaultAudioDao implements IAudioDao {
 	}
 	
 	public List<Audio> listAudioByAlbum(Audio audio){
-		
-		QueryBuilder<Audio> qb = audioDao.queryBuilder();
-		qb.where(Properties.AlbumId.eq(audio.getAlbumId()));
-		
-		return qb.list();
+		return null;
+//		QueryBuilder<Audio> qb = audioDao.queryBuilder();
+//		qb.where(Properties..eq(audio.getAlbumId()));
+//		
+//		return qb.list();
 	}
 	
 	
@@ -108,7 +108,7 @@ public class DefaultAudioDao implements IAudioDao {
 		audioDao.update(audio);
 		
 		//check if update is ok
-		if(audio.equals(listAudioById(audio).get(0)))
+		if(audio.equals(listAudioById(audio)))
 			return true;
 		
 		throw new DBException();
@@ -122,7 +122,7 @@ public class DefaultAudioDao implements IAudioDao {
 		audioDao.delete(audio);
 		
 		//check if delete is ok
-		if(listAudioById(audio).isEmpty())
+		if(listAudioById(audio) != null)
 			return true;
 		
 		throw new DBException();

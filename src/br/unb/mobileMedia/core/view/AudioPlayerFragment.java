@@ -1,32 +1,31 @@
 package br.unb.mobileMedia.core.view;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import br.unb.mobileMedia.R;
-import br.unb.mobileMedia.core.FileChooser.FileChooserFragment;
 import br.unb.mobileMedia.core.FileChooser.FileDetail;
 import br.unb.mobileMedia.core.audioPlayer.AudioPlayerList;
-import br.unb.mobileMedia.core.domain.AudioOld;
+import br.unb.mobileMedia.core.domain.Audio;
+import br.unb.mobileMedia.core.extractor.DefaultAudioExtractor;
+import br.unb.mobileMedia.core.extractor.MediaExtractor;
 import br.unb.mobileMedia.playlist.PlayListManager;
 
 public class AudioPlayerFragment extends Fragment implements PlayListManager,
@@ -35,8 +34,9 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager,
 	public static final String EXECUTION_LIST = "EXECUTION_LIST";
 
 	private AudioPlayerList player;
-	private List<AudioOld> musicList = new ArrayList<AudioOld>();
+	private List<Audio> musicList = new ArrayList<Audio>();
 
+	private ImageView   albumArt;
 	private ImageButton btnPlayPause;
 	private ImageButton btnNext;
 	private ImageButton btnPrevious;
@@ -63,7 +63,10 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager,
 		View v = inflater.inflate(R.layout.activity_audio_player, container,false);
 
 		Log.i("AudioPlayerFragment", "OnCreateView...");
-
+		
+		//albumArt
+		albumArt = (ImageView) v.findViewById(R.id.albumArt);
+		
 		// Song title
 		songTitleLabel = (TextView) v.findViewById(R.id.songTitle);
 		songCurrentDurationLabel = (TextView) v.findViewById(R.id.songCurrentDurationLabel);
@@ -181,26 +184,26 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager,
 		});
 
 		// Click no botao para adicionar uma musica Chamando o FileChooser
-		getActivity().findViewById(R.id.btnPlaylist).setOnClickListener(
-			new OnClickListener() {
-				public void onClick(View v) {
-					// TODO Extract this to a method (repeated in
-					// MMUnBActivity too)
-					Fragment newFragment = new FileChooserFragment(); // AudioSelectFragment();
-					newFragment.setTargetFragment(AudioPlayerFragment.this,-1);
-					FragmentTransaction transaction = getActivity()
-							.getSupportFragmentManager().beginTransaction();
-					if (getActivity().findViewById(R.id.main) != null) {
-						transaction.replace(R.id.main, newFragment);
-						transaction.addToBackStack(null);
-					} else {
-						transaction.replace(R.id.content, newFragment);
-						transaction.addToBackStack(null);
-					}
-					transaction.commit();
-			}
-		});
-		
+//		getActivity().findViewById(R.id.btnPlaylist).setOnClickListener(
+//			new OnClickListener() {
+//				public void onClick(View v) {
+//					// TODO Extract this to a method (repeated in
+//					// MMUnBActivity too)
+//					Fragment newFragment = new FileChooserFragment(); // AudioSelectFragment();
+//					newFragment.setTargetFragment(AudioPlayerFragment.this,-1);
+//					FragmentTransaction transaction = getActivity()
+//							.getSupportFragmentManager().beginTransaction();
+//					if (getActivity().findViewById(R.id.main) != null) {
+//						transaction.replace(R.id.main, newFragment);
+//						transaction.addToBackStack(null);
+//					} else {
+//						transaction.replace(R.id.content, newFragment);
+//						transaction.addToBackStack(null);
+//					}
+//					transaction.commit();
+//			}
+//		});
+//		
 	}
 	
 		
@@ -220,6 +223,7 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager,
 				songTotalDurationLabel.setText(""+ utils.milliSecondsToTimer(totalDuration));
 				songCurrentDurationLabel.setText(""+ utils.milliSecondsToTimer(currentDuration));
 				songTitleLabel.setText(player.getTitleSong());
+				albumArt.setImageBitmap(player.getAlbumArt());
 				int progress = (int) (utils.getProgressPercentage(currentDuration,totalDuration));
 		// Log.d("Progress", ""+progress);
 				songProgressBar.setProgress(progress);
@@ -253,7 +257,7 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager,
 	private void initAudioList() {
 		Log.i("AudioPlayerFragment", "init audio list...");
 		if (getArguments() == null) {
-			musicList = new ArrayList<AudioOld>();
+			musicList = new ArrayList<Audio>();
 			Log.i("AudioPlayerFragment", "getArguments() is null");
 			return;
 		}
@@ -264,12 +268,11 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager,
 			
 			Log.i("AudioPlayerFragment","getParcelableArray(EXECUTION_LIST) has " + ps.length+ " itens");
 			
-			musicList = new ArrayList<AudioOld>();
+			musicList = new ArrayList<Audio>();
 			
 			for (int i = 0; i < ps.length; i++) {
-				musicList.add((AudioOld) ps[i]);
-				Log.i("AudioPlayerFragment", "Add music to musicList: "
-						+ (AudioOld) ps[i]);
+				musicList.add((Audio) ps[i]);
+				Log.i("AudioPlayerFragment", "Add music to musicList: "	+ (Audio) ps[i]);
 			}
 		}
 	}
@@ -280,10 +283,10 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager,
 	 */
 	private void updateAudioListView(){
 		Log.i("AudioPlayerFragment", "Updateding audio list view...");
-//		ListView listView = (ListView) getActivity().findViewById(R.id.list_audio_player);
-		AudioOld[] music = musicList.toArray(new AudioOld[musicList.size()]);
-//		listView.setAdapter(new AudioPlayerArrayAdapter(getActivity().getApplicationContext(), music));
-//		listView.setItemChecked(0, true);
+		ListView listView = (ListView) getActivity().findViewById(R.id.list_audio_player);
+		Audio[] music = musicList.toArray(new Audio[musicList.size()]);
+		listView.setAdapter(new AudioPlayerArrayAdapter(getActivity().getApplicationContext(), music));
+		listView.setItemChecked(0, true);
 	}
 	
 	@Override
@@ -295,7 +298,7 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager,
 	/**
 	 * Add a audio to audio list Doesn't updated the list view
 	 */
-	public void addMusic(AudioOld audio) {
+	public void addMusic(Audio audio) {
 		// TODO Auto-generated method stub
 		Log.i("AudioPlayerFragment", "Adding music..." + audio);
 		musicList.add(audio);
@@ -311,17 +314,17 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager,
 		String url = null;
 		
 		for (FileDetail file : files) {
-			try {
-				
-				url = Uri.encode(file.getPath());
-				
-				addMusic(new AudioOld(file.getName().toString(),new URI(url)));
-				
-			} catch (URISyntaxException e) {
-				// TODO Auto-generated catch block
-				Log.i("Exception", "receiveFileChooser() - URISyntaxException");
-				e.printStackTrace();
-			}
+//			try {
+//				
+////				url = Uri.encode(file.getPath());
+//				
+////				addMusic(new Audio(null, file.getName().toString(), file.getPath(), null));
+//				
+//			} catch (URISyntaxException e) {
+//				// TODO Auto-generated catch block
+//				Log.i("Exception", "receiveFileChooser() - URISyntaxException");
+//				e.printStackTrace();
+//			}
 		}
 		
 	}

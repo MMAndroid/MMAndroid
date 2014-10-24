@@ -1,7 +1,7 @@
 package br.unb.mobileMedia.playlist;
 
-import br.unb.mobileMedia.core.domain.AudioOld;
+import br.unb.mobileMedia.core.domain.Audio;
 
 public interface PlayListManager {
-	public void addMusic(AudioOld audio);
+	public void addMusic(Audio aux);
 }

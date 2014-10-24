@@ -24,7 +24,7 @@ import android.widget.ListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.Toast;
 import br.unb.mobileMedia.R;
-import br.unb.mobileMedia.core.domain.AudioOld;
+import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.manager.Manager;
 
 public class AudioExpandableListFragment extends ExpandableListFragment {
@@ -36,7 +36,7 @@ public class AudioExpandableListFragment extends ExpandableListFragment {
 	private static final String TITLE = "TITLE";
 	private List<Map<String, String>> groupList;
 	private List<List<Map<String, String>>> childList;
-	private Map<String, List<AudioOld>> albuns;
+	private Map<String, List<Audio>> albuns;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class AudioExpandableListFragment extends ExpandableListFragment {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		List<AudioOld> production = new ArrayList<AudioOld>();
+		List<Audio> production = new ArrayList<Audio>();
         try {
         	
        		Bundle args = getArguments();
@@ -95,14 +95,14 @@ public class AudioExpandableListFragment extends ExpandableListFragment {
 		Toast.makeText(getActivity().getApplicationContext(), "Abrindo player...", Toast.LENGTH_SHORT).show();
 		try {
 			String albumName = groupList.get(groupPosition).get(ALBUM);
-			List<AudioOld> album = albuns.get(albumName);
-			List<AudioOld> listTmp = album.subList(childPosition, album.size());
-			AudioOld[] executionList = new AudioOld[listTmp.size()]; 
+			List<Audio> album = albuns.get(albumName);
+			List<Audio> listTmp = album.subList(childPosition, album.size());
+			Audio[] executionList = new Audio[listTmp.size()]; 
 			
 			listTmp.toArray(executionList);
 		
 			Bundle args = new Bundle();
-			args.putParcelableArray(AudioPlayerFragment.EXECUTION_LIST, executionList);
+//			args.putParcelableArray(AudioPlayerFragment.EXECUTION_LIST, executionList);
 			
 			// TODO Extract this to a method (repeated in MMUnBActivity too)
 			Fragment newFragment = new AudioPlayerFragment();
@@ -138,7 +138,7 @@ public class AudioExpandableListFragment extends ExpandableListFragment {
 	 * @param albuns
 	 * @return
 	 */
-	private List<Map<String, String>> createGroupList(Map<String, List<AudioOld>> albuns) {
+	private List<Map<String, String>> createGroupList(Map<String, List<Audio>> albuns) {
 		List<Map<String, String>> result = new ArrayList<Map<String, String>>();
 
 		for (String album : albuns.keySet()) {
@@ -150,12 +150,12 @@ public class AudioExpandableListFragment extends ExpandableListFragment {
 	}
 	
 	
-	private List<List<Map<String, String>>> createChildList(Map<String, List<AudioOld>> albuns) {
+	private List<List<Map<String, String>>> createChildList(Map<String, List<Audio>> albuns) {
 		List<List<Map<String, String>>> result = new ArrayList<List<Map<String,String>>>();
 		for(String album : albuns.keySet()) {
 			List<Map<String, String>> children = new ArrayList<Map<String,String>>();
 			
-			for(AudioOld audio : albuns.get(album)) {
+			for(Audio audio : albuns.get(album)) {
 				Map<String, String> musics = new HashMap<String, String>();
 				musics.put(TITLE, audio.getTitle());
 				children.add(musics);
@@ -174,17 +174,17 @@ public class AudioExpandableListFragment extends ExpandableListFragment {
 	 * Return all production (musics) grouped by album (a map <String, List<Audio>>, where 
 	 * the string is the name of the album).
 	 */
-    private Map<String, List<AudioOld>> groupByAlbum(List<AudioOld> production) {
-		Map<String, List<AudioOld>> albuns = new HashMap<String, List<AudioOld>>(); 
-    	for(AudioOld a : production) {
-			List<AudioOld> musics = new ArrayList<AudioOld>();
+    private Map<String, List<Audio>> groupByAlbum(List<Audio> production) {
+		Map<String, List<Audio>> albuns = new HashMap<String, List<Audio>>(); 
+    	for(Audio a : production) {
+			List<Audio> musics = new ArrayList<Audio>();
 			
     		if(albuns.containsKey(a.getAlbum())) {
     			musics = albuns.get(a.getAlbum());
 			}
     		musics.add(a);
     		
-    		albuns.put(a.getAlbum(), musics);
+//    		albuns.put(a.getAlbum(), musics);
 		}
     	return albuns;
 	}

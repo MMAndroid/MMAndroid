@@ -2,19 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-    
-<!--     <TextView -->
-<!--         android:layout_width="match_parent" -->
-<!--         android:layout_height="wrap_content" -->
-<!--         android:text="Listar todas as musicas do banco de dados"/> -->
-    
-    
+
     <ListView
         android:id="@+id/list_musiclistselect"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true">
-
+        android:layout_alignParentLeft="true" >
     </ListView>
 
 </RelativeLayout>

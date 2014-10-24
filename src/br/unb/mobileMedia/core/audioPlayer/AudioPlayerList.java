@@ -1,27 +1,28 @@
 package br.unb.mobileMedia.core.audioPlayer;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.util.Log;
-import br.unb.mobileMedia.core.domain.AudioOld;
+import br.unb.mobileMedia.core.domain.Audio;
+import br.unb.mobileMedia.core.extractor.DefaultAudioExtractor;
+import br.unb.mobileMedia.core.extractor.MediaExtractor;
 
 public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	private static volatile AudioPlayerList uniqueInstance;
 	private Context context;
 	private MediaPlayer player;
-	private List<AudioOld> audioList;
+	private List<Audio> audioList;
 	private boolean repeat = false;
 	private boolean shuffle = false;
 	private boolean isPlaying = false;
 	private int currentSongIndex = 0;
+	private MediaExtractor audioExtractor;
 
 	private AudioPlayerList() {
 	}
@@ -32,10 +33,12 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	 */
 	private AudioPlayerList(Context c) {
 		this.context = c;
-		player = new MediaPlayer();
-		audioList = new ArrayList<AudioOld>();
+		this.player = new MediaPlayer();
+		this.audioList = new ArrayList<Audio>();
 		setRepeat(false);
-		player.setOnCompletionListener(this);
+		this.player.setOnCompletionListener(this);
+		
+		this.audioExtractor = new DefaultAudioExtractor(this.context);
 	}
 
 	/**
@@ -43,18 +46,18 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	 * @param context the application context.
 	 * @param audioArray an array of musics that the user might choose to play
 	 */
-	private AudioPlayerList(Context context, AudioOld[] audioArray) {
+	private AudioPlayerList(Context context, Audio[] audioArray) {
 		this(context);
 		if (audioArray == null) {
-			audioList = new ArrayList<AudioOld>();
+			audioList = new ArrayList<Audio>();
 		}
-		for (AudioOld audio : audioArray) {
+		for (Audio audio : audioArray) {
 			audioList.add(audio);
 		}
 	}
 
 	public static AudioPlayerList getInstance(Context context,
-			AudioOld[] audioArray) {
+			Audio[] audioArray) {
 		if (uniqueInstance == null) {
 			synchronized (AudioPlayerList.class) {
 				if (uniqueInstance == null) {
@@ -79,11 +82,11 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	public void play(int indexFile) {
 		try {
 			
-			Log.i("UriEncode: ", audioList.get(indexFile).getURI().toString() );
-			Log.i("UriDecode: ", Uri.decode(audioList.get(indexFile).getURI().toString()));
+//			Log.i("UriEncode: ", Uri.encode(audioList.get(indexFile).getUrl()));
+//			Log.i("UriDecode: ", Uri.decode(audioList.get(indexFile).getUrl()));
 			 
 			player.reset();
-			player.setDataSource(context, Uri.parse(audioList.get(indexFile).getURI().toString()));
+			player.setDataSource(context, Uri.parse(Uri.encode(audioList.get(indexFile).getUrl())));
 			player.prepare();
 			player.start();
 			
@@ -141,7 +144,7 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 		audioList.removeAll(audioList);
 	}
 
-	public void newPlaylist(List<AudioOld> executionList) {
+	public void newPlaylist(List<Audio> executionList) {
 		audioList = executionList;
 	}
 
@@ -186,7 +189,7 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 		player.reset();
 	}
 
-	public void addMusic(AudioOld newMusic) {
+	public void addMusic(Audio newMusic) {
 		audioList.add(newMusic);
 	}
 
@@ -195,8 +198,7 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	 * @return name of current music
 	 */
 	public String getTitleSong() {
-		String str1 = audioList.get(currentSongIndex).getTitle();
-		return str1.substring(0, str1.indexOf("."));
+		return audioList.get(currentSongIndex).getTitle();
 	}
 
 	public int getDuration() {
@@ -227,5 +229,10 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	 */
 	private int random() {
 		return new Random().nextInt(sizeOfAudioList() - 1);
+	}
+	
+	
+	public Bitmap getAlbumArt(){
+		return audioExtractor.getAlbumArt(audioList.get(currentSongIndex).getUrl());
 	}
 }

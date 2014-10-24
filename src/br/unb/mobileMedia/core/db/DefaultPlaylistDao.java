@@ -3,7 +3,6 @@ package br.unb.mobileMedia.core.db;
 import java.util.List;
 
 import de.greenrobot.dao.query.QueryBuilder;
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;

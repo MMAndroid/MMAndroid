@@ -11,17 +11,17 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import br.unb.mobileMedia.R;
-import br.unb.mobileMedia.core.domain.AudioOld;
+import br.unb.mobileMedia.core.domain.Audio;
 
-public class AudioPlayerArrayAdapter extends ArrayAdapter<AudioOld> {
+public class AudioPlayerArrayAdapter extends ArrayAdapter<Audio> {
 
 	private Context context;
 	
-	public AudioPlayerArrayAdapter(Context context, AudioOld[] objects) {
+	public AudioPlayerArrayAdapter(Context context, Audio[] objects) {
 		super(context, R.layout.video_row_layout);
 		this.context = context;
-		List<AudioOld> objectsVector = Arrays.asList(objects);
-		Iterator<AudioOld> iterator = objectsVector.iterator(); 
+		List<Audio> objectsVector = Arrays.asList(objects);
+		Iterator<Audio> iterator = objectsVector.iterator(); 
 		while (iterator.hasNext()) {
 			add(iterator.next());
 		}

@@ -1,8 +1,10 @@
 package br.unb.mobileMedia.core.domain;
 
+import java.net.URI;
 import java.util.List;
 
-import br.unb.mobileMedia.core.db.AlbumDao;
+import android.os.Parcel;
+import android.os.Parcelable;
 import br.unb.mobileMedia.core.db.AudioDao;
 import br.unb.mobileMedia.core.db.DaoSession;
 import br.unb.mobileMedia.core.db.HistoryDao;
@@ -13,21 +15,19 @@ import de.greenrobot.dao.DaoException;
 /**
  * Entity mapped to table AUDIO.
  */
-public class Audio {
+public class Audio implements Parcelable{
 
     private Long id;
     private String title;
     private String url;
-    private long albumId;
+    private String album;
+    private long AuthorId;
 
     /** Used to resolve relations */
     private transient DaoSession daoSession;
 
     /** Used for active entity operations. */
     private transient AudioDao myDao;
-
-    private Album album;
-    private Long album__resolvedKey;
 
     private List<History> audiosHistory;
     private List<PlaylistMedia> listPlaylistMediaAudio;
@@ -39,11 +39,12 @@ public class Audio {
         this.id = id;
     }
 
-    public Audio(Long id, String title, String url, long albumId) {
+    public Audio(Long id, String title, String url, String album, long AuthorId) {
         this.id = id;
         this.title = title;
         this.url = url;
-        this.albumId = albumId;
+        this.album = album;
+        this.AuthorId = AuthorId;
     }
 
     /** called by internal mechanisms, do not call yourself. */
@@ -76,40 +77,20 @@ public class Audio {
         this.url = url;
     }
 
-    public long getAlbumId() {
-        return albumId;
-    }
-
-    public void setAlbumId(long albumId) {
-        this.albumId = albumId;
-    }
-
-    /** To-one relationship, resolved on first access. */
-    public Album getAlbum() {
-        long __key = this.albumId;
-        if (album__resolvedKey == null || !album__resolvedKey.equals(__key)) {
-            if (daoSession == null) {
-                throw new DaoException("Entity is detached from DAO context");
-            }
-            AlbumDao targetDao = daoSession.getAlbumDao();
-            Album albumNew = targetDao.load(__key);
-            synchronized (this) {
-                album = albumNew;
-            	album__resolvedKey = __key;
-            }
-        }
+    public String getAlbum() {
         return album;
     }
 
-    public void setAlbum(Album album) {
-        if (album == null) {
-            throw new DaoException("To-one property 'albumId' has not-null constraint; cannot set to-one to null");
-        }
-        synchronized (this) {
-            this.album = album;
-            albumId = album.getId();
-            album__resolvedKey = albumId;
-        }
+    public void setAlbum(String album) {
+        this.album = album;
+    }
+
+    public long getAuthorId() {
+        return AuthorId;
+    }
+
+    public void setAuthorId(long AuthorId) {
+        this.AuthorId = AuthorId;
     }
 
     /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
@@ -180,4 +161,39 @@ public class Audio {
         myDao.refresh(this);
     }
 
+    
+    
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeLong(id);
+		dest.writeString(title);
+		dest.writeSerializable(url);
+		dest.writeString(album);	
+		dest.writeLong(AuthorId);	
+	}
+    
+	 public static final Parcelable.Creator<Audio> CREATOR = new Parcelable.Creator<Audio>() {
+
+		public Audio createFromParcel(Parcel source) {
+			long id = source.readLong(); 
+			String title = source.readString();
+			URI uri = (URI)source.readSerializable();
+			String album = source.readString();
+			long authorId = source.readLong();
+
+			
+			Audio audio = new Audio(id, title, uri.toString(), album, authorId);
+						
+			return audio;
+		}
+
+		public Audio[] newArray(int size) {
+			return new Audio[size];
+		}
+	
+	 };
+
+	public int describeContents() {
+		return 0;
+	} 
+    
 }

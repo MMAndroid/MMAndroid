@@ -1,7 +1,9 @@
 package br.unb.mobileMedia.playlist;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,7 +25,7 @@ import android.widget.ListView;
 import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.domain.Audio;
-import br.unb.mobileMedia.core.domain.AudioOld;
+import br.unb.mobileMedia.core.domain.Author;
 import br.unb.mobileMedia.core.domain.Playlist;
 import br.unb.mobileMedia.core.manager.Manager;
 import br.unb.mobileMedia.core.view.AudioPlayerFragment;
@@ -37,6 +39,10 @@ public class PlayListEditorFragment extends Fragment {
 	// String containing the playlist id that will be passed on to another
 	// activity through an intent.
 	public final static String SELECTED_PLAYLIST_ID = "idPlaylist";
+    private ArrayAdapterMusic adapterMusic;
+    private Map<Long, String> mapIdNameAuthor = new HashMap<Long, String>();
+    private List<Author> authors;
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,7 +59,7 @@ public class PlayListEditorFragment extends Fragment {
 		// get from intent the playlist`s id.
 		Bundle extras = getArguments();
 		playListId = extras.getInt(MainPlaylistListFragment.SELECTED_PLAYLIST_ID);
-		Log.i("PlayList Name", "Num:" + playListId);
+		Log.i("PlayList ID", "" + playListId);
 		configureUI();
 	}
 
@@ -109,16 +115,22 @@ public class PlayListEditorFragment extends Fragment {
 	}
 
 	private void executePlayList() {
+		
 		List<Audio> listTmp = musicList;
-		AudioOld[] executionList = new AudioOld[listTmp.size()];
+		Audio[] executionList = new Audio[listTmp.size()];
 		listTmp.toArray(executionList);
+		
 		Bundle args = new Bundle();
 		args.putParcelableArray(AudioPlayerFragment.EXECUTION_LIST,	executionList);
+		
 		// TODO Extract this to a method (repeated in MMUnBActivity too)
+		
 		Fragment newFragment = new AudioPlayerFragment();
 		newFragment.setArguments(args);
+		
 		FragmentManager manager = getActivity().getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
+		
 		if (getActivity().findViewById(R.id.main) != null) {
 			transaction.replace(R.id.main, newFragment);
 			transaction.addToBackStack(null);
@@ -149,15 +161,18 @@ public class PlayListEditorFragment extends Fragment {
 						names);
 				listMusicLists.setAdapter(adapter);
 			} else {
-				names = new String[musicList.size()];
-				int i = 0;
-				for (Audio p : musicList) {
-					names[i++] = p.getTitle();
-				}
-				ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-						getActivity(), android.R.layout.simple_list_item_1,
-						android.R.id.text1, names);
-				listMusicLists.setAdapter(adapter);
+				
+	    		authors = Manager.instance().listAuthors(getActivity().getApplicationContext());
+		    	
+		    	for(Author author : authors){
+		    		mapIdNameAuthor.put(author.getId(), author.getName());
+		    	}
+				
+				this.adapterMusic = new ArrayAdapterMusic(getActivity().getApplicationContext(),
+						R.layout.playlist_music_row, musicList, mapIdNameAuthor);
+		    	
+		    	listMusicLists.setAdapter(adapterMusic);
+		    	
 			}
 		} catch (DBException e) {
 			e.printStackTrace();

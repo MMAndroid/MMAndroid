@@ -12,7 +12,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.db.DBException;
-import br.unb.mobileMedia.core.domain.AuthorOld;
+import br.unb.mobileMedia.core.domain.Author;
 import br.unb.mobileMedia.core.manager.Manager;
 
 /**
@@ -25,15 +25,14 @@ public class AuthorListFragment extends ListFragment {
 		super.onCreate(savedInstanceState);
 		getActivity().setTitle("All artists");
 		try {
-			List<AuthorOld> authors = Manager.instance().listAuthors(getActivity().getApplicationContext());
+			List<Author> authors = Manager.instance().listAuthors(getActivity().getApplicationContext());
 
 			if (authors == null || authors.size() == 0) {
 				String[] values = new String[] { "No author found." };
 				ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, values);
 				setListAdapter(adapter);
 			} else {
-				AuthorArrayAdapter adapter = new AuthorArrayAdapter(getActivity(),
-						authors);
+				AuthorArrayAdapter adapter = new AuthorArrayAdapter(getActivity(), authors);
 				setListAdapter(adapter);
 			}
 		} catch (DBException e) {
@@ -51,10 +50,10 @@ public class AuthorListFragment extends ListFragment {
 	 */
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		AuthorOld item = (AuthorOld) getListAdapter().getItem(position);
+		Author item = (Author) getListAdapter().getItem(position);
 		
 		Bundle args = new Bundle();
-		args.putInt(AudioExpandableListFragment.SELECTED_ARTIST_ID, item.getId());
+//		args.putInt(AudioExpandableListFragment.SELECTED_ARTIST_ID, item.getId());
 		args.putString(AudioExpandableListFragment.SELECTED_ARTIST_NAME, item.getName());
 		
 		// TODO Extract this to a method (repeated in MMUnBActivity too)

@@ -23,14 +23,18 @@ public class DefaultDBFactory extends DBFactory {
 		return new DefaultPlaylistDao(context);
 	}
 	
-
+	
 	@Override
-	public AuthorDAOOld createAuthorDAO() {
-		return new DefaultAuthorDAO(context);
+	public IAuthorDao createAuthorDao() {
+		return new DefaultAuthorDao(context);
 	}
 
 
 
+	@Override
+	public IPlaylistMediaDao createPlaylistMediaDao(){
+		return new DefaultPlaylistMediaDao(context);
+	}
 
 
 

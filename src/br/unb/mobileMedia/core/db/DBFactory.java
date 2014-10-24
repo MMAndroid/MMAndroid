@@ -35,17 +35,23 @@ public abstract class DBFactory{
 	
 	
 	/**
+	 * Returns an instance of AuthorDao.
+	 * @return an instance of AuthorDao
+	 */
+	public abstract IAuthorDao createAuthorDao();
+	
+	/**
 	 * Returns an instance of PlaylistDao.
 	 * @return an instance of PlaylistDao
 	 */
 	public abstract IPlayListDao createPlaylistDao();
 
 	
-	/**
-	 * Returns an instance of AuthorDAO.
-	 * @return an instance of AuthorDAO.
-	 */
-	public abstract AuthorDAOOld createAuthorDAO();
+	
+	
+	public abstract IPlaylistMediaDao createPlaylistMediaDao();
+
+	
 	
 	
 	

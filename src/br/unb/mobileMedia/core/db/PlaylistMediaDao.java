@@ -31,8 +31,8 @@ public class PlaylistMediaDao extends AbstractDao<PlaylistMedia, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property VideoPlaylistMediaId = new Property(1, long.class, "videoPlaylistMediaId", false, "VIDEO_PLAYLIST_MEDIA_ID");
-        public final static Property AudioPlaylistMediaId = new Property(2, long.class, "audioPlaylistMediaId", false, "AUDIO_PLAYLIST_MEDIA_ID");
+        public final static Property VideoId = new Property(1, Long.class, "videoId", false, "VIDEO_ID");
+        public final static Property AudioId = new Property(2, Long.class, "audioId", false, "AUDIO_ID");
         public final static Property PlaylistId = new Property(3, long.class, "playlistId", false, "PLAYLIST_ID");
     };
 
@@ -56,8 +56,8 @@ public class PlaylistMediaDao extends AbstractDao<PlaylistMedia, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'PLAYLIST_MEDIA' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
-                "'VIDEO_PLAYLIST_MEDIA_ID' INTEGER NOT NULL ," + // 1: videoPlaylistMediaId
-                "'AUDIO_PLAYLIST_MEDIA_ID' INTEGER NOT NULL ," + // 2: audioPlaylistMediaId
+                "'VIDEO_ID' INTEGER," + // 1: videoId
+                "'AUDIO_ID' INTEGER," + // 2: audioId
                 "'PLAYLIST_ID' INTEGER NOT NULL );"); // 3: playlistId
     }
 
@@ -76,8 +76,16 @@ public class PlaylistMediaDao extends AbstractDao<PlaylistMedia, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
-        stmt.bindLong(2, entity.getVideoPlaylistMediaId());
-        stmt.bindLong(3, entity.getAudioPlaylistMediaId());
+ 
+        Long videoId = entity.getVideoId();
+        if (videoId != null) {
+            stmt.bindLong(2, videoId);
+        }
+ 
+        Long audioId = entity.getAudioId();
+        if (audioId != null) {
+            stmt.bindLong(3, audioId);
+        }
         stmt.bindLong(4, entity.getPlaylistId());
     }
 
@@ -98,8 +106,8 @@ public class PlaylistMediaDao extends AbstractDao<PlaylistMedia, Long> {
     public PlaylistMedia readEntity(Cursor cursor, int offset) {
         PlaylistMedia entity = new PlaylistMedia( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.getLong(offset + 1), // videoPlaylistMediaId
-            cursor.getLong(offset + 2), // audioPlaylistMediaId
+            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // videoId
+            cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2), // audioId
             cursor.getLong(offset + 3) // playlistId
         );
         return entity;
@@ -109,8 +117,8 @@ public class PlaylistMediaDao extends AbstractDao<PlaylistMedia, Long> {
     @Override
     public void readEntity(Cursor cursor, PlaylistMedia entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setVideoPlaylistMediaId(cursor.getLong(offset + 1));
-        entity.setAudioPlaylistMediaId(cursor.getLong(offset + 2));
+        entity.setVideoId(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
+        entity.setAudioId(cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2));
         entity.setPlaylistId(cursor.getLong(offset + 3));
      }
     
@@ -138,30 +146,30 @@ public class PlaylistMediaDao extends AbstractDao<PlaylistMedia, Long> {
     }
     
     /** Internal query to resolve the "listPlaylistMediaVideo" to-many relationship of Video. */
-    public List<PlaylistMedia> _queryVideo_ListPlaylistMediaVideo(long videoPlaylistMediaId) {
+    public List<PlaylistMedia> _queryVideo_ListPlaylistMediaVideo(Long videoId) {
         synchronized (this) {
             if (video_ListPlaylistMediaVideoQuery == null) {
                 QueryBuilder<PlaylistMedia> queryBuilder = queryBuilder();
-                queryBuilder.where(Properties.VideoPlaylistMediaId.eq(null));
+                queryBuilder.where(Properties.VideoId.eq(null));
                 video_ListPlaylistMediaVideoQuery = queryBuilder.build();
             }
         }
         Query<PlaylistMedia> query = video_ListPlaylistMediaVideoQuery.forCurrentThread();
-        query.setParameter(0, videoPlaylistMediaId);
+        query.setParameter(0, videoId);
         return query.list();
     }
 
     /** Internal query to resolve the "listPlaylistMediaAudio" to-many relationship of Audio. */
-    public List<PlaylistMedia> _queryAudio_ListPlaylistMediaAudio(long audioPlaylistMediaId) {
+    public List<PlaylistMedia> _queryAudio_ListPlaylistMediaAudio(Long audioId) {
         synchronized (this) {
             if (audio_ListPlaylistMediaAudioQuery == null) {
                 QueryBuilder<PlaylistMedia> queryBuilder = queryBuilder();
-                queryBuilder.where(Properties.AudioPlaylistMediaId.eq(null));
+                queryBuilder.where(Properties.AudioId.eq(null));
                 audio_ListPlaylistMediaAudioQuery = queryBuilder.build();
             }
         }
         Query<PlaylistMedia> query = audio_ListPlaylistMediaAudioQuery.forCurrentThread();
-        query.setParameter(0, audioPlaylistMediaId);
+        query.setParameter(0, audioId);
         return query.list();
     }
 
@@ -192,8 +200,8 @@ public class PlaylistMediaDao extends AbstractDao<PlaylistMedia, Long> {
             builder.append(',');
             SqlUtils.appendColumns(builder, "T2", daoSession.getPlaylistDao().getAllColumns());
             builder.append(" FROM PLAYLIST_MEDIA T");
-            builder.append(" LEFT JOIN VIDEO T0 ON T.'VIDEO_PLAYLIST_MEDIA_ID'=T0.'_id'");
-            builder.append(" LEFT JOIN AUDIO T1 ON T.'AUDIO_PLAYLIST_MEDIA_ID'=T1.'_id'");
+            builder.append(" LEFT JOIN VIDEO T0 ON T.'VIDEO_ID'=T0.'_id'");
+            builder.append(" LEFT JOIN AUDIO T1 ON T.'AUDIO_ID'=T1.'_id'");
             builder.append(" LEFT JOIN PLAYLIST T2 ON T.'PLAYLIST_ID'=T2.'_id'");
             builder.append(' ');
             selectDeep = builder.toString();
@@ -206,15 +214,11 @@ public class PlaylistMediaDao extends AbstractDao<PlaylistMedia, Long> {
         int offset = getAllColumns().length;
 
         Video playlistMediaVideo = loadCurrentOther(daoSession.getVideoDao(), cursor, offset);
-         if(playlistMediaVideo != null) {
-            entity.setPlaylistMediaVideo(playlistMediaVideo);
-        }
+        entity.setPlaylistMediaVideo(playlistMediaVideo);
         offset += daoSession.getVideoDao().getAllColumns().length;
 
         Audio playlistMediaAudio = loadCurrentOther(daoSession.getAudioDao(), cursor, offset);
-         if(playlistMediaAudio != null) {
-            entity.setPlaylistMediaAudio(playlistMediaAudio);
-        }
+        entity.setPlaylistMediaAudio(playlistMediaAudio);
         offset += daoSession.getAudioDao().getAllColumns().length;
 
         Playlist playlistMediaPlaylist = loadCurrentOther(daoSession.getPlaylistDao(), cursor, offset);

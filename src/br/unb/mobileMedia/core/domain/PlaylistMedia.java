@@ -14,8 +14,8 @@ import de.greenrobot.dao.DaoException;
 public class PlaylistMedia {
 
     private Long id;
-    private long videoPlaylistMediaId;
-    private long audioPlaylistMediaId;
+    private Long videoId;
+    private Long audioId;
     private long playlistId;
 
     /** Used to resolve relations */
@@ -41,10 +41,10 @@ public class PlaylistMedia {
         this.id = id;
     }
 
-    public PlaylistMedia(Long id, long videoPlaylistMediaId, long audioPlaylistMediaId, long playlistId) {
+    public PlaylistMedia(Long id, Long videoId, Long audioId, long playlistId) {
         this.id = id;
-        this.videoPlaylistMediaId = videoPlaylistMediaId;
-        this.audioPlaylistMediaId = audioPlaylistMediaId;
+        this.videoId = videoId;
+        this.audioId = audioId;
         this.playlistId = playlistId;
     }
 
@@ -62,20 +62,20 @@ public class PlaylistMedia {
         this.id = id;
     }
 
-    public long getVideoPlaylistMediaId() {
-        return videoPlaylistMediaId;
+    public Long getVideoId() {
+        return videoId;
     }
 
-    public void setVideoPlaylistMediaId(long videoPlaylistMediaId) {
-        this.videoPlaylistMediaId = videoPlaylistMediaId;
+    public void setVideoId(Long videoId) {
+        this.videoId = videoId;
     }
 
-    public long getAudioPlaylistMediaId() {
-        return audioPlaylistMediaId;
+    public Long getAudioId() {
+        return audioId;
     }
 
-    public void setAudioPlaylistMediaId(long audioPlaylistMediaId) {
-        this.audioPlaylistMediaId = audioPlaylistMediaId;
+    public void setAudioId(Long audioId) {
+        this.audioId = audioId;
     }
 
     public long getPlaylistId() {
@@ -88,7 +88,7 @@ public class PlaylistMedia {
 
     /** To-one relationship, resolved on first access. */
     public Video getPlaylistMediaVideo() {
-        long __key = this.videoPlaylistMediaId;
+        Long __key = this.videoId;
         if (playlistMediaVideo__resolvedKey == null || !playlistMediaVideo__resolvedKey.equals(__key)) {
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
@@ -104,19 +104,16 @@ public class PlaylistMedia {
     }
 
     public void setPlaylistMediaVideo(Video playlistMediaVideo) {
-        if (playlistMediaVideo == null) {
-            throw new DaoException("To-one property 'videoPlaylistMediaId' has not-null constraint; cannot set to-one to null");
-        }
         synchronized (this) {
             this.playlistMediaVideo = playlistMediaVideo;
-            videoPlaylistMediaId = playlistMediaVideo.getId();
-            playlistMediaVideo__resolvedKey = videoPlaylistMediaId;
+            videoId = playlistMediaVideo == null ? null : playlistMediaVideo.getId();
+            playlistMediaVideo__resolvedKey = videoId;
         }
     }
 
     /** To-one relationship, resolved on first access. */
     public Audio getPlaylistMediaAudio() {
-        long __key = this.audioPlaylistMediaId;
+        Long __key = this.audioId;
         if (playlistMediaAudio__resolvedKey == null || !playlistMediaAudio__resolvedKey.equals(__key)) {
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
@@ -132,13 +129,10 @@ public class PlaylistMedia {
     }
 
     public void setPlaylistMediaAudio(Audio playlistMediaAudio) {
-        if (playlistMediaAudio == null) {
-            throw new DaoException("To-one property 'audioPlaylistMediaId' has not-null constraint; cannot set to-one to null");
-        }
         synchronized (this) {
             this.playlistMediaAudio = playlistMediaAudio;
-            audioPlaylistMediaId = playlistMediaAudio.getId();
-            playlistMediaAudio__resolvedKey = audioPlaylistMediaId;
+            audioId = playlistMediaAudio == null ? null : playlistMediaAudio.getId();
+            playlistMediaAudio__resolvedKey = audioId;
         }
     }
 

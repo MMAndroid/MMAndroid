@@ -1,13 +1,6 @@
 package br.unb.mobileMedia;
 
-import br.unb.mobileMedia.core.db.DBConstants;
 import br.unb.mobileMedia.core.db.DBException;
-import br.unb.mobileMedia.core.db.DBFactory;
-import br.unb.mobileMedia.core.db.DaoMaster;
-import br.unb.mobileMedia.core.db.DatabaseOpenHelper;
-import br.unb.mobileMedia.core.db.IAudioDao;
-import br.unb.mobileMedia.core.db.DaoMaster.DevOpenHelper;
-import br.unb.mobileMedia.core.db.DefaultDBFactory;
 import br.unb.mobileMedia.core.manager.Manager;
 import br.unb.mobileMedia.core.view.AudioPlayerFragment;
 import br.unb.mobileMedia.core.view.AuthorListFragment;
@@ -22,7 +15,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.text.Editable.Factory;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,9 +37,14 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
 		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_CUSTOM);
 		actionBar.setTitle("MMAndroid"); 
 		actionBar.setSubtitle("mobile media");
-		
-		DBFactory fac = DefaultDBFactory.factory(this);
-		IAudioDao dao = fac.createAudioDAO();
+
+//		
+//		try {
+//			Manager.instance().synchronizeMedia(this);
+//		} catch (DBException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
 		//Menu com os botoes
 		MenuFragment menuFrag = new MenuFragment();

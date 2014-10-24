@@ -5,26 +5,26 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 import br.unb.mobileMedia.core.domain.AudioFormats;
-import br.unb.mobileMedia.core.domain.Audio;
 
 public class ListAllFiles {
 
 	private File sdcard, extSdcard;
-	private List<Audio> result;
+	private List<File> result;
 
 	public ListAllFiles() {
 		
-		result = new ArrayList<Audio>();
+		result = new ArrayList<File>();
 		sdcard = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
 		extSdcard = new File("/mnt/extSdCard/");
 	
 	}
 
 	
-	public List<Audio> getAllMusic(){
+	public List<File> getAllMusic(){
 		
 		try {
 			listAllDirs(sdcard);
@@ -60,11 +60,7 @@ public class ListAllFiles {
 						if (temp.getAbsolutePath().endsWith(extensionAccepted.getFormatAsString()) && !temp.isHidden()) {
 							try{
 								
-								Audio audio = new Audio();
-								audio.setTitle(temp.getName());
-								audio.setUrl(temp.getAbsolutePath());
-								
-								result.add(audio);	
+								result.add(new File(temp.getAbsolutePath()));	
 							
 							}catch(Exception e){
 								throw e;

@@ -2,19 +2,18 @@ package br.unb.mobileMedia.core.extractor;
 
 import java.io.File;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaScannerConnection;
-import android.net.Uri;
 import android.util.Log;
+import android.widget.ImageView;
 import br.unb.mobileMedia.core.domain.Audio;
-import br.unb.mobileMedia.core.domain.AudioOld;
-import br.unb.mobileMedia.core.domain.AuthorOld;
+import br.unb.mobileMedia.core.domain.Author;
 import br.unb.mobileMedia.core.domain.VideoOld;
 
 /**
@@ -35,6 +34,7 @@ public class DefaultVideoExtractor implements MediaExtractor {
 	private File mp4File;
 	private MediaScannerConnection msc;
 	private Context context;
+	private MediaMetadataRetriever mmr;
 
 	/**
 	 * Constructs a DefaultVideoExtractor with the specified context. The
@@ -46,15 +46,16 @@ public class DefaultVideoExtractor implements MediaExtractor {
 	 */
 	public DefaultVideoExtractor(Context context) {
 		this.context = context;
+		this.mmr = new MediaMetadataRetriever();
 	}
 
 	/**
 	 * @see MediaExtractor#processFile(File[])
 	 */
-	public List<AuthorOld> processFiles(List<File> videoFiles) {
-		Map<Integer, AuthorOld> authors = new HashMap<Integer, AuthorOld>();
+	public List<Author> processFiles(List<File> videoFiles) {
+		Map<Integer, Author> authors = new HashMap<Integer, Author>();
 
-		MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+		
 
 		Log.i("Video files to process: ", String.valueOf(videoFiles.size()));
 		for(File file: videoFiles){
@@ -64,7 +65,7 @@ public class DefaultVideoExtractor implements MediaExtractor {
 			Log.i("URI: ", u.getPath());
 
 			mmr.setDataSource(u.getPath());
-
+			
 			String authorName = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
 			authorName = authorName == null || authorName.equals("") ? UNKNOWN : authorName;
 
@@ -85,17 +86,33 @@ public class DefaultVideoExtractor implements MediaExtractor {
 			Log.i("titleKey: ", titleKey);
 			Log.i("album: ", album);
 
-			AuthorOld author = authors.get(authorId);
+			Author author = authors.get(authorId);
 
 			if(author == null) {
-				author = new  AuthorOld(authorId.hashCode(), authorName);
+//				author = new  Author(authorId.hashCode(), authorName);
 			}
 			Integer id = titleKey.hashCode();
-			author.addProduction(new VideoOld(id, id, album, u));
+//			author.addProduction(new VideoOld(id, id, album, u));
 
-			authors.put(author.getId(), author);
+//			authors.put(author.getId(), author);
 		}
-		return new ArrayList<AuthorOld>(authors.values());
+		return null;
+//		return new ArrayList<Author>(authors.values());
+	}
+
+	public List<Audio> processAudio(List<Author> authors, List<File> files) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Bitmap getAlbumArt(String url) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getBitRate(String url) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
