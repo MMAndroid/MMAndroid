@@ -409,8 +409,6 @@ public class Manager {
 		
 		Playlist platlist = new Playlist((long)idPlaylist);
 		
-		
-		
 		for(Audio audio : mediaList){
 			playlistMediaDao.addAudioToPlaylist(audio, platlist);
 		}
@@ -424,10 +422,15 @@ public class Manager {
 	 * @param list of ids of medias 
 	 * @throws DBException
 	 */
-	public void removeMediaFromPlaylist(Context context, int idPlaylist, List<Integer> mediaList) throws DBException {
+	public void removeMediaFromPlaylist(Context context, int idPlaylist, List<Audio> mediaList) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final IPlayListDao playlistDao = factory.createPlaylistDao();
-		playlistDao.removeMedias(idPlaylist, mediaList);
+		final IPlaylistMediaDao playlistMediaDao = factory.createPlaylistMediaDao();
+		
+		for(Audio audio : mediaList){
+			PlaylistMedia pl = playlistMediaDao.getPlaylistByMediaInPlaylist(audio, new Playlist((long)idPlaylist));
+			playlistMediaDao.removeMediaFromPlaylist(pl);
+		}
+		
 	}
 	
 	/**

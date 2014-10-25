@@ -50,6 +50,10 @@
     
     
     <string name="saveMedia">Save</string>
+    <string name="removeMedia">Delete</string>
+    
+    
+    <string name="noMediaFound">Nenhuma Musica Encontrada.</string>
     
     
     

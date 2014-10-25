@@ -14,4 +14,8 @@ public interface IPlaylistMediaDao {
 	void addToPlaylist(int idPlaylist, List<Integer> mediaList); 
 	
 	List<PlaylistMedia> getMusicFromPlaylist(Playlist playlist) throws DBException;
+	
+	PlaylistMedia getPlaylistByMediaInPlaylist(Audio audio, Playlist playlist) throws DBException;
+	
+	void removeMediaFromPlaylist(PlaylistMedia playlistMedia) throws DBException;
 }

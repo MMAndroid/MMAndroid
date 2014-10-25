@@ -1,14 +1,10 @@
 package br.unb.mobileMedia.core.FileChooser;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import br.unb.mobileMedia.R;
-import br.unb.mobileMedia.core.domain.AudioFormats;
-import br.unb.mobileMedia.core.view.AudioPlayerFragment;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -22,6 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
+import br.unb.mobileMedia.R;
+import br.unb.mobileMedia.core.domain.AudioFormats;
+import br.unb.mobileMedia.core.view.AudioPlayerFragment;
 
 public class FileChooserFragment extends ListFragment {
 	File currentDir;
@@ -152,6 +151,7 @@ public class FileChooserFragment extends ListFragment {
 		adapter = new FileArrayAdapter(getActivity().getApplicationContext(),
 				R.layout.activity_list_file_chooser, dir);
 		this.setListAdapter(adapter);
+		
 
 	}
 

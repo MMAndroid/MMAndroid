@@ -53,8 +53,7 @@ public class MusicSelectFragment extends Fragment {
 
 		Bundle extras = getArguments();
 		// the playlist id that the music will be added.
-		playListId = extras
-				.getInt(MainPlaylistListFragment.SELECTED_PLAYLIST_ID);
+		playListId = extras.getInt(MainPlaylistListFragment.SELECTED_PLAYLIST_ID);
 
 		refreshListMusicLists();
 

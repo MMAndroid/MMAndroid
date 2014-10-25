@@ -88,6 +88,27 @@ public class DefaultPlaylistMediaDao implements IPlaylistMediaDao {
 		return false;
 
 	}
+	
+	
+	public PlaylistMedia getPlaylistByMediaInPlaylist(Audio audio, Playlist playlist) throws DBException{
+		QueryBuilder<PlaylistMedia> qb = playlistMediaDao.queryBuilder();
+
+		qb.where(Properties.AudioId.eq(audio.getId()),
+				Properties.Id.eq(playlist.getId()) );
+
+		if (qb.list().size() > 0) {
+			return qb.list().get(0);
+		}
+
+		return null;
+
+	}
+	
+	public void removeMediaFromPlaylist(PlaylistMedia playlistMedia) throws DBException{
+		
+		playlistMediaDao.delete(playlistMedia);
+		
+	}
 
 	public void addToPlaylist(int idPlaylist, List<Integer> mediaList) {
 		
