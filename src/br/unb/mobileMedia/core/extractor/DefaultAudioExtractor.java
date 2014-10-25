@@ -5,15 +5,13 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.ImageView;
 import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Author;
@@ -23,16 +21,15 @@ import br.unb.mobileMedia.core.domain.Author;
  * 
  * @author rbonifacio
  */
+@SuppressLint("InlinedApi")
 public class DefaultAudioExtractor implements MediaExtractor {
 	
 	private static final String UNKNOWN = "Unknown";
 
-	private File mp3File;
-	private MediaScannerConnection msc;
+//	private File mp3File;
+//	private MediaScannerConnection msc;
 	private Context context;
-	private Uri uri;
 	private MediaMetadataRetriever mmr;
-	private ImageView album_art;
 	
 	/**
 	 * Constructs a DefaultAudioExtractor with the specified context. The
@@ -51,27 +48,22 @@ public class DefaultAudioExtractor implements MediaExtractor {
 	
 	public Bitmap getAlbumArt(String url){
 		
-		Bitmap bm = null;
+		Bitmap bm = BitmapFactory.decodeResource(context.getResources(), 
+    		    R.drawable.adele);
 		
 		try{
-			
+		
 			mmr.setDataSource(url);
 						
-			byte[] artBytes = mmr.getEmbeddedPicture();
-			
-			if(artBytes != null){
+			if(mmr.getEmbeddedPicture() != null){
+				BitmapFactory.decodeByteArray(mmr.getEmbeddedPicture(), 0, mmr.getEmbeddedPicture().length);
 				Log.i("artByte", "nao null");
-		        InputStream is = new ByteArrayInputStream(artBytes);
+		        InputStream is = new ByteArrayInputStream(mmr.getEmbeddedPicture());
 		        bm = BitmapFactory.decodeStream(is);
-		        
-		    }else{
-		    	bm = BitmapFactory.decodeResource(context.getResources(), 
-		    		    R.drawable.icon_audio);
-		    }
-			
+			}
 			
 		}catch(RuntimeException e){
-			Log.i("Exception", "Art image");
+//			Log.i("Exception", "Art image");
 		}
 		
 		return bm;
@@ -157,7 +149,7 @@ public class DefaultAudioExtractor implements MediaExtractor {
 				}catch(RuntimeException e){
 					e.getStackTrace();
 					//Exibir alert para informar sobre acentuação no arquivo
-					Log.i("RuntimeExeption f: ", file.getAbsolutePath());
+//					Log.i("RuntimeExeption f: ", file.getAbsolutePath());
 				}	
 				
 				
@@ -190,20 +182,20 @@ public class DefaultAudioExtractor implements MediaExtractor {
 	
 
 	
-	private MediaScannerConnection createMediaScanner(final List<File> audioFiles) {
-		return new MediaScannerConnection(context,
-				new MediaScannerConnection.MediaScannerConnectionClient() {
-					public void onScanCompleted(String path, Uri uri) {
-						msc.disconnect();
-					}
-
-					public void onMediaScannerConnected() {
-						for (final File file : audioFiles) {
-							mp3File = file;
-							msc.scanFile(mp3File.getAbsolutePath(), null);
-
-						}
-					}
-				});
-	}
+//	private MediaScannerConnection createMediaScanner(final List<File> audioFiles) {
+//		return new MediaScannerConnection(context,
+//				new MediaScannerConnection.MediaScannerConnectionClient() {
+//					public void onScanCompleted(String path, Uri uri) {
+//						msc.disconnect();
+//					}
+//
+//					public void onMediaScannerConnected() {
+//						for (final File file : audioFiles) {
+//							mp3File = file;
+//							msc.scanFile(mp3File.getAbsolutePath(), null);
+//
+//						}
+//					}
+//				});
+//	}
 }

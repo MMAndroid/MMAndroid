@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ public class ArrayAdapterMusic extends ArrayAdapter<Audio> {
 	private List<Audio> items;
 	private Map<Long, String> map;
 	private MediaExtractor audioExtractor;
+	private SparseBooleanArray mSelectedItemsIds;
 
 	public ArrayAdapterMusic(Context context, int textViewResourceId,
 			List<Audio> objects, Map<Long, String> map) {
@@ -35,7 +37,7 @@ public class ArrayAdapterMusic extends ArrayAdapter<Audio> {
 		this.items = objects;
 		this.map = map;
 		this.audioExtractor = new DefaultAudioExtractor(this.context);
-		
+		this.mSelectedItemsIds = new SparseBooleanArray();
 
 	}
 	
@@ -70,12 +72,37 @@ public class ArrayAdapterMusic extends ArrayAdapter<Audio> {
 			
 			int b = Integer.parseInt(audioExtractor.getBitRate(audio.getUrl()));
 			b = (b == 0) ? 0 : (b/1000);
+			
 			bitRate.setText(b+" kbps");
 			
 		}
+		
 		return rowView;
 	}
 	
 	
 
+	public void toggleSelection(int position) {
+		selectView(position, !mSelectedItemsIds.get(position));
+	}
+	
+	
+	public void selectView(int position, boolean value) {
+		if (value)
+			mSelectedItemsIds.put(position, value);
+		else
+			mSelectedItemsIds.delete(position);
+		notifyDataSetChanged();
+	}
+
+	
+	public SparseBooleanArray getSelectedIds() {
+		return mSelectedItemsIds;
+	}
+
+	public void removeSelection() {
+		mSelectedItemsIds = new SparseBooleanArray();
+		notifyDataSetChanged();
+	}
+	
 }

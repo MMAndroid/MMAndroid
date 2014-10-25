@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 import br.unb.mobileMedia.core.domain.AudioFormats;

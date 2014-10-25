@@ -37,18 +37,11 @@ public class DefaultAuthorDao implements IAuthorDao {
 	public void saveAuthor(Author author) throws DBException {
 
 		try {
-			
-			Log.i("Author Name:", ""+author.getName());	
 
 			if(findByName(author.getName()) == null){
 				this.authorDao.insert(author);
-				Log.i("Salvo","-------");
 			}
-//			else
-//				Log.i(audio.getTitle(), "In Database");
 			
-			
-		
 		}catch (SQLiteException e) {
 			Log.i("Save Author","-Exception-");
 			e.printStackTrace();

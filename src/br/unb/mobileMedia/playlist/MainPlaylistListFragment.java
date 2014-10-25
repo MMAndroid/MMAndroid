@@ -49,6 +49,9 @@ public class MainPlaylistListFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		setHasOptionsMenu(true);
 		getActivity().setTitle(R.string.title_activity_play_list);
+		
+		Log.i("MainPlaylistListFragment", "MainPlaylistListFragment");
+		
 		return inflater.inflate(R.layout.activity_play_list, container, false);
 	}
 

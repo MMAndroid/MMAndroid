@@ -11,10 +11,8 @@ import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaScannerConnection;
 import android.util.Log;
-import android.widget.ImageView;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Author;
-import br.unb.mobileMedia.core.domain.VideoOld;
 
 /**
  * A default implementation of an video extractor.

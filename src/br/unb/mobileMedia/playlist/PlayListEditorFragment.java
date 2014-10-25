@@ -100,10 +100,10 @@ public class PlayListEditorFragment extends Fragment {
 		args.putInt(SELECTED_PLAYLIST_ID, playListId);
 		// TODO Extract this to a method (repeated in MMUnBActivity too)
 		Fragment newFragment = new MusicSelectFragment();
-		// Chamando o FileChooser para escolher as musicas
-		// Fragment newFragment = new FileChooserFragment();
 		newFragment.setArguments(args);
+		
 		FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+		
 		if (getActivity().findViewById(R.id.main) != null) {
 			transaction.replace(R.id.main, newFragment);
 			transaction.addToBackStack(null);
@@ -111,6 +111,7 @@ public class PlayListEditorFragment extends Fragment {
 			transaction.replace(R.id.content, newFragment);
 			transaction.addToBackStack(null);
 		}
+		
 		transaction.commit();
 	}
 
@@ -169,7 +170,7 @@ public class PlayListEditorFragment extends Fragment {
 		    	}
 				
 				this.adapterMusic = new ArrayAdapterMusic(getActivity().getApplicationContext(),
-						R.layout.playlist_music_row, musicList, mapIdNameAuthor);
+						R.layout.music_row_in_playlist, musicList, mapIdNameAuthor);
 		    	
 		    	listMusicLists.setAdapter(adapterMusic);
 		    	

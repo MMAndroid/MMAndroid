@@ -24,8 +24,6 @@ import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.FileChooser.FileDetail;
 import br.unb.mobileMedia.core.audioPlayer.AudioPlayerList;
 import br.unb.mobileMedia.core.domain.Audio;
-import br.unb.mobileMedia.core.extractor.DefaultAudioExtractor;
-import br.unb.mobileMedia.core.extractor.MediaExtractor;
 import br.unb.mobileMedia.playlist.PlayListManager;
 
 public class AudioPlayerFragment extends Fragment implements PlayListManager,

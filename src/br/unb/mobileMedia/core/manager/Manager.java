@@ -393,8 +393,6 @@ public class Manager {
 		DBFactory factory = DBFactory.factory(context);
 		final IPlayListDao playlistDao = factory.createPlaylistDao();
 		return playlistDao.listPlaylists();
-//		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
-//		return playlistDAO.listPlaylists();
 	}
 	
 	/**
@@ -405,10 +403,17 @@ public class Manager {
 	 * @param list of ids of medias 
 	 * @throws DBException
 	 */
-	public void addMediaToPlaylist(Context context, int idPlaylist, List<Integer> mediaList) throws DBException {
+	public void addMediaToPlaylist(Context context, int idPlaylist, List<Audio> mediaList) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final IPlaylistMediaDao playlistDao = factory.createPlaylistMediaDao();
-		playlistDao.addToPlaylist(idPlaylist, mediaList);
+		final IPlaylistMediaDao playlistMediaDao = factory.createPlaylistMediaDao();
+		
+		Playlist platlist = new Playlist((long)idPlaylist);
+		
+		
+		
+		for(Audio audio : mediaList){
+			playlistMediaDao.addAudioToPlaylist(audio, platlist);
+		}
 	}
 	
 	/**
