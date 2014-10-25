@@ -14,8 +14,8 @@ Micro Edition.
 Features dessa versao
 ===========================
 
-Player basico para execucao de videos armazenados 
-no SDCard. Em mais detalhes, cobre:
+Player basico para execucao de videos armazenados em todo dispositiovo.
+Em mais detalhes, cobre:
 
 * Mudanca de activities (Telas) (Registro dessas atividades no manifest)
 
@@ -35,6 +35,7 @@ playlist, preferencias sobre musicas, videos e fotos, atribuir informacao
 de localizacao (essa musica me lembra a Chapada dos Viadeiros, por exemplo), 
 relacionar midias, como essa musica esta associada a um evento especifico, e 
 tais fotos foram tiradas nesse evento, etc.
+
 
 * Executar midias que estao em um servidor remoto
 
