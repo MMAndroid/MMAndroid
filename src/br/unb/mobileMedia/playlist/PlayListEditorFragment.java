@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -38,6 +38,7 @@ public class PlayListEditorFragment extends Fragment {
 	// String containing the playlist id that will be passed on to another
 	// activity through an intent.
 	public final static String SELECTED_PLAYLIST_ID = "idPlaylist";
+	@SuppressLint("UseSparseArrays")
 	private Map<Long, String> mapIdNameAuthor = new HashMap<Long, String>();
 	private List<Author> authors;
 	private ArrayAdapterMusic listviewadapter;
@@ -145,9 +146,20 @@ public class PlayListEditorFragment extends Fragment {
 
 		try {
 			playlist = Manager.instance().getPlaylistById(getActivity(), playListId);
+			
 			if (playlist != null) {
 				musicList = Manager.instance().getMusicFromPlaylist(getActivity(), playListId);
 			}
+			
+			authors = Manager.instance().listAuthors(
+					getActivity().getApplicationContext());
+
+			
+			for (Author author : authors) {
+				mapIdNameAuthor.put(author.getId(), author.getName());
+			}
+			
+			
 			// String[] names;
 			// check if there is any playlist
 			if (musicList == null || musicList.size() == 0) {
