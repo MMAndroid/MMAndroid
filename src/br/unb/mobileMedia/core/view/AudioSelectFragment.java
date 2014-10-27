@@ -49,7 +49,7 @@ public class AudioSelectFragment extends Fragment{
 	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.activity_playlist_music_select, menu);
+		inflater.inflate(R.menu.save_audio_playlist, menu);
 	}
 
 	//updates the listview with all the musics from the DB

@@ -1,10 +1,12 @@
 package br.unb.mobileMedia.core.db;
 
 import java.util.List;
+
 import de.greenrobot.dao.query.QueryBuilder;
 import br.unb.mobileMedia.core.db.AudioDao.Properties;
 import br.unb.mobileMedia.core.db.DaoMaster.DevOpenHelper;
 import br.unb.mobileMedia.core.domain.Audio;
+import br.unb.mobileMedia.core.domain.PlaylistMedia;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -100,6 +102,25 @@ public class DefaultAudioDao implements IAudioDao {
 		return audioDao.loadAll();
 		
 	}
+	
+	
+	
+	public List<Audio> listAllAudioPaginated( int init, int limit) throws DBException{
+		
+		QueryBuilder<Audio> qb = audioDao.queryBuilder();
+//		qb.where(Properties.Url.isNotNull());
+		qb.offset(init);
+		qb.limit(limit);
+
+		if (qb.list().size() > 0) {
+			Log.e("AudioPaginated", ""+qb.list().size());
+			return qb.list();
+		}
+
+		throw new DBException();
+
+	}
+	
 	
 	
 	public boolean updateAudio(Audio audio) throws DBException{

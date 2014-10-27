@@ -120,11 +120,11 @@ public class Manager {
 		List<Audio> list = extractor.processAudio(daoAuthor.listAuthors(), files);
 		 
 		for(Audio a : list){
-//			 Log.i("Audio Title:", ""+a.getTitle());
-//			 Log.i("Audio Url:", ""+a.getUrl());
-//			 Log.i("Audio Album:", ""+a.getAlbum());
-//			 Log.i("Audio Author:", ""+a.getAuthorId());
-//			
+			 Log.i("Audio Title:", ""+a.getTitle());
+			 Log.i("Audio Url:", ""+a.getUrl());
+			 Log.i("Audio Album:", ""+a.getAlbum());
+			 Log.i("Audio Author:", ""+a.getAuthorId());
+			
 			 daoAudio.saveAudio(a);
 			 
 		}
@@ -165,6 +165,16 @@ public class Manager {
 	public List<Audio> listAllProduction(Context context) throws DBException {
 		IAuthorDao dao = DBFactory.factory(context).createAuthorDao();
 		return dao.listAllProduction();
+	}
+	
+	
+//	listAllAudioPaginated
+	public List<Audio> listAllAudioPaginated(Context context,  int init, int limit) throws DBException {
+		DBFactory factory = DBFactory.factory(context);
+		final IPlaylistMediaDao playlistMediaDao = factory.createPlaylistMediaDao();
+		final IAudioDao audioDao = factory.createAudioDAO();
+
+		 return audioDao.listAllAudioPaginated(init, limit);
 	}
 	
 	
@@ -425,10 +435,23 @@ public class Manager {
 	public void removeMediaFromPlaylist(Context context, int idPlaylist, List<Audio> mediaList) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
 		final IPlaylistMediaDao playlistMediaDao = factory.createPlaylistMediaDao();
+		PlaylistMedia pl;
 		
 		for(Audio audio : mediaList){
-			PlaylistMedia pl = playlistMediaDao.getPlaylistByMediaInPlaylist(audio, new Playlist((long)idPlaylist));
-			playlistMediaDao.removeMediaFromPlaylist(pl);
+			
+			try{
+				pl = playlistMediaDao.getPlaylistByMediaInPlaylist(audio, new Playlist((long)idPlaylist));
+				
+				if(pl != null)
+					playlistMediaDao.removeMediaFromPlaylist(pl);
+				
+			}catch(DBException e){
+				e.getStackTrace();
+				Log.i("PLMedia", "null");
+			}
+			
+			
+			
 		}
 		
 	}
@@ -453,6 +476,29 @@ public class Manager {
 			audiosInPlaylist.add(audioDao.listAudioById(new Audio(media.getAudioId())));
 		}
 		
+		 return audiosInPlaylist;
+	}
+	
+
+	
+	
+	
+	public List<Audio> getMusicFromPlaylistPaginate(Context context, int idPlaylist, int init, int limit) throws DBException {
+		DBFactory factory = DBFactory.factory(context);
+		final IPlaylistMediaDao playlistMediaDao = factory.createPlaylistMediaDao();
+		final IAudioDao audioDao = factory.createAudioDAO();
+
+		List<PlaylistMedia> playlist = playlistMediaDao.getMusicFromPlaylistPaginate(new Playlist((long)idPlaylist), init, limit);
+//		
+		List<Audio> audiosInPlaylist = new ArrayList<Audio>();
+//		
+		for(PlaylistMedia media : playlist){
+			audiosInPlaylist.add(audioDao.listAudioById(new Audio(media.getAudioId())));
+		}
+//		
+		Log.i("init "+ init, "limit " + limit);
+		
+//		return null;
 		 return audiosInPlaylist;
 	}
 	

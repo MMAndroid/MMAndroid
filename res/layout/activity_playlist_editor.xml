@@ -4,10 +4,12 @@
     android:layout_height="match_parent"
     tools:context=".playlist.PlayListEditorActivity" >
 
-     <ListView
+    <ListView
         android:id="@+id/list_musiclist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"/>
+        android:layout_alignParentLeft="true" />
+
+  
 
 </RelativeLayout>

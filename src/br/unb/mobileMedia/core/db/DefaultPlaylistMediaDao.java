@@ -94,13 +94,34 @@ public class DefaultPlaylistMediaDao implements IPlaylistMediaDao {
 		QueryBuilder<PlaylistMedia> qb = playlistMediaDao.queryBuilder();
 
 		qb.where(Properties.AudioId.eq(audio.getId()),
-				Properties.Id.eq(playlist.getId()) );
+				Properties.PlaylistId.eq(playlist.getId()) );
 
 		if (qb.list().size() > 0) {
 			return qb.list().get(0);
 		}
 
-		return null;
+		throw new DBException();
+
+	}
+
+	
+	
+	
+	public List<PlaylistMedia> getMusicFromPlaylistPaginate(Playlist playlist, int init, int limit) throws DBException{
+		
+		QueryBuilder<PlaylistMedia> qb = playlistMediaDao.queryBuilder();
+
+		qb.where(Properties.PlaylistId.eq(playlist.getId()) );
+		qb.offset(init);
+		qb.limit(limit);
+
+		if (qb.list().size() > 0) {
+			return qb.list();
+		}
+
+		
+
+		throw new DBException();
 
 	}
 	
