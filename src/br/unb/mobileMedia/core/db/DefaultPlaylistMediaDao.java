@@ -32,16 +32,16 @@ public class DefaultPlaylistMediaDao implements IPlaylistMediaDao {
 
 	}
 
-	public void addAudioToPlaylist(Audio audio, Playlist playlist) throws DBException {
+	public void addAudioToPlaylist(Long idAudio, Playlist playlist) throws DBException {
 		try {
 
 			// Log.i("Audio Title", ""+ audio.getTitle());
 			// Log.i("Audio Path", ""+audio.getUrl());
 			// Log.i("listAudioByPath()", ""+listAudioByPath(audio).size());
 
-			if (!listAudioInPlaylistMedia(audio, playlist)){
+			if (!listAudioInPlaylistMedia(idAudio, playlist)){
 				//PlaylistMedia(Long id, long videoPlaylistMediaId, long audioPlaylistMediaId, long playlistId) 
-				this.playlistMediaDao.insert(new PlaylistMedia(null, null, audio.getId(),  playlist.getId()));
+				this.playlistMediaDao.insert(new PlaylistMedia(null, null, idAudio,  playlist.getId()));
 				
 			}
 			// else
@@ -58,11 +58,11 @@ public class DefaultPlaylistMediaDao implements IPlaylistMediaDao {
 	}
 
 	
-	public List<PlaylistMedia> getMusicFromPlaylist(Playlist playlist) throws DBException{
+	public List<PlaylistMedia> getMusicFromPlaylist(Long idPlaylist) throws DBException{
 		try{
 			
 			QueryBuilder<PlaylistMedia> qb = this.playlistMediaDao.queryBuilder();
-			qb.where(Properties.PlaylistId.eq(playlist.getId()));
+			qb.where(Properties.PlaylistId.eq(idPlaylist));
 			
 			return qb.list();
 			
@@ -74,11 +74,11 @@ public class DefaultPlaylistMediaDao implements IPlaylistMediaDao {
 		}
 	}
 	
-	private boolean listAudioInPlaylistMedia(Audio audio, Playlist playlist) {
+	private boolean listAudioInPlaylistMedia(Long idAudio, Playlist playlist) {
 
 		QueryBuilder<PlaylistMedia> qb = playlistMediaDao.queryBuilder();
 
-		qb.where(Properties.AudioId.eq(audio.getId()),
+		qb.where(Properties.AudioId.eq(idAudio),
 				Properties.Id.eq(playlist.getId()));
 
 		if (qb.list().size() > 0) {
@@ -94,20 +94,41 @@ public class DefaultPlaylistMediaDao implements IPlaylistMediaDao {
 		QueryBuilder<PlaylistMedia> qb = playlistMediaDao.queryBuilder();
 
 		qb.where(Properties.AudioId.eq(audio.getId()),
-				Properties.Id.eq(playlist.getId()) );
+				Properties.PlaylistId.eq(playlist.getId()) );
 
 		if (qb.list().size() > 0) {
 			return qb.list().get(0);
 		}
 
-		return null;
+		throw new DBException();
+
+	}
+
+	
+	
+	
+	public List<PlaylistMedia> getMusicFromPlaylistPaginate(Playlist playlist, int init, int limit) throws DBException{
+		
+		QueryBuilder<PlaylistMedia> qb = playlistMediaDao.queryBuilder();
+
+		qb.where(Properties.PlaylistId.eq(playlist.getId()) );
+		qb.offset(init);
+		qb.limit(limit);
+
+		if (qb.list().size() > 0) {
+			return qb.list();
+		}
+
+		
+
+		throw new DBException();
 
 	}
 	
-	public void removeMediaFromPlaylist(PlaylistMedia playlistMedia) throws DBException{
+	public void removeMediaFromPlaylist(Long idMediaPlaylist) throws DBException{
 		
-		playlistMediaDao.delete(playlistMedia);
-		
+		playlistMediaDao.deleteByKey(idMediaPlaylist);
+
 	}
 
 	public void addToPlaylist(int idPlaylist, List<Integer> mediaList) {

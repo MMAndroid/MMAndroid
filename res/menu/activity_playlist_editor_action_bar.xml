@@ -13,7 +13,6 @@
                 android:title="@string/add_music_in_play_list_ab"/>
             <item
                 android:id="@+id/ExecutePlayList"
-                android:icon="@drawable/play_icon"
                 android:title="@string/execute_play_list"/>
         </menu>
     </item>

@@ -61,21 +61,13 @@ public interface IPlayListDao {
 	 */
 	Playlist getPlaylist(int idPlaylist) throws DBException;
 	
-	/**
-	 * Get a playlist by name.
-	 * @param namePlaylist - the name from the playlist which will be returned 
-	 * @return a playlist.
-	 * @throws DBException if anything goes wrong with the database query
-	 */
-	Playlist getPlaylist(String name) throws DBException;
-
 	
 	/**
 	 * Delete a playlist by name.
-	 * @param namePlaylist - the name from the playlist which will be deleted 
+	 * @param id - the name from the playlist which will be deleted 
 	 * @throws DBException if anything goes wrong with the database query
 	 */
-	void deletePlaylist(String namePlaylist) throws DBException;
+	void deletePlaylist(Long id) throws DBException;
 	
 	/**
 	 * Edit a playlist by id.
@@ -94,13 +86,7 @@ public interface IPlayListDao {
 	 */
 	void addPositionPlaylist(Playlist playlist, double latitude, double longitude) throws DBException;
 	
-	/**
-	 * Remove a list of medias from a playlist
-	 * @param idPlaylist - the id from the playlist which will be returned 
-	 * @param mediaList - list of medias to be removed
-	 * @throws DBException if anything goes wrong with the database query
-	 */
-	void removeMedias(int idPlaylist, List<Integer> mediaList) throws DBException;
+
 	
 	
 	/**

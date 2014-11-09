@@ -7,7 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 
 public class MenuFragment extends Fragment {
 	
@@ -17,16 +17,16 @@ public class MenuFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,	Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.menu, container, false);
 		
-		Button button;
+		ImageButton button;
 		
-		button = ((Button) view.findViewById(R.id.btn_list_authors));
+		button = ((ImageButton) view.findViewById(R.id.btn_list_authors));
 		button.setOnClickListener(new OnClickMenuItemListener());
 		
-		button = ((Button) view.findViewById(R.id.btn_open_music_player));
+		button = ((ImageButton) view.findViewById(R.id.btn_open_music_player));
 		button.setOnClickListener(new OnClickMenuItemListener());
 				
-		button = ((Button) view.findViewById(R.id.btn_synchronize));
-		button.setOnClickListener(new OnClickMenuItemListener());
+//		button = ((ImageButton) view.findViewById(R.id.btn_synchronize));
+//		button.setOnClickListener(new OnClickMenuItemListener());
 
 		return view;
 	}

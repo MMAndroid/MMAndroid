@@ -76,8 +76,7 @@ public class DefaultPlaylistDao implements IPlayListDao {
 	}
 
 	public List<Playlist> listPlaylists() throws DBException {
-		// TODO Auto-generated method stub
-		return null;
+		return playlistDao.loadAll();
 	}
 	
 	
@@ -101,20 +100,22 @@ public class DefaultPlaylistDao implements IPlayListDao {
 	}
 	
 	public Playlist getPlaylist(int idPlaylist) throws DBException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Playlist p = this.playlistDao.load((long)idPlaylist);
+		
+		if(p == null)
+			throw new DBException();
+		
+		return p;
 	}
 
-	public Playlist getPlaylist(String name) throws DBException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	
-	public void deletePlaylist(String namePlaylist) throws DBException {
+	public void deletePlaylist(Long id) throws DBException {
 		
 		try{
-			Playlist playlist = getPlaylistByName(namePlaylist);
+			Playlist playlist = getPlaylist(id.intValue());
 			
 			if(playlist != null)
 				playlistDao.delete(playlist);
@@ -138,11 +139,6 @@ public class DefaultPlaylistDao implements IPlayListDao {
 		
 	}
 
-	public void removeMedias(int idPlaylist, List<Integer> mediaList)
-			throws DBException {
-		// TODO Auto-generated method stub
-		
-	}
 
 	public List<Audio> getMusicFromPlaylist(int idPlaylist) throws DBException {
 		// TODO Auto-generated method stub

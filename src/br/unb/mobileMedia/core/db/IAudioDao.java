@@ -3,6 +3,7 @@ package br.unb.mobileMedia.core.db;
 import java.util.List;
 
 import br.unb.mobileMedia.core.domain.Audio;
+import br.unb.mobileMedia.core.domain.PlaylistMedia;
 
 public interface IAudioDao {
 		
@@ -60,5 +61,9 @@ public interface IAudioDao {
 	 * @throws DBException if not delete 
 	 */
 	public boolean deleteAudio(Audio audio) throws DBException;
+	
+	
+	List<Audio> listAllAudioPaginated( int init, int limit) throws DBException;
+
 	
 }

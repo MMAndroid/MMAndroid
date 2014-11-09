@@ -10,7 +10,6 @@
         <menu>
             <item
                 android:id="@+id/ExecuteMusicSelected"
-                android:icon="@drawable/play_icon"
                 android:title="Play Music Selecteds"/>
         </menu>
     </item>

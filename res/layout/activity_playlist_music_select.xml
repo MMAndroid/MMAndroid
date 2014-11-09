@@ -3,14 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<!--     <TextView -->
-<!--        	android:layout_width="match_parent" -->
-<!--         android:layout_height="20dp" -->
-<!--         android:layout_marginBottom="5dp" -->
-<!--         android:textAlignment="center" -->
-<!--         android:text="Select music for playlist" -->
-<!--         /> -->
-    
+
+<!-- here is load the audio rows in this list -->
     <ListView
         android:id="@+id/list_musiclistselect"
         android:layout_width="match_parent"
@@ -20,4 +14,5 @@
         android:choiceMode="multipleChoice">
     </ListView>
 
+    
 </RelativeLayout>
