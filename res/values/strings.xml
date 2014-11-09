@@ -42,6 +42,14 @@
     <string name="exit_ab">Exit</string>
     <string name="refresh_ab">Refresh</string>
     
+    <!-- Context menus -->
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="manager_playlist">Manager Playlist</string>
+    <string name="manager_playlist_exec">play</string>
+    <string name="add_geographical_position">Add Position GPS</string>
+    
+    
     
     <!-- Action Bar Strings PlayListActivity -->
     <string name="add_play_list_ab">New Play List</string>
@@ -56,6 +64,33 @@
     <string name="noMediaFound">Nenhuma Musica Encontrada.</string>
     
     
+    <string name="drawer_open">Open Drawer</string>
+		<string name="drawer_close">Close Drawer</string>
+    
+    
+    <!-- Nav Drawer Menu Items -->
+    <string-array name="nav_drawer_items">
+        <item >Home</item>
+        <item >Authors</item>
+        <item >Albums</item>
+        <item >Playlist</item>
+        <item >Musics</item>
+    </string-array>
+    
+    
+    
+    <!-- Nav Drawer List Item Icons -->
+    <!-- Keep them in order as the titles are in -->
+    <array name="nav_drawer_icons">
+        <item>@drawable/ic_home</item>
+        <item>@drawable/ic_author</item>
+        <item>@drawable/ic_album</item>
+        <item>@drawable/ic_playlist</item>
+        <item>@drawable/ic_music</item>
+    </array>
+    
+    
+    <string name="desc_list_item_icon">Item Icon</string>
     
     
 </resources>

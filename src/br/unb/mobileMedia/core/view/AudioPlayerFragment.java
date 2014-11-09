@@ -24,6 +24,8 @@ import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.FileChooser.FileDetail;
 import br.unb.mobileMedia.core.audioPlayer.AudioPlayerList;
 import br.unb.mobileMedia.core.domain.Audio;
+import br.unb.mobileMedia.core.extractor.DefaultAudioExtractor;
+import br.unb.mobileMedia.core.extractor.MediaExtractor;
 import br.unb.mobileMedia.playlist.PlayListManager;
 
 public class AudioPlayerFragment extends Fragment implements PlayListManager,
@@ -45,8 +47,12 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager,
 	private Handler mHandler = new Handler();
 	private Utilities utils;
 	private TextView songTitleLabel;
+	private TextView author;
+	private TextView genre;
+	private TextView album;
 	private TextView songCurrentDurationLabel;
 	private TextView songTotalDurationLabel;
+	private MediaExtractor audioExtractor;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -61,6 +67,13 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager,
 		View v = inflater.inflate(R.layout.activity_audio_player, container,false);
 
 		Log.i("AudioPlayerFragment", "OnCreateView...");
+		
+		this.audioExtractor = new DefaultAudioExtractor(getActivity().getApplicationContext());
+
+		
+		this.author = (TextView) v.findViewById(R.id.author);
+		this.album = (TextView) v.findViewById(R.id.album);
+		this.genre = (TextView) v.findViewById(R.id.genre);
 		
 		//albumArt
 		albumArt = (ImageView) v.findViewById(R.id.albumArt);
@@ -77,6 +90,8 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager,
 		btnRepeat = (ImageButton) v.findViewById(R.id.btnRepeat);
 		btnShuffle = (ImageButton) v.findViewById(R.id.btnShuffle);
 		songProgressBar = (SeekBar) v.findViewById(R.id.songProgressBar);
+		
+		
 		utils = new Utilities();
 		songProgressBar.setOnSeekBarChangeListener(this);
 
@@ -205,22 +220,29 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager,
 	}
 	
 		
-		
+	
 	public void updateProgressBar() {
 		mHandler.postDelayed(mUpdateTimeTask, 100);
 	}
-		
+	
 	/*
 	* Background Runnable thread
 	*/
 	private Runnable mUpdateTimeTask = new Runnable() {
 		public void run() {	
 			if(player.isPlaying()){
+				
 				long totalDuration = player.getDuration();
 				long currentDuration = player.getCurrentPosition();
 				songTotalDurationLabel.setText(""+ utils.milliSecondsToTimer(totalDuration));
 				songCurrentDurationLabel.setText(""+ utils.milliSecondsToTimer(currentDuration));
 				songTitleLabel.setText(player.getTitleSong());
+				
+				
+				author.setText(player.getAuthor());
+				genre.setText(player.getGenre());
+				album.setText(player.getAlbum());
+				
 				albumArt.setImageBitmap(player.getAlbumArt());
 				int progress = (int) (utils.getProgressPercentage(currentDuration,totalDuration));
 		// Log.d("Progress", ""+progress);
@@ -281,10 +303,10 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager,
 	 */
 	private void updateAudioListView(){
 		Log.i("AudioPlayerFragment", "Updateding audio list view...");
-		ListView listView = (ListView) getActivity().findViewById(R.id.list_audio_player);
+//		ListView listView = (ListView) getActivity().findViewById(R.id.list_audio_player);
 		Audio[] music = musicList.toArray(new Audio[musicList.size()]);
-		listView.setAdapter(new AudioPlayerArrayAdapter(getActivity().getApplicationContext(), music));
-		listView.setItemChecked(0, true);
+//		listView.setAdapter(new AudioPlayerArrayAdapter(getActivity().getApplicationContext(), music));
+//		listView.setItemChecked(0, true);
 	}
 	
 	@Override

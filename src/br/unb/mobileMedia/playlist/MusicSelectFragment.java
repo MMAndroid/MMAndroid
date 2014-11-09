@@ -1,222 +1,298 @@
 package br.unb.mobileMedia.playlist;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.AsyncTask;
+import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.ActionMode;
 import android.view.Menu;
-import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.ListView;
 import br.unb.mobileMedia.R;
+import br.unb.mobileMedia.Exception.ExceptionMediaExtractor;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.domain.Audio;
-import br.unb.mobileMedia.core.domain.Author;
+import br.unb.mobileMedia.core.extractor.DefaultAudioExtractor;
+import br.unb.mobileMedia.core.extractor.MediaExtractor;
 import br.unb.mobileMedia.core.manager.Manager;
-import br.unb.mobileMedia.playlist.MultiChoiceMode.OnChooseMoreListener;
 
-public class MusicSelectFragment extends Fragment implements OnChooseMoreListener {
+public class MusicSelectFragment extends ListFragment{
 
-	public final static int menuInflate = R.menu.save_audio_playlist;
+	public final int menuInflate = R.menu.save_audio_playlist;
 	private final int ITEMS_PER_PAGE = 9;
 
-	@SuppressLint("UseSparseArrays")
-	private Map<Long, String> mapIdNameAuthor = new HashMap<Long, String>();
 	private List<Audio> musicList = new ArrayList<Audio>();
-	private List<Audio> musics = new ArrayList<Audio>();
-	private List<Author> authors = new ArrayList<Author>();
-	private List<Audio> selecteds = new ArrayList<Audio>();
+	private List<Long> selecteds = new ArrayList<Long>();
 	private int playListId;
-	private int listviewselection;
-	private int totalAudioInDb = 0;
 	
+	private ArrayAdapterAudio adapter;
+
+
 	private Context context;
-	private View footerView;
-	private ListView list = null;
-	private ArrayAdapterMusic listviewadapter;
+
+	private List<AudioViewItem> mItems;
+	private MediaExtractor mediaExtractor;
 	
-
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		super.onCreateView(inflater, container, savedInstanceState);
+	public void onCreate(Bundle savedInstanceState) {
 
-		setHasOptionsMenu(true);
+		super.onCreate(savedInstanceState);
 
 		this.context = getActivity().getApplicationContext();
+
+		mItems = new ArrayList<AudioViewItem>();
+		mediaExtractor = new DefaultAudioExtractor(context);
+
+
+	}
+	
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 		
-		getActivity().getActionBar().setSubtitle(R.string.title_activity_music_select);
+		Bundle extras = getArguments();
+
+		this.playListId = extras
+				.getInt(MainPlaylistListFragment.SELECTED_PLAYLIST_ID);
+				
+		try {
+			getActivity().getActionBar().setSubtitle("Add Music in PLaylist: " + Manager.instance().getPlaylistById(getActivity(), playListId).getTitle());
+		} catch (DBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		configureUI();
 		
-		return inflater.inflate(R.layout.activity_playlist_music_select,
-				container, false);
+
+		
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onActivityCreated(savedInstanceState);
-
-		Bundle extras = getArguments();
-		// the playlist id that the music will be added.
-		playListId = extras.getInt(MainPlaylistListFragment.SELECTED_PLAYLIST_ID);
-
-		this.list = (ListView) getActivity().findViewById(R.id.list_musiclistselect);
-
-		this.listviewadapter = new ArrayAdapterMusic(context,
-				R.layout.music_row_select_from_playlist, musics,
-				mapIdNameAuthor);
-
-		this.footerView = ((LayoutInflater) getActivity().getSystemService(
-				context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.footer,
-				null, false);
-
-		this.list.addFooterView(footerView, null, false);
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		// remove the dividers from the ListView of the ListFragment
+				
+		getListView().setDivider(null);
 		
-		this.list.setAdapter(listviewadapter);
 		
+		getListView().setOnScrollListener(new AbsListView.OnScrollListener(){
+			public void onScrollStateChanged(AbsListView absListView, int i) {
+//			  Log.e("onScrollStateChanged", "onScrollStateChanged");
+			}
+		 
+		  	public void onScroll(AbsListView absListView,  int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+		  
+			  if (totalItemCount != 0 && totalItemCount == firstVisibleItem + visibleItemCount) {
+			  
+			  }
+		 
+		  	}
+		  });
+	}
+	
+	
+	
+	public void onChooseMore(int position) {
+	  if (!selecteds.contains(mItems.get(position).id)) {
+		  selecteds.add(mItems.get(position).id);
+		  Log.i("adicionado",""+ mItems.get(position).id.intValue());
+		  
+	  } else {
+		  selecteds.remove(mItems.get(position).id);
+		  Log.i("removido", ""+   mItems.get(position).id.intValue());
+	  }
+	}
+   
+
+	// updates the listview with all the musics from the DB
+	private void configureUI() {
+
 		try {
-			this.musicList = Manager.instance().listAllAudio(context);
-			this.totalAudioInDb = this.musicList.size();
-			this.authors = Manager.instance().listAuthors(context);
 
-			for (Author author : this.authors) {
-				this.mapIdNameAuthor.put(author.getId(), author.getName());
+			this.musicList = Manager.instance().listAllAudio(context);
+
+			for (Audio audio : musicList) {
+
+				Long   id    = null;
+				String title = null;
+				String album = null;
+				Bitmap artAlbum = null;
+				String author = null;
+				String bitRate = null;
+
+				try {
+
+					this.mediaExtractor.setMMR(audio.getUrl());
+
+					id    = audio.getId();
+					title = audio.getTitle();
+					album = this.mediaExtractor.getAlbum();
+					artAlbum = this.mediaExtractor.getAlbumArt();
+					author = this.mediaExtractor.getAuthor();
+					bitRate = this.mediaExtractor.getBitRate();
+
+				} catch (ExceptionMediaExtractor e1) {
+
+					Log.e("ExceptionMediaExtractor", e1.getMessage());
+
+				}
+
+				mItems.add(new AudioViewItem(id, artAlbum, title, album, author, bitRate));
 			}
 
 		} catch (DBException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		
-		refreshListMusicLists();
+		adapter = new ArrayAdapterAudio(context, R.layout.audio_row, mItems, getListView());
+		
+		setListAdapter(adapter);
+		
+		getListView().setSelector(R.drawable.list_selector);
+		
+		getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+		
+		getListView().setMultiChoiceModeListener(new MultiChoiceModeListener() {
 
-		Log.i("MusicSelectFragment", "");
-		Log.i("Add music to ", "Playlist " + playListId);
-
-	}
-
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
-		menu.clear();
-
-	}
-
-	// updates the listview with all the musics from the DB
-	private void refreshListMusicLists() {
-
-		// Pass results to ListViewAdapter Class
-		this.listviewadapter = new ArrayAdapterMusic(context,
-				R.layout.music_row_select_from_playlist, musics,
-				mapIdNameAuthor);
-
-		this.list.setOnScrollListener(new EndlessScrollListener(){
-			@Override
-			public void onLoadMore(int page, int totalItemsCount){
-				Log.i("OnLoadMore", ""+page);
-				loadMore(page, totalItemsCount);
-				listviewadapter.setNotifyOnChange(true);
+			public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+				mode.getMenuInflater().inflate(menuInflate, menu);
+				return true;
 			}
+
+			public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+				switch (item.getItemId()) {
+				case R.id.saveMedia:
+					saveItems();
+					mode.finish();
+				default:
+					return false;
+				}
+			}
+
+			public void onDestroyActionMode(ActionMode mode) {
+				adapter.removeSelection();
+			}
+
+			public void onItemCheckedStateChanged(ActionMode mode, int position,
+					long id, boolean checked) {
+				// Capture total checked items
+				final int checkedCount = getListView().getCheckedItemCount();
+				// Set the CAB title according to total checked items
+				mode.setTitle(checkedCount + " Selected");
+				
+//				getListView().getAdapter().
+				adapter.toggleSelection(position);
+				
+				onChooseMore(position);
+			
+			}
+			
 		});
 		
-		list.setAdapter(listviewadapter);
-
-		list.setMultiChoiceModeListener(new MultiChoiceMode(this, list, this.menuInflate));
-		list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-		list.setSelection(listviewselection);
-		
 
 	}
 
+
+
+	 public void saveItems() {
+		 try {
+			 Manager.instance().addMediaToPlaylist( getActivity().getBaseContext(), playListId, selecteds);
+			 // Closes the activity. Only one music can be added per time.
+			 getActivity().getSupportFragmentManager().popBackStack();
 	
-
-
-	public void onChooseMore(int position) {
-		if (!selecteds.contains(listviewadapter.getItem(position))) {
-			selecteds.add(listviewadapter.getItem(position));
-//			Log.i("adicionado",""+ listviewadapter.getItem(position).getId().intValue());
-		} else {
-			selecteds.remove(listviewadapter.getItem(position));
-//			Log.i("removido", ""+ listviewadapter.getItem(position).getId().intValue());
-		}	
-	}
-
-	public void removeItems() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void saveItems() {
-		try {
-
-			Manager.instance().addMediaToPlaylist(
-					getActivity().getBaseContext(), playListId, selecteds);
-			// Closes the activity. Only one music can be added per time.
-			getActivity().getSupportFragmentManager().popBackStack();
-
-		} catch (DBException e) {
-			e.printStackTrace();
-			Log.i("DBException", "in saveMedia - MusicSelectFragment");
-		}		
-	}
+		 } catch (DBException e) {
+			 e.printStackTrace();
+			 Log.i("DBException", "in saveMedia - MusicSelectFragment");
+		 }
+	 }
 	
 	
-	private void loadMore(final int page, final int totalItemsCount) {
-		
-		Log.e("Page", page+"-"+totalItemsCount);
-		
-		new AsyncTask<Void, Void, Void>() {
-			List<Audio> audios;
-
-			@Override
-			protected Void doInBackground(Void... voids) {
-				// Simulating delay to get more items from an API.
-				try {
-//					Log.e("Lisview items", ""+listviewadapter.getCount());
-//					Log.e("totalItemsCount", ""+totalItemsCount);
-//					Log.e("page", ""+page);
-
-					Thread.sleep(1000);
-					audios = Manager.instance().listAllAudioPaginated(context, listviewadapter.getCount(), ITEMS_PER_PAGE);
-//					audios = Manager.instance().getMusicFromPlaylistPaginate(
-//						context, playListId, listviewadapter.getCount(),
-//						ITEMS_PER_PAGE);
-					
-					Log.e("listviewadapter: " + listviewadapter.getCount(), "musicList: "+musicList.size());
-
-				} catch (Exception e) {
-					e.getStackTrace();
-				}
-
-				return null;
-			}
-
-			@Override
-			protected void onPostExecute(Void result) {
-				
-				list.addFooterView(footerView, null, false);
-				
-				if(totalItemsCount < totalAudioInDb){
-					Log.e("totalItemsCount: " + totalItemsCount, "musicList: "+musicList.size());
-					for (Audio audio : audios) {
-						musics.add(audio);
-					}
-				}
-				
-				list.removeFooterView(footerView);
-
-			}
-		}.execute();
-	}
-	
+	//
+	// public void removeItems() {
+	// // TODO Auto-generated method stub
+	//
+	// }
+	//
+	// public void saveItems() {
+	// try {
+	//
+	// Manager.instance().addMediaToPlaylist(
+	// getActivity().getBaseContext(), playListId, selecteds);
+	// // Closes the activity. Only one music can be added per time.
+	// getActivity().getSupportFragmentManager().popBackStack();
+	//
+	// } catch (DBException e) {
+	// e.printStackTrace();
+	// Log.i("DBException", "in saveMedia - MusicSelectFragment");
+	// }
+	// }
+	//
+	// private void loadMore(final int page, final int totalItemsCount) {
+	//
+	// Log.e("Page", page + "-" + totalItemsCount);
+	//
+	// new AsyncTask<Void, Void, Void>() {
+	// List<Audio> audios;
+	//
+	// @Override
+	// protected Void doInBackground(Void... voids) {
+	// // Simulating delay to get more items from an API.
+	// try {
+	// // Log.e("Lisview items", ""+ getCount());
+	// Log.e("totalItemsCount", "" + totalItemsCount);
+	// Log.e("page", "" + page);
+	//
+	// // Thread.sleep(1000);
+	// // audios =
+	// // Manager.instance().listAllAudioPaginated(context,
+	// // listviewadapter.getCount(), ITEMS_PER_PAGE);
+	// // audios = Manager.instance().getMusicFromPlaylistPaginate(
+	// // context, playListId, listviewadapter.getCount(),
+	// // ITEMS_PER_PAGE);
+	//
+	// // Log.e("listviewadapter: " + listviewadapter.getCount(),
+	// // "musicList: "+musicList.size());
+	//
+	// } catch (Exception e) {
+	// e.getStackTrace();
+	// }
+	//
+	// return null;
+	// }
+	//
+	// @Override
+	// protected void onPostExecute(Void result) {
+	//
+	// // list.addFooterView(footerView, null, false);
+	// //
+	// // if(totalItemsCount < totalAudioInDb){
+	// // Log.e("totalItemsCount: " + totalItemsCount,
+	// // "musicList: "+musicList.size());
+	// // for (Audio audio : audios) {
+	// // musics.add(audio);
+	// // }
+	// // }
+	// //
+	// // list.removeFooterView(footerView);
+	//
+	// }
+	// }.execute();
+	// }
 
 }

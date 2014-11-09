@@ -1,0 +1,29 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+     <item
+        android:id="@+id/menu_context_manager_playlist"
+        android:orderInCategory="100"
+        android:title="@string/manager_playlist"/>
+     
+    <item
+        android:id="@+id/menu_context_exec_this_playlist"
+        android:orderInCategory="100"
+        android:title="@string/manager_playlist_exec"/>
+    
+     <item
+        android:id="@+id/menu_context_add_position"
+        android:orderInCategory="100"
+        android:title="@string/add_geographical_position"/>
+     
+     
+    <item
+        android:id="@+id/menu_context_edit"
+        android:orderInCategory="100"
+        android:title="@string/edit"/>
+    
+    <item
+        android:id="@+id/menu_context_delete"
+        android:orderInCategory="100"
+        android:title="@string/delete"/>
+
+</menu>

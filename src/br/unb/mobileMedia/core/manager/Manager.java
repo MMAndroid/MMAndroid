@@ -98,9 +98,6 @@ public class Manager {
 		//get all Author's in files
 		List<Author> authors =  extractor.processFiles(allMusics);
 		
-		Log.i("listAudios", ""+allMusics.size());
-		Log.i("Autores: ", ""+authors.size());
-
 		save(context, authors, allMusics);
 		
 	}
@@ -120,10 +117,10 @@ public class Manager {
 		List<Audio> list = extractor.processAudio(daoAuthor.listAuthors(), files);
 		 
 		for(Audio a : list){
-			 Log.i("Audio Title:", ""+a.getTitle());
-			 Log.i("Audio Url:", ""+a.getUrl());
-			 Log.i("Audio Album:", ""+a.getAlbum());
-			 Log.i("Audio Author:", ""+a.getAuthorId());
+//			 Log.i("Audio Title:", ""+a.getTitle());
+//			 Log.i("Audio Url:", ""+a.getUrl());
+//			 Log.i("Audio Album:", ""+a.getAlbum());
+//			 Log.i("Audio Author:", ""+a.getAuthorId());
 			
 			 daoAudio.saveAudio(a);
 			 
@@ -284,16 +281,31 @@ public class Manager {
 	}
 
 	/**
-	 * Remove a playlist identified by namePlaylist
+	 * Remove a playlist identified by id and Automatic remove all media from this playlist
 	 * 
 	 * @param context the application context
 	 * @param name from the playlist to be removed
 	 * @throws DBException
 	 */
-	public void removePlaylist(Context context, String namePlaylist) throws DBException {
+	public void removePlaylist(Context context, Long idPlaylist) throws DBException {
+		
 		DBFactory factory = DBFactory.factory(context);
+		
 		final IPlayListDao playlistDao = factory.createPlaylistDao();
-		playlistDao.deletePlaylist(namePlaylist);
+		final IPlaylistMediaDao playlistMediaDao = factory.createPlaylistMediaDao();
+		
+		try{
+			//Remove all medias from playlist
+			removeAllMediaFromPlaylist(context, idPlaylist);
+			
+			//delete playlist
+			playlistDao.deletePlaylist(idPlaylist);
+			
+		}catch(DBException e){
+			Log.e("Erro", e.getCause().toString());
+		}
+		
+		
 	}
 	
 	/**
@@ -371,7 +383,7 @@ public class Manager {
 	public Playlist getPlaylist(Context context, String name) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
 		final IPlayListDao playlistDao = factory.createPlaylistDao();
-		return playlistDao.getPlaylist(name);
+		return playlistDao.getPlaylistByName(name);
 //		final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
 //		return playlistDAO.getPlaylist(name);
 	}
@@ -413,16 +425,51 @@ public class Manager {
 	 * @param list of ids of medias 
 	 * @throws DBException
 	 */
-	public void addMediaToPlaylist(Context context, int idPlaylist, List<Audio> mediaList) throws DBException {
+	public void addMediaToPlaylist(Context context, int idPlaylist, List<Long> mediaList) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
 		final IPlaylistMediaDao playlistMediaDao = factory.createPlaylistMediaDao();
 		
 		Playlist platlist = new Playlist((long)idPlaylist);
 		
-		for(Audio audio : mediaList){
-			playlistMediaDao.addAudioToPlaylist(audio, platlist);
+		for(Long idAudio : mediaList){
+			playlistMediaDao.addAudioToPlaylist(idAudio, platlist);
 		}
 	}
+
+	
+	
+	/**
+	 * Remove all medias from a playlist
+	 * 
+	 * @param context the application context
+	 * @param id from the playlist
+	 * @param list of ids of medias 
+	 * @throws DBException
+	 */
+	public void removeAllMediaFromPlaylist(Context context, Long idPlaylist) throws DBException {
+		DBFactory factory = DBFactory.factory(context);
+		final IPlaylistMediaDao playlistMediaDao = factory.createPlaylistMediaDao();
+		
+		List<PlaylistMedia> pl;
+		
+		try{
+			pl = playlistMediaDao.getMusicFromPlaylist(idPlaylist);
+			
+			if(pl != null){
+				for(int i=0;i<pl.size();i++){
+					playlistMediaDao.removeMediaFromPlaylist(pl.get(i).getId());
+				}
+				
+			}
+			
+		}catch(DBException e){
+			e.getStackTrace();
+			Log.i("PLMedia", "null");
+		}
+			
+		
+	}
+	
 	
 	/**
 	 * Remove a list of medias from a playlist
@@ -443,7 +490,7 @@ public class Manager {
 				pl = playlistMediaDao.getPlaylistByMediaInPlaylist(audio, new Playlist((long)idPlaylist));
 				
 				if(pl != null)
-					playlistMediaDao.removeMediaFromPlaylist(pl);
+					playlistMediaDao.removeMediaFromPlaylist(pl.getId());
 				
 			}catch(DBException e){
 				e.getStackTrace();
@@ -468,7 +515,7 @@ public class Manager {
 		final IPlaylistMediaDao playlistMediaDao = factory.createPlaylistMediaDao();
 		final IAudioDao audioDao = factory.createAudioDAO();
 
-		List<PlaylistMedia> playlist = playlistMediaDao.getMusicFromPlaylist(new Playlist((long)idPlaylist));
+		List<PlaylistMedia> playlist = playlistMediaDao.getMusicFromPlaylist((long)idPlaylist);
 		
 		List<Audio> audiosInPlaylist = new ArrayList<Audio>();
 		

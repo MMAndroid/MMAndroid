@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaScannerConnection;
 import android.util.Log;
+import br.unb.mobileMedia.Exception.ExceptionMediaExtractor;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Author;
 
@@ -103,14 +104,34 @@ public class DefaultVideoExtractor implements MediaExtractor {
 		return null;
 	}
 
-	public Bitmap getAlbumArt(String url) {
+	public Bitmap getAlbumArt() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public String getBitRate(String url) {
+	public String getBitRate() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public String getAuthor() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getAlbum() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getGenre() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void setMMR(String url) throws ExceptionMediaExtractor {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -7,7 +7,7 @@
         android:state_pressed="true" />
     <item android:drawable="@drawable/img_btn_play_pressed" 
         	android:state_focused="true" />
-    <item android:drawable="@drawable/img_btn_play"
+    <item android:drawable="@drawable/img_btn_play" 
         android:state_focused="false"
         android:state_pressed="false" />
 </selector>

@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import android.graphics.Bitmap;
+import br.unb.mobileMedia.Exception.ExceptionMediaExtractor;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Author;
 
@@ -22,14 +23,22 @@ public interface MediaExtractor {
 	 * @param audioFiles input files used to obtain audio data
 	 * @return a list of audio data obtained from <i>audioFiles</i>.
 	 */
-	public List<Author> processFiles(List<File> audioFiles);
 	
+	
+	public void setMMR(String url) throws ExceptionMediaExtractor;
+	
+	public List<Author> processFiles(List<File> audioFiles);
 	
 	public List<Audio> processAudio(List<Author> authors, List<File> files);
 
-
-	public Bitmap getAlbumArt(String url);
+	public String getAuthor();
 	
-	public String getBitRate(String url);
+	public String getAlbum();
+	
+	public String getGenre();
+
+	public Bitmap getAlbumArt();
+	
+	public String getBitRate();
 
 }
