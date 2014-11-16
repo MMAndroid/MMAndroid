@@ -25,7 +25,7 @@ public class NavDrawerListAdapter extends BaseAdapter {
 		return navDrawerItems.size();
 	}
 
-	public Object getItem(int position) {		
+	public NavDrawerItem getItem(int position) {		
 		return navDrawerItems.get(position);
 	}
 
@@ -34,30 +34,57 @@ public class NavDrawerListAdapter extends BaseAdapter {
 	}
 
 	
+	private static class ViewHolder{
+		public  ImageView imgIcon;
+		public  TextView txtTitle;
+		public  TextView txtCount;
+	}
+	
 	public View getView(int position, View convertView, ViewGroup parent) {
+		
+		ViewHolder v;
+		
 		if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater)
                     context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            convertView = mInflater.inflate(R.layout.drawer_list_item, null);
+            convertView = mInflater.inflate(R.layout.drawer_list_item, parent, false);
+            
+            v = new ViewHolder();
+            v.imgIcon = (ImageView) convertView.findViewById(R.id.icon);
+            v.txtTitle = (TextView) convertView.findViewById(R.id.title);
+            v.txtCount = (TextView) convertView.findViewById(R.id.counter);
+            
+            convertView.setTag(v);
+            
+        }else{
+        	v = (ViewHolder) convertView.getTag();
         }
+		
+	
+		NavDrawerItem item = navDrawerItems.get(position);
          
-        ImageView imgIcon = (ImageView) convertView.findViewById(R.id.icon);
-        TextView txtTitle = (TextView) convertView.findViewById(R.id.title);
-        TextView txtCount = (TextView) convertView.findViewById(R.id.counter);
-         
-        imgIcon.setImageResource(navDrawerItems.get(position).getIcon());        
-        txtTitle.setText(navDrawerItems.get(position).getTitle());
+		v.imgIcon.setImageResource(item.getIcon());        
+		v.txtTitle.setText(item.getTitle());
         
         // displaying count
         // check whether it set visible or not
-        if(navDrawerItems.get(position).getCounterVisibility()){
-        	txtCount.setText(navDrawerItems.get(position).getCount());
+        if(item.getCounterVisibility()){
+        	v.txtCount.setText(item.getCount());
         }else{
-        	// hide the counter view
-        	txtCount.setVisibility(View.GONE);
+        	v.txtCount.setVisibility(View.GONE);
         }
         
         return convertView;
 	}
+	
+	
+	
+	public void swapItem(ArrayList<NavDrawerItem> navDrawerItems) {
+ 		
+//    	this.navDrawerItems.addAll(navDrawerItems);
+    	
+    	notifyDataSetChanged();
+	}
+	
 
 }

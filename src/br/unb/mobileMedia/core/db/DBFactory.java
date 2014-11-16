@@ -53,6 +53,8 @@ public abstract class DBFactory{
 
 	
 	
+	public abstract IAlbumDao createAlbumDao();
+	
 	
 	
 	

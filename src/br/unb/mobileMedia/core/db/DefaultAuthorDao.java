@@ -34,12 +34,12 @@ public class DefaultAuthorDao implements IAuthorDao {
 		this.audioDao   = daoSession.getAudioDao();
 	}
 	
-	public void saveAuthor(Author author) throws DBException {
+	public void saveAuthor(String author) throws DBException {
 
 		try {
 
-			if(findByName(author.getName()) == null){
-				this.authorDao.insert(author);
+			if(findByName(author) == null){
+				this.authorDao.insert(new Author(null, author));
 			}
 			
 		}catch (SQLiteException e) {

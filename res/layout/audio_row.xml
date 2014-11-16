@@ -3,25 +3,20 @@
     android:layout_width="fill_parent"
     android:background="?android:attr/activatedBackgroundIndicator"
     android:layout_height="wrap_content"
-    android:orientation="horizontal" >
-
-    <ImageView
-        android:id="@+id/AlbumArt"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_margin="1sp" />
+    android:orientation="horizontal"
+    android:layout_marginTop="2dp">
 
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="65dp"
         android:orientation="horizontal"
         android:paddingLeft="2dp" >
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical" 
+            android:paddingLeft="10dp">
 
             <TextView
                 android:id="@+id/TitleItem"
@@ -30,7 +25,7 @@
                 android:paddingBottom="3sp"
                 android:paddingTop="3sp"
                 android:textColor="#000000"
-                android:textSize="13sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/ArtistaItem"
@@ -61,7 +56,7 @@
                 android:layout_height="fill_parent"
                 android:gravity="center"
                 android:textColor="#000000"
-                android:textSize="10sp" />
+                android:textSize="10dp" />
         </RelativeLayout>
     </RelativeLayout>
 

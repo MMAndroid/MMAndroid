@@ -11,20 +11,21 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import br.unb.mobileMedia.R;
+import br.unb.mobileMedia.core.domain.Album;
 import br.unb.mobileMedia.core.domain.Author;
 
-public class AuthorArrayAdapter extends ArrayAdapter<Author> {
+public class AlbumArrayAdapter extends ArrayAdapter<Album> {
 
 	private Context context;
 	private LayoutInflater mInflater;
 	
-	public AuthorArrayAdapter(Context context, List<Author> authors) {
+	public AlbumArrayAdapter(Context context, List<Album> albums) {
 		super(context, R.layout.author_row);
 		this.context = context;
 		
 		this.mInflater = LayoutInflater.from(context);
 		
-		Iterator<Author> iterator = authors.iterator();
+		Iterator<Album> iterator = albums.iterator();
 		while (iterator.hasNext()) {
 			this.add(iterator.next());
 		}
@@ -37,22 +38,22 @@ public class AuthorArrayAdapter extends ArrayAdapter<Author> {
 		
 		if(convertView == null){
 			
-			convertView = mInflater.inflate(R.layout.author_row, parent, false);
+			convertView = mInflater.inflate(R.layout.album_row, parent, false);
 			v = new ViewHolder();
-			v.imageArt = (ImageView) convertView.findViewById(R.id.AuthorArt);
-			v.nameAuthor = (TextView) convertView.findViewById(R.id.NameAuthor);
-			v.numAlbumAuthor = (TextView) convertView.findViewById(R.id.numAlbumAuthor);
+			v.imageArt = (ImageView) convertView.findViewById(R.id.albumArt);
+			v.nameAlbum = (TextView) convertView.findViewById(R.id.nameAlbum);
+			v.numAudioInAldum = (TextView) convertView.findViewById(R.id.numAudioInAldum);
 		
 			convertView.setTag(v);
 		}else{
         	v = (ViewHolder) convertView.getTag();
         }
 		
-		Author item = getItem(position);
+		Album item = getItem(position);
 		
 		v.imageArt.setBackgroundResource(R.drawable.adele);
-		v.nameAuthor.setText(item.getName());
-		v.numAlbumAuthor.setText("Albums: "+item.getAlbuns().size()+".");
+		v.nameAlbum.setText(item.getName());
+		v.numAudioInAldum.setText("Audios: "+item.getAudioAlbum().size()+".");
 
 		
 		return convertView;
@@ -60,7 +61,7 @@ public class AuthorArrayAdapter extends ArrayAdapter<Author> {
 	
 	private static class ViewHolder{
 		ImageView imageArt;
-		TextView nameAuthor;
-		TextView numAlbumAuthor;
+		TextView nameAlbum;
+		TextView numAudioInAldum;
 	}
 }

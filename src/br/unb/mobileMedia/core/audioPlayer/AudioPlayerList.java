@@ -7,11 +7,8 @@ import java.util.Random;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.util.Log;
-import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.Exception.ExceptionMediaExtractor;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.extractor.DefaultAudioExtractor;
@@ -241,7 +238,8 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	
 	
 	public Bitmap getAlbumArt(){
-		return audioExtractor.getAlbumArt();
+		return null;
+//		return audioExtractor.getAlbumArt();
 	}
 	
 	

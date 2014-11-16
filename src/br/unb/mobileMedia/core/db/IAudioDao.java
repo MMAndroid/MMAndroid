@@ -47,6 +47,9 @@ public interface IAudioDao {
 	public List<Audio> listAllAudio();
 	
 	
+	public Long countAllAudio();
+	
+	
 	/**
 	 * Update audio of the MMUAndroid database.
 	 * @return true
@@ -63,7 +66,7 @@ public interface IAudioDao {
 	public boolean deleteAudio(Audio audio) throws DBException;
 	
 	
-	List<Audio> listAllAudioPaginated( int init, int limit) throws DBException;
+	List<Audio> listAllAudioPaginated( int ofset, int limit) throws DBException;
 
 	
 }

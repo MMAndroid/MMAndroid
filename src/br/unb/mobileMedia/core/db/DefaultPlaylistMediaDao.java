@@ -2,7 +2,6 @@ package br.unb.mobileMedia.core.db;
 
 import java.util.List;
 
-import de.greenrobot.dao.query.QueryBuilder;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -12,6 +11,7 @@ import br.unb.mobileMedia.core.db.PlaylistMediaDao.Properties;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Playlist;
 import br.unb.mobileMedia.core.domain.PlaylistMedia;
+import de.greenrobot.dao.query.QueryBuilder;
 
 public class DefaultPlaylistMediaDao implements IPlaylistMediaDao {
 
@@ -41,7 +41,7 @@ public class DefaultPlaylistMediaDao implements IPlaylistMediaDao {
 
 			if (!listAudioInPlaylistMedia(idAudio, playlist)){
 				//PlaylistMedia(Long id, long videoPlaylistMediaId, long audioPlaylistMediaId, long playlistId) 
-				this.playlistMediaDao.insert(new PlaylistMedia(null, null, idAudio,  playlist.getId()));
+				this.playlistMediaDao.insert(new PlaylistMedia(null, (Long)null, idAudio,  playlist.getId()));
 				
 			}
 			// else
@@ -78,7 +78,7 @@ public class DefaultPlaylistMediaDao implements IPlaylistMediaDao {
 
 		QueryBuilder<PlaylistMedia> qb = playlistMediaDao.queryBuilder();
 
-		qb.where(Properties.AudioId.eq(idAudio),
+		qb.where(Properties.AudioPlaylistMediaId.eq(idAudio),
 				Properties.Id.eq(playlist.getId()));
 
 		if (qb.list().size() > 0) {
@@ -93,7 +93,7 @@ public class DefaultPlaylistMediaDao implements IPlaylistMediaDao {
 	public PlaylistMedia getPlaylistByMediaInPlaylist(Audio audio, Playlist playlist) throws DBException{
 		QueryBuilder<PlaylistMedia> qb = playlistMediaDao.queryBuilder();
 
-		qb.where(Properties.AudioId.eq(audio.getId()),
+		qb.where(Properties.AudioPlaylistMediaId.eq(audio.getId()),
 				Properties.PlaylistId.eq(playlist.getId()) );
 
 		if (qb.list().size() > 0) {

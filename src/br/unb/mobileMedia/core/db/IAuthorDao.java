@@ -13,7 +13,7 @@ public interface IAuthorDao {
 	 * 
 	 * @param author - the author that will be persisted. 
 	 */
-	public void saveAuthor(Author author) throws DBException;
+	public void saveAuthor(String author) throws DBException;
 	
 	/**
 	 * Persist an media and relates it to author in the database

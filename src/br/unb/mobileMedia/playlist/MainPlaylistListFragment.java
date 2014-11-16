@@ -285,8 +285,7 @@ public class MainPlaylistListFragment extends ListFragment {
 		listTmp.toArray(executionList);
 		Bundle args = new Bundle();
 
-		args.putParcelableArray(AudioPlayerFragment.EXECUTION_LIST,
-				executionList);
+//		args.putParcelableArray(AudioPlayerFragment.EXECUTION_LIST, executionList);
 
 		Fragment newFragment = new AudioPlayerFragment();
 		newFragment.setArguments(args);

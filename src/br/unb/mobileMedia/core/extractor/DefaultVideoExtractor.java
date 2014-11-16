@@ -12,6 +12,7 @@ import android.media.MediaMetadataRetriever;
 import android.media.MediaScannerConnection;
 import android.util.Log;
 import br.unb.mobileMedia.Exception.ExceptionMediaExtractor;
+import br.unb.mobileMedia.core.domain.Album;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Author;
 
@@ -99,12 +100,12 @@ public class DefaultVideoExtractor implements MediaExtractor {
 //		return new ArrayList<Author>(authors.values());
 	}
 
-	public List<Audio> processAudio(List<Author> authors, List<File> files) {
+	public List<Audio> processAudio(List<File> files, List<Album> albums) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Bitmap getAlbumArt() {
+	public byte[] getAlbumArt() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -132,6 +133,18 @@ public class DefaultVideoExtractor implements MediaExtractor {
 	public void setMMR(String url) throws ExceptionMediaExtractor {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+
+	public List<String> extractAllAuthors(List<File> audiosFiles) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Album> extractAllAlbum(List<File> audioFiles, List<Author> authors) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

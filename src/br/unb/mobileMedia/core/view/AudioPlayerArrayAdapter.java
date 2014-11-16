@@ -18,7 +18,7 @@ public class AudioPlayerArrayAdapter extends ArrayAdapter<Audio> {
 	private Context context;
 	
 	public AudioPlayerArrayAdapter(Context context, Audio[] objects) {
-		super(context, R.layout.video_row_layout);
+		super(context, R.layout.author_row);
 		this.context = context;
 		List<Audio> objectsVector = Arrays.asList(objects);
 		Iterator<Audio> iterator = objectsVector.iterator(); 
@@ -30,8 +30,8 @@ public class AudioPlayerArrayAdapter extends ArrayAdapter<Audio> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View rowView = inflater.inflate(R.layout.video_row_layout, parent,false);
-		TextView textView = (TextView) rowView.findViewById(R.id.txt_name);
+		View rowView = inflater.inflate(R.layout.author_row, parent,false);
+		TextView textView = (TextView) rowView.findViewById(R.id.NameAuthor);
 		
 		textView.setText(getItem(position).getTitle());
 		

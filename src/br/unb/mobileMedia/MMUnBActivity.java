@@ -22,7 +22,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.manager.Manager;
-import br.unb.mobileMedia.core.view.AudioPlayerFragment;
+import br.unb.mobileMedia.core.view.AlbumListFragment;
+import br.unb.mobileMedia.core.view.AudioSelectFragment;
+import br.unb.mobileMedia.core.view.AuthorListFragment;
 import br.unb.mobileMedia.playlist.MainPlaylistListFragment;
 
 @SuppressLint("NewApi")
@@ -31,7 +33,6 @@ public class MMUnBActivity extends FragmentActivity {
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
-	
 	
 
 	// nav drawer title
@@ -51,27 +52,13 @@ public class MMUnBActivity extends FragmentActivity {
 	private ActionBar actionBar;
 	private SyncFiles syncFiles;
 
-	private Integer TotalPlaylist;
-	private Integer TotalAudio;
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState); 
 		setContentView(R.layout.main);
 
-		
-		try {
-			TotalAudio = (Manager.instance().listAllAudio(getApplicationContext()).size());
-			TotalPlaylist = (Manager.instance().listPlaylists(getApplicationContext()).size());
-		} catch (DBException e) {
-			
-			TotalAudio = 0;
-			TotalPlaylist = 0;
-			
-			Log.e("###",e.getMessage());
-		}
-		
-		
 		mTitle = mDrawerTitle = getTitle();
 
 		// load slide menu items
@@ -88,8 +75,8 @@ public class MMUnBActivity extends FragmentActivity {
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));		// Home
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));		// Authors
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));		// Albums
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, TotalPlaylist.toString()));		// Playlist
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1), true, TotalAudio.toString()));		// Audios
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));		// Playlist
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));		// Audios
 
 		// Recycle the typed array
 		navMenuIcons.recycle();
@@ -246,21 +233,21 @@ public class MMUnBActivity extends FragmentActivity {
 			break;
 			
 		 case 1:
-			 fragment = new AudioPlayerFragment();
+			 fragment = new AuthorListFragment();
 		 break;
-		// case 2:
-		// fragment = new PhotosFragment();
-		// break;
+		 
+		 case 2:
+			 fragment = new AlbumListFragment();
+		 break;
+		 
 		 case 3:
-		 fragment = new MainPlaylistListFragment();
-		 break;
-		// case 4:
-		// fragment = new PagesFragment(); 
-		// break;
-		// case 5:
-		// fragment = new WhatsHotFragment();
-		// break;
-		//
+			 fragment = new MainPlaylistListFragment();
+			 break;
+			 
+		 case 4:
+			 fragment = new AudioSelectFragment();
+			 break;
+		
 		default:
 			break;
 		}
@@ -344,6 +331,11 @@ public class MMUnBActivity extends FragmentActivity {
 	private class SyncFiles extends AsyncTask<Void, Void, Void> {
 
 		private Context context;
+		private Integer TotalPlaylist;
+		private Integer TotalAudio;
+		private Integer TotalAuthor;
+		private Integer TotalAlbum;
+
 
 		public SyncFiles(Context c) {
 			context = c;
@@ -355,7 +347,12 @@ public class MMUnBActivity extends FragmentActivity {
 			try {
 
 				Manager.instance().synchronizeMedia(context);
-
+				
+				TotalAuthor   = Manager.instance().listAuthors(context).size();
+				TotalAlbum    = Manager.instance().countAllAlbum(context).intValue();
+				TotalPlaylist = Manager.instance().listPlaylists(getApplicationContext()).size();
+				TotalAudio    = Manager.instance().countAllAudio(context).intValue();
+				
 			} catch (Exception e) {
 				Log.i("Exception", e.getCause().toString());
 				e.getStackTrace();
@@ -370,6 +367,23 @@ public class MMUnBActivity extends FragmentActivity {
 				menuItem.collapseActionView();
 				menuItem.setActionView(null);
 			}
+			
+			navDrawerItems.get(1).setCounterVisibility(true);
+			navDrawerItems.get(2).setCounterVisibility(true);
+			navDrawerItems.get(3).setCounterVisibility(true);
+			navDrawerItems.get(4).setCounterVisibility(true);
+			
+			navDrawerItems.get(1).setCount(TotalAuthor.toString());
+			navDrawerItems.get(2).setCount(TotalAlbum.toString());
+			navDrawerItems.get(3).setCount(TotalPlaylist.toString());
+			navDrawerItems.get(4).setCount(TotalAudio.toString());
+
+			adapter = null;
+			adapter =  new NavDrawerListAdapter(getApplicationContext(), navDrawerItems);
+			
+			mDrawerList.setAdapter(adapter);
+			
+			Log.i("onPostExecute", "MMUnBActivity");
 
 		}
 

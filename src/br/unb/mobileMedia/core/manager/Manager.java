@@ -16,10 +16,12 @@ import android.os.Environment;
 import android.util.Log;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.db.DBFactory;
+import br.unb.mobileMedia.core.db.IAlbumDao;
 import br.unb.mobileMedia.core.db.IAudioDao;
 import br.unb.mobileMedia.core.db.IAuthorDao;
 import br.unb.mobileMedia.core.db.IPlayListDao;
 import br.unb.mobileMedia.core.db.IPlaylistMediaDao;
+import br.unb.mobileMedia.core.domain.Album;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Author;
 import br.unb.mobileMedia.core.domain.Playlist;
@@ -93,30 +95,46 @@ public class Manager {
 		
 		MediaExtractor extractor = new DefaultAudioExtractor(context);
 		
+		//get all audio in device
 		List<File> allMusics = new ListAllFiles().getAllMusic();
 		
-		//get all Author's in files
-		List<Author> authors =  extractor.processFiles(allMusics);
+		//extract all authors of audio in device
+		List<String> authors =  extractor.extractAllAuthors(allMusics);
 		
-		save(context, authors, allMusics);
+		// save authors in database
+		for(String author : authors)
+			saveAuthors(context, author);
+		
+		
+		//Get all authors put in database to get id of all author
+		List<Author> list_authors = listAuthors(context);
+		
+		
+		//extract all albums of audios in device
+		List<Album> albums = extractor.extractAllAlbum(allMusics, list_authors);
+		
+		//save all album with respective authorId in db
+		for(Album album : albums)
+			saveAlbum(context, album);
+		
+		
+		//Get all albums put in database to get id of all album
+		albums = this.listAlbums(context);
+		
+		//prepare all audio to persist in database
+		List<Audio> audios = extractor.processAudio(allMusics, albums);
+		
+		saveAudios(context, audios);
 		
 	}
+	
 
-	private void save(Context context, List<Author> authors, List<File> files) throws DBException {
-		
-		IAuthorDao daoAuthor = DBFactory.factory(context).createAuthorDao();
+
+	private void saveAudios(Context context, List<Audio> audios) throws DBException {
+
 		IAudioDao daoAudio  = DBFactory.factory(context).createAudioDAO();
 
-		MediaExtractor extractor = new DefaultAudioExtractor(context);
-		
-		for(Author author: authors) {
-			daoAuthor.saveAuthor(author);
-		}
-
-		//Audio processado com so ID do respectivo author
-		List<Audio> list = extractor.processAudio(daoAuthor.listAuthors(), files);
-		 
-		for(Audio a : list){
+		for(Audio a : audios){
 //			 Log.i("Audio Title:", ""+a.getTitle());
 //			 Log.i("Audio Url:", ""+a.getUrl());
 //			 Log.i("Audio Album:", ""+a.getAlbum());
@@ -127,6 +145,36 @@ public class Manager {
 		}
 				
 	}
+	
+	
+	
+	public void saveAuthors(Context context, String nameAuthor){
+		IAuthorDao dao = DBFactory.factory(context).createAuthorDao();
+		
+		try {
+			dao.saveAuthor(nameAuthor);
+		} catch (DBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	
+	public void saveAlbum(Context context, Album album){
+		
+		IAlbumDao dao = DBFactory.factory(context).createAlbumDao();
+		
+		try {
+			dao.saveAlbum(album);
+		} catch (DBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 	
 	
 
@@ -153,6 +201,14 @@ public class Manager {
 
 		return dao.listAuthors();
 	}
+	
+	
+	
+	public List<Album> listAlbums(Context context) throws DBException{
+		IAlbumDao dao = DBFactory.factory(context).createAlbumDao();
+		
+		return dao.listAlbums();
+	}
 
 	/**
 	 * List all production within the database
@@ -164,17 +220,27 @@ public class Manager {
 		return dao.listAllProduction();
 	}
 	
-	
-//	listAllAudioPaginated
+	/**
+	 * 
+	 * @param context
+	 * @param init
+	 * @param limit
+	 * @return
+	 * @throws DBException
+	 */
 	public List<Audio> listAllAudioPaginated(Context context,  int init, int limit) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final IPlaylistMediaDao playlistMediaDao = factory.createPlaylistMediaDao();
 		final IAudioDao audioDao = factory.createAudioDAO();
-
-		 return audioDao.listAllAudioPaginated(init, limit);
+		
+		return audioDao.listAllAudioPaginated(init, limit);
 	}
 	
-	
+	/**
+	 * 
+	 * @param context
+	 * @return
+	 * @throws DBException
+	 */
 	public List<Audio> listAllAudio(Context context) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
 		final IAudioDao audioDao = factory.createAudioDAO();
@@ -183,6 +249,26 @@ public class Manager {
 //		final IPlayListDao playlistDao = factory.createPlaylistDao();
 //		playlistDao.deletePlaylist(namePlaylist);
 	}
+	
+	
+	/**
+	 * 
+	 * @param context
+	 * @return number of audio in device
+	 */
+	public Long countAllAudio(Context context){
+		DBFactory factory = DBFactory.factory(context);
+		final IAudioDao audioDao = factory.createAudioDAO();
+		return audioDao.countAllAudio();
+	}
+	
+	
+	public Long countAllAlbum(Context context){
+		DBFactory factory = DBFactory.factory(context);
+		final IAlbumDao albumDao = factory.createAlbumDao();
+		return albumDao.countAlbum();
+	}
+	
 	
 
 	/**
@@ -520,7 +606,7 @@ public class Manager {
 		List<Audio> audiosInPlaylist = new ArrayList<Audio>();
 		
 		for(PlaylistMedia media : playlist){
-			audiosInPlaylist.add(audioDao.listAudioById(new Audio(media.getAudioId())));
+			audiosInPlaylist.add(audioDao.listAudioById(new Audio(media.getAudioPlaylistMediaId())));
 		}
 		
 		 return audiosInPlaylist;
@@ -540,7 +626,7 @@ public class Manager {
 		List<Audio> audiosInPlaylist = new ArrayList<Audio>();
 //		
 		for(PlaylistMedia media : playlist){
-			audiosInPlaylist.add(audioDao.listAudioById(new Audio(media.getAudioId())));
+			audiosInPlaylist.add(audioDao.listAudioById(new Audio(media.getAudioPlaylistMediaId())));
 		}
 //		
 		Log.i("init "+ init, "limit " + limit);

@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -137,7 +136,6 @@ public class PlayListEditorFragment extends ListFragment {
 				Long   id    = null;
 				String title = null;
 				String album = null;
-				Bitmap artAlbum = null;
 				String author = null;
 				String bitRate = null;
 				
@@ -149,7 +147,7 @@ public class PlayListEditorFragment extends ListFragment {
 					id       = audio.getId();
 					title    = audio.getTitle();
 					album    = this.mediaExtractor.getAlbum(); 
-					artAlbum = this.mediaExtractor.getAlbumArt();
+//					artAlbum = this.mediaExtractor.getAlbumArt();
 					author   = this.mediaExtractor.getAuthor();
 					bitRate  = this.mediaExtractor.getBitRate();
 					
@@ -159,7 +157,7 @@ public class PlayListEditorFragment extends ListFragment {
 					
 				}
 				
-				mItems.add(new AudioViewItem(id, artAlbum, title,	album, author, bitRate));	
+				mItems.add(new AudioViewItem(id, title,	album, author, bitRate));	
 			}
 			
 
@@ -168,36 +166,6 @@ public class PlayListEditorFragment extends ListFragment {
 		}
 
 		setListAdapter(new ArrayAdapterAudio(getActivity(),  R.layout.audio_row, mItems, getListView()));
-		//
-		// try {
-		// // check if there is any playlist
-		// if (musicList == null || totalAudioInDb == 0) {
-		// Toast.makeText(getActivity().getApplicationContext(),
-		// "No music.", Toast.LENGTH_LONG).show();
-		// }else{
-		//
-		//
-		// // this.setOnScrollListener(new EndlessScrollListener(){
-		// // @Override
-		// // public void onLoadMore(int page, int totalItemsCount){
-		// //// Log.i("OnLoadMore", ""+page);
-		// //// loadMore(page, totalItemsCount);
-		// //// listviewadapter.setNotifyOnChange(true);
-		// // }
-		// // });
-		//
-		// // this.setListAdapter(listviewadapter);
-		//
-		// // this.list.setMultiChoiceModeListener(new MultiChoiceMode(this,
-		// this.list, menuInflate));
-		// // this.list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-		// // this.list.setSelection(listviewselection);
-		//
-		// }
-
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
 
 	}
 
@@ -244,12 +212,18 @@ public class PlayListEditorFragment extends ListFragment {
 	}
 
 	private void executePlayList() {
+		
 		List<Audio> listTmp = musicList;
+		
 		Audio[] executionList = new Audio[listTmp.size()];
+		
 		listTmp.toArray(executionList);
+		
 		Bundle args = new Bundle();
-		args.putParcelableArray(AudioPlayerFragment.EXECUTION_LIST,
-				executionList);
+		
+//		args.putParcelableArray(AudioPlayerFragment.EXECUTION_LIST, executionList);
+				
+	
 		// TODO Extract this to a method (repeated in MMUnBActivity too)
 		Fragment newFragment = new AudioPlayerFragment();
 		newFragment.setArguments(args);

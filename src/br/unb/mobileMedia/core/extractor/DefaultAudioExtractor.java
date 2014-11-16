@@ -6,13 +6,11 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.util.Log;
-import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.Exception.ExceptionMediaExtractor;
+import br.unb.mobileMedia.core.domain.Album;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Author;
 
@@ -57,22 +55,22 @@ public class DefaultAudioExtractor implements MediaExtractor {
 		
 	}
 	
-	public Bitmap getAlbumArt(){
+	public byte[] getAlbumArt(){
 
 		try {
-
+			
 			if (mmr.getEmbeddedPicture() == null) {
 				throw new ExceptionMediaExtractor(
 						mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)
 						+ " Hasn't getEmbeddedPicture!");
 			}
 
-			return BitmapFactory.decodeByteArray(mmr.getEmbeddedPicture(), 0,
-					mmr.getEmbeddedPicture().length);
+			return 	mmr.getEmbeddedPicture();
 			
 		} catch (ExceptionMediaExtractor e) {
 			
-			return BitmapFactory.decodeResource(context.getResources(), R.drawable.adele);
+			return null;
+//			return BitmapFactory.decodeResource(context.getResources(), R.drawable.adele);
 			
 		}
 
@@ -112,8 +110,7 @@ public class DefaultAudioExtractor implements MediaExtractor {
 				Log.i("", e.getMessage());
 			}
 
-			String authorName = mmr
-					.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
+			String authorName = getAuthor();
 			authorName = authorName == null || authorName.equals("") ? UNKNOWN
 					: authorName;
 
@@ -144,56 +141,114 @@ public class DefaultAudioExtractor implements MediaExtractor {
 
 		return result;
 	}
-
-	public List<Audio> processAudio(List<Author> authors, List<File> files) {
-
-		List<Audio> audios = new ArrayList<Audio>();
-		MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-
-		for (Author author : authors) {
-
-			for (File file : files) {
-				try {
-					mmr.setDataSource(context,
-							Uri.parse(Uri.encode(file.getAbsolutePath())));
-				} catch (RuntimeException e) {
-					e.getStackTrace();
-					// Exibir alert para informar sobre acentuação no arquivo
-					// Log.i("RuntimeExeption f: ", file.getAbsolutePath());
-				}
-
-				String authorName = mmr
-						.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
-				authorName = authorName == null || authorName.equals("") ? UNKNOWN
-						: authorName;
-
-				// Integer authorId = authorName.hashCode();
-
-				String title = mmr
-						.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
-				title = title == null || title.equals("") ? UNKNOWN : title;
-
-				String titleKey = mmr
-						.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
-				titleKey = titleKey == null || titleKey.equals("") ? UNKNOWN
-						: titleKey;
-
-				String album = mmr
-						.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM); // cursor.
-				album = album == null || album.equals("") ? UNKNOWN : album;
-
-				if (author.getName().equals(authorName)) {
-					// Long id, String title, String url, long albumId
-					audios.add(new Audio(null, titleKey,
-							file.getAbsolutePath(), album, author.getId()));
-				}
-
+	
+	
+	public List<String> extractAllAuthors(List<File> audioFiles){
+		List<String> result = new ArrayList<String>();
+		
+		
+		for(File audio : audioFiles){
+			
+			try {
+				mmr.setDataSource(context, Uri.parse(Uri.encode(audio.getAbsolutePath().toString())));
+			} catch (RuntimeException e) {
+				// Exibir alert para informar sobre acentuação no arquivo
+				Log.i("RuntimeExeption: ", audio.getAbsolutePath().toString());
+				Log.i("", e.getMessage());
 			}
+			
+			String author = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
+			
+			if(!result.contains(author)){
+				result.add(author);
+			}
+		}
+		
+		return result;
+	}
+
+	
+	public List<Album> extractAllAlbum(List<File> audioFiles, List<Author> authors){
+		
+		List<Album> result = new ArrayList<Album>();
+		
+		for(File audio : audioFiles){
+			
+			try {
+				mmr.setDataSource(context, Uri.parse(Uri.encode(audio.getAbsolutePath().toString())));
+			} catch (RuntimeException e) {
+				// Exibir alert para informar sobre acentuação no arquivo
+				Log.i("RuntimeExeption: ", audio.getAbsolutePath().toString());
+				Log.i("", e.getMessage());
+			}
+			
+			String nameAlbum = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM);
+			String nameAuthor = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
+			
+			//create album and add NameAlbum
+			Album album = new Album(null);
+			album.setName(nameAlbum);
+			
+			for(Author author : authors){
+				if(author.getName().equals(nameAuthor)){
+					album.setAutorId(author.getId());
+					break;
+				}
+			}
+	
+			
+			if(!result.contains(album)){
+				result.add(album);
+			}
+		}
+		
+		return result;
+	}
+	
+	
+	
+	public List<Audio> processAudio(List<File> files, List<Album> albums) {
+
+		List<Audio> result = new ArrayList<Audio>();
+
+		for (File file : files) {
+			try {
+				mmr.setDataSource(context, Uri.parse(Uri.encode(file.getAbsolutePath())));
+			} catch (RuntimeException e) {
+				e.getStackTrace();
+				// Exibir alert para informar sobre acentuação no arquivo
+				// Log.i("RuntimeExeption f: ", file.getAbsolutePath());
+			}
+
+			
+			String nameAlbum = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM);
+			String title     = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
+			
+			
+			Audio audio = new Audio(null);
+			audio.setTitle(title);
+			audio.setUrl(file.getAbsolutePath());
+		
+			for(Album album : albums){
+				if(album.getName().equals(nameAlbum)){
+					audio.setAlbumId(album.getId());
+					break;
+				}
+			}
+			
+			if(!result.contains(audio)){
+				result.add(audio);
+			}
+			
 
 		}
 
-		return audios;
+		return result;
 	}
+	
+	
+	
+	
 
 	public String getAuthor() {
 	

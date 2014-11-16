@@ -28,6 +28,12 @@ public class DefaultDBFactory extends DBFactory {
 	public IAuthorDao createAuthorDao() {
 		return new DefaultAuthorDao(context);
 	}
+	
+	
+	@Override
+	public IAlbumDao createAlbumDao(){
+		return new DefaultAlbumDao(context);
+	}
 
 
 
@@ -35,6 +41,8 @@ public class DefaultDBFactory extends DBFactory {
 	public IPlaylistMediaDao createPlaylistMediaDao(){
 		return new DefaultPlaylistMediaDao(context);
 	}
+
+	
 
 
 
