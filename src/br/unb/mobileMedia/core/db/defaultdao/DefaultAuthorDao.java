@@ -1,4 +1,4 @@
-package br.unb.mobileMedia.core.db;
+package br.unb.mobileMedia.core.db.defaultdao;
 
 import java.util.Date;
 import java.util.List;
@@ -9,8 +9,15 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
-import br.unb.mobileMedia.core.db.AuthorDao.Properties;
-import br.unb.mobileMedia.core.db.DaoMaster.DevOpenHelper;
+import br.unb.mobileMedia.core.db.DBConstants;
+import br.unb.mobileMedia.core.db.DBException;
+import br.unb.mobileMedia.core.db.dao.AudioDao;
+import br.unb.mobileMedia.core.db.dao.AuthorDao;
+import br.unb.mobileMedia.core.db.dao.DaoMaster;
+import br.unb.mobileMedia.core.db.dao.DaoSession;
+import br.unb.mobileMedia.core.db.dao.AuthorDao.Properties;
+import br.unb.mobileMedia.core.db.dao.DaoMaster.DevOpenHelper;
+import br.unb.mobileMedia.core.db.idao.IAuthorDao;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Author;
 

@@ -1,8 +1,9 @@
-package br.unb.mobileMedia.core.db;
+package br.unb.mobileMedia.core.db.dao;
 
 import java.util.Map;
 
 import android.database.sqlite.SQLiteDatabase;
+import br.unb.mobileMedia.core.db.idao.PlaylistMediaDao;
 import br.unb.mobileMedia.core.domain.Album;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Author;

@@ -1,10 +1,16 @@
-package br.unb.mobileMedia.core.db;
+package br.unb.mobileMedia.core.db.defaultdao;
 
 import java.util.List;
 
 import de.greenrobot.dao.query.QueryBuilder;
-import br.unb.mobileMedia.core.db.AudioDao.Properties;
-import br.unb.mobileMedia.core.db.DaoMaster.DevOpenHelper;
+import br.unb.mobileMedia.core.db.DBConstants;
+import br.unb.mobileMedia.core.db.DBException;
+import br.unb.mobileMedia.core.db.dao.AudioDao;
+import br.unb.mobileMedia.core.db.dao.DaoMaster;
+import br.unb.mobileMedia.core.db.dao.DaoSession;
+import br.unb.mobileMedia.core.db.dao.AudioDao.Properties;
+import br.unb.mobileMedia.core.db.dao.DaoMaster.DevOpenHelper;
+import br.unb.mobileMedia.core.db.idao.IAudioDao;
 import br.unb.mobileMedia.core.domain.Audio;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

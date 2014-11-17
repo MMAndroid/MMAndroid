@@ -1,8 +1,9 @@
-package br.unb.mobileMedia.core.db;
+package br.unb.mobileMedia.core.db.idao;
 
 
 import java.util.List;
 
+import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Playlist;
 import br.unb.mobileMedia.core.domain.PlaylistMedia;

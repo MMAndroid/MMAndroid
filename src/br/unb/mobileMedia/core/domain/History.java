@@ -1,9 +1,9 @@
 package br.unb.mobileMedia.core.domain;
 
-import br.unb.mobileMedia.core.db.AudioDao;
-import br.unb.mobileMedia.core.db.DaoSession;
-import br.unb.mobileMedia.core.db.HistoryDao;
-import br.unb.mobileMedia.core.db.VideoDao;
+import br.unb.mobileMedia.core.db.dao.AudioDao;
+import br.unb.mobileMedia.core.db.dao.DaoSession;
+import br.unb.mobileMedia.core.db.dao.HistoryDao;
+import br.unb.mobileMedia.core.db.dao.VideoDao;
 import de.greenrobot.dao.AbstractDao;
 import de.greenrobot.dao.DaoException;
 

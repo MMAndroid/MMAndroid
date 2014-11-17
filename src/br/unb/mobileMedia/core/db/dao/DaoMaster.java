@@ -1,5 +1,6 @@
-package br.unb.mobileMedia.core.db;
+package br.unb.mobileMedia.core.db.dao;
 
+import br.unb.mobileMedia.core.db.idao.PlaylistMediaDao;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;

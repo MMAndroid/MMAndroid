@@ -1,5 +1,15 @@
 package br.unb.mobileMedia.core.db;
 
+import br.unb.mobileMedia.core.db.defaultdao.DefaultAlbumDao;
+import br.unb.mobileMedia.core.db.defaultdao.DefaultAudioDao;
+import br.unb.mobileMedia.core.db.defaultdao.DefaultAuthorDao;
+import br.unb.mobileMedia.core.db.defaultdao.DefaultPlaylistDao;
+import br.unb.mobileMedia.core.db.defaultdao.DefaultPlaylistMediaDao;
+import br.unb.mobileMedia.core.db.idao.IAlbumDao;
+import br.unb.mobileMedia.core.db.idao.IAudioDao;
+import br.unb.mobileMedia.core.db.idao.IAuthorDao;
+import br.unb.mobileMedia.core.db.idao.IPlayListDao;
+import br.unb.mobileMedia.core.db.idao.IPlaylistMediaDao;
 import android.content.Context;
 
 /**

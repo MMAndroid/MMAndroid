@@ -1,9 +1,10 @@
-package br.unb.mobileMedia.core.db;
+package br.unb.mobileMedia.core.db.idao;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Author;
 

@@ -1,4 +1,4 @@
-package br.unb.mobileMedia.core.db;
+package br.unb.mobileMedia.core.db.defaultdao;
 
 import java.util.List;
 
@@ -6,8 +6,14 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
-import br.unb.mobileMedia.core.db.DaoMaster.DevOpenHelper;
-import br.unb.mobileMedia.core.db.PlaylistMediaDao.Properties;
+import br.unb.mobileMedia.core.db.DBConstants;
+import br.unb.mobileMedia.core.db.DBException;
+import br.unb.mobileMedia.core.db.dao.DaoMaster;
+import br.unb.mobileMedia.core.db.dao.DaoSession;
+import br.unb.mobileMedia.core.db.dao.DaoMaster.DevOpenHelper;
+import br.unb.mobileMedia.core.db.idao.IPlaylistMediaDao;
+import br.unb.mobileMedia.core.db.idao.PlaylistMediaDao;
+import br.unb.mobileMedia.core.db.idao.PlaylistMediaDao.Properties;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Playlist;
 import br.unb.mobileMedia.core.domain.PlaylistMedia;
@@ -41,7 +47,8 @@ public class DefaultPlaylistMediaDao implements IPlaylistMediaDao {
 
 			if (!listAudioInPlaylistMedia(idAudio, playlist)){
 				//PlaylistMedia(Long id, long videoPlaylistMediaId, long audioPlaylistMediaId, long playlistId) 
-				this.playlistMediaDao.insert(new PlaylistMedia(null, (Long)null, idAudio,  playlist.getId()));
+//				this.playlistMediaDao.insert(new PlaylistMedia(null, (Long)null, idAudio,  playlist.getId()));
+				this.playlistMediaDao.insert(new PlaylistMedia(null, 0, idAudio,  playlist.getId()));
 				
 			}
 			// else

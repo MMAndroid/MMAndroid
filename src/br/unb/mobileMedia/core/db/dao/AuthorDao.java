@@ -1,4 +1,4 @@
-package br.unb.mobileMedia.core.db;
+package br.unb.mobileMedia.core.db.dao;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;

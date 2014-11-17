@@ -1,4 +1,4 @@
-package br.unb.mobileMedia.core.db;
+package br.unb.mobileMedia.core.db.idao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.List;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import br.unb.mobileMedia.core.db.dao.DaoSession;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Playlist;
 import br.unb.mobileMedia.core.domain.PlaylistMedia;

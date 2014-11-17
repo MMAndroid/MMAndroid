@@ -2,9 +2,9 @@ package br.unb.mobileMedia.core.domain;
 
 import java.util.List;
 
-import br.unb.mobileMedia.core.db.DaoSession;
-import br.unb.mobileMedia.core.db.PlaylistDao;
-import br.unb.mobileMedia.core.db.PlaylistMediaDao;
+import br.unb.mobileMedia.core.db.dao.DaoSession;
+import br.unb.mobileMedia.core.db.dao.PlaylistDao;
+import br.unb.mobileMedia.core.db.idao.PlaylistMediaDao;
 import de.greenrobot.dao.AbstractDao;
 import de.greenrobot.dao.DaoException;
 
