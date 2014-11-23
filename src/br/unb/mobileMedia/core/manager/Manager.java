@@ -43,10 +43,11 @@ public class Manager {
 	private static Manager instance;
 
 	/*
-	 * Private constructor according to the single 
-	 * design pattern
+	 * Private constructor according to the singleton design pattern
 	 */
-	private Manager(){}; 
+	private Manager(){
+		
+	}; 
 
 	/**
 	 * Single method to obtain an instance of the Manager class. 
@@ -186,7 +187,6 @@ public class Manager {
 	 */
 	public List<Audio> listProductionByAuthorPK(Context context, Integer authorPK) throws DBException {
 		IAuthorDao dao = DBFactory.factory(context).createAuthorDao();
-
 		return dao.findAudioProductionByAuthorKey(authorPK);
 	}
 
@@ -198,11 +198,8 @@ public class Manager {
 	 */
 	public List<Author> listAuthors(Context context) throws DBException {
 		IAuthorDao dao = DBFactory.factory(context).createAuthorDao();
-
 		return dao.listAuthors();
 	}
-	
-	
 	
 	public List<Album> listAlbums(Context context) throws DBException{
 		IAlbumDao dao = DBFactory.factory(context).createAlbumDao();

@@ -2,8 +2,6 @@ package br.unb.mobileMedia;
 
 import java.util.ArrayList;
 
-import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.AsyncTask;
@@ -27,7 +25,6 @@ import br.unb.mobileMedia.core.view.AudioSelectFragment;
 import br.unb.mobileMedia.core.view.AuthorListFragment;
 import br.unb.mobileMedia.playlist.MainPlaylistListFragment;
 
-@SuppressLint("NewApi")
 public class MMUnBActivity extends FragmentActivity {
 
 	private DrawerLayout mDrawerLayout;
@@ -35,7 +32,7 @@ public class MMUnBActivity extends FragmentActivity {
 	private ActionBarDrawerToggle mDrawerToggle;
 	
 	// nav drawer title
-	private CharSequence mDrawerTitle;
+	//private CharSequence mDrawerTitle;
 
 	// used to store app title
 	private CharSequence mTitle;
@@ -48,7 +45,7 @@ public class MMUnBActivity extends FragmentActivity {
 	private NavDrawerListAdapter adapter;
 
 	private MenuItem menuItem;
-	private ActionBar actionBar;
+	//private ActionBar actionBar;
 	private SyncFiles syncFiles;
 	
 	@Override
@@ -56,7 +53,8 @@ public class MMUnBActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState); 
 		setContentView(R.layout.main);
 
-		mTitle = mDrawerTitle = getTitle();
+//		mTitle = mDrawerTitle = getTitle();
+		mTitle = getTitle();
 
 		// load slide menu items
 		navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
@@ -115,7 +113,6 @@ public class MMUnBActivity extends FragmentActivity {
 			displayView(0);
 		}
 
-
 		// SyncFile auto
 		syncFiles = new SyncFiles(this);
 		syncFiles.execute();
@@ -146,7 +143,6 @@ public class MMUnBActivity extends FragmentActivity {
 		// Sync the toggle state after onRestoreInstanceState has occurred.
 		mDrawerToggle.syncState();
 	}
-
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
