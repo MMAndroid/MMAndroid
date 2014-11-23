@@ -34,7 +34,6 @@ public class MMUnBActivity extends FragmentActivity {
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
 	
-
 	// nav drawer title
 	private CharSequence mDrawerTitle;
 
@@ -51,8 +50,6 @@ public class MMUnBActivity extends FragmentActivity {
 	private MenuItem menuItem;
 	private ActionBar actionBar;
 	private SyncFiles syncFiles;
-
-
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -324,8 +321,6 @@ public class MMUnBActivity extends FragmentActivity {
 					Toast.LENGTH_LONG).show();
 		}
 	}
-
-
 
 	// Parametro, Progresso, Resultado
 	private class SyncFiles extends AsyncTask<Void, Void, Void> {

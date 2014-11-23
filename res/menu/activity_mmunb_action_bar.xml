@@ -9,7 +9,7 @@
         android:title="">
         
         <menu>
-            <item android:id="@+id/twiiterAction"   android:icon="@drawable/twiiter_icon"   android:title="@string/twiiter_ab"/>
+            <item android:id="@+id/twiiterAction"   android:icon="@drawable/twiiter_icon"   android:title="@string/twitter_ab"/>
             <item android:id="@+id/facebookAction"  android:icon="@drawable/facebook_icon"  android:title="@string/facebook_ab"/>
             <item android:id="@+id/instagramAction" android:icon="@drawable/instagram_icon" android:title="@string/instagram_ab"/>
         </menu>
