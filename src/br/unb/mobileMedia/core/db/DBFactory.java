@@ -15,6 +15,8 @@ import android.content.Context;
 
 //DBFactory.factory(context).createAudioDAO();
 
+//TODO: Remover
+@Deprecated
 public abstract class DBFactory{
 	protected Context context;
 	

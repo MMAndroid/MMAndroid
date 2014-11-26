@@ -2,30 +2,22 @@ package br.unb.mobileMedia.core.db.defaultdao;
 
 import java.util.List;
 
-import de.greenrobot.dao.query.QueryBuilder;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 import br.unb.mobileMedia.core.db.DBConstants;
 import br.unb.mobileMedia.core.db.DBException;
-import br.unb.mobileMedia.core.db.dao.DaoMaster;
-import br.unb.mobileMedia.core.db.dao.DaoSession;
-import br.unb.mobileMedia.core.db.dao.PlaylistDao;
 import br.unb.mobileMedia.core.db.dao.AudioDao.Properties;
-import br.unb.mobileMedia.core.db.dao.DaoMaster.DevOpenHelper;
+import br.unb.mobileMedia.core.db.dao.DaoMaster;
+import br.unb.mobileMedia.core.db.dao.PlaylistDao;
 import br.unb.mobileMedia.core.db.idao.IPlayListDao;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Playlist;
+import de.greenrobot.dao.query.QueryBuilder;
 
-public class DefaultPlaylistDao implements IPlayListDao {
+public class DefaultPlaylistDao extends DefaultDao implements IPlayListDao {
 
-	private Context context;
-	private SQLiteDatabase db;
-	private DaoMaster daoMaster;
-	private DaoSession daoSession;
 	private PlaylistDao playlistDao;
-	private DevOpenHelper openHelper;
 	
 	public DefaultPlaylistDao(Context c){
 		this.context = c;

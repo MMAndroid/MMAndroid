@@ -2,42 +2,30 @@ package br.unb.mobileMedia.core.db.defaultdao;
 
 import java.util.List;
 
-import de.greenrobot.dao.query.QueryBuilder;
+import android.content.Context;
+import android.database.sqlite.SQLiteException;
+import android.util.Log;
 import br.unb.mobileMedia.core.db.DBConstants;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.db.dao.AudioDao;
-import br.unb.mobileMedia.core.db.dao.DaoMaster;
-import br.unb.mobileMedia.core.db.dao.DaoSession;
 import br.unb.mobileMedia.core.db.dao.AudioDao.Properties;
-import br.unb.mobileMedia.core.db.dao.DaoMaster.DevOpenHelper;
+import br.unb.mobileMedia.core.db.dao.DaoMaster;
 import br.unb.mobileMedia.core.db.idao.IAudioDao;
 import br.unb.mobileMedia.core.domain.Audio;
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
-import android.util.Log;
+import de.greenrobot.dao.query.QueryBuilder;
 
-public class DefaultAudioDao implements IAudioDao {
+public class DefaultAudioDao extends DefaultDao implements IAudioDao {
 
-	private Context context;
-	private SQLiteDatabase db;
-	private DaoMaster daoMaster;
-	private DaoSession daoSession;
 	private AudioDao audioDao;
-	private DevOpenHelper openHelper;
 	
 	public DefaultAudioDao(Context c){
 		this.context = c;
-		
 		this.openHelper = new DaoMaster.DevOpenHelper(this.context, DBConstants.DATABASE_NAME, null);
 		this.db = openHelper.getWritableDatabase();
 		this.daoMaster = new DaoMaster(db);
 		this.daoSession = daoMaster.newSession();
 		this.audioDao = daoSession.getAudioDao();
 	}
-
-	
-
 	
 	public void saveAudio(Audio audio) throws DBException {
 		try {
@@ -57,14 +45,11 @@ public class DefaultAudioDao implements IAudioDao {
 			Log.e(DefaultAudioDao.class.getCanonicalName(),
 					e.getLocalizedMessage());
 			throw new DBException();
-
 		} 
 			
 	}
 	
-	
 	public Audio listAudioById(Audio audio){
-		
 		QueryBuilder<Audio>qb = audioDao.queryBuilder();
 		qb.where(Properties.Id.eq(audio.getId()));
 		
@@ -77,19 +62,14 @@ public class DefaultAudioDao implements IAudioDao {
 	
 
 	public List<Audio> listAudioByTitle(Audio audio){
-		
 		QueryBuilder<Audio> qb = audioDao.queryBuilder();
 		qb.where(Properties.Title.eq(audio.getTitle()));
-		
 		return qb.list();
 	}
 	
-	
 	public List<Audio> listAudioByPath(Audio audio){
-		
 		QueryBuilder<Audio> qb = audioDao.queryBuilder();
 		qb.where(Properties.Url.eq(audio.getUrl()));
-		
 		return qb.list();
 	}
 	
@@ -101,31 +81,21 @@ public class DefaultAudioDao implements IAudioDao {
 //		return qb.list();
 	}
 	
-	
 	public List<Audio> listAllAudio(){
-		
 		return audioDao.loadAll();
-		
 	}
-	
 	
 	public Long countAllAudio(){
 		return audioDao.count();
 	}
 	
-	
-	
 	public List<Audio> listAllAudioPaginated( int ofset, int limit) throws DBException{
-		
 		QueryBuilder<Audio> qb = audioDao.queryBuilder();
 		qb.limit(limit);
 		qb.offset(ofset);
 		qb.orderAsc(Properties.AlbumId);
 		
-		
 		Log.e("Limit:", ""+limit+ " - " + ofset);
-		
-		
 		
 		if (qb.list().size() > 0) {
 			Log.e("AudioPaginated", ""+qb.list().size());
@@ -136,10 +106,7 @@ public class DefaultAudioDao implements IAudioDao {
 
 	}
 	
-	
-	
 	public boolean updateAudio(Audio audio) throws DBException{
-		
 		//make update
 		audioDao.update(audio);
 		
@@ -150,7 +117,6 @@ public class DefaultAudioDao implements IAudioDao {
 		throw new DBException();
 		
 	}
-	
 	
 	public boolean deleteAudio(Audio audio) throws DBException{
 		
@@ -164,7 +130,5 @@ public class DefaultAudioDao implements IAudioDao {
 		throw new DBException();
 		
 	}
-
-	
 	
 }

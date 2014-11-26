@@ -4,32 +4,24 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import de.greenrobot.dao.query.QueryBuilder;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 import br.unb.mobileMedia.core.db.DBConstants;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.db.dao.AudioDao;
 import br.unb.mobileMedia.core.db.dao.AuthorDao;
-import br.unb.mobileMedia.core.db.dao.DaoMaster;
-import br.unb.mobileMedia.core.db.dao.DaoSession;
 import br.unb.mobileMedia.core.db.dao.AuthorDao.Properties;
-import br.unb.mobileMedia.core.db.dao.DaoMaster.DevOpenHelper;
+import br.unb.mobileMedia.core.db.dao.DaoMaster;
 import br.unb.mobileMedia.core.db.idao.IAuthorDao;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Author;
+import de.greenrobot.dao.query.QueryBuilder;
 
-public class DefaultAuthorDao implements IAuthorDao {
+public class DefaultAuthorDao extends DefaultDao implements IAuthorDao {
 
-	private SQLiteDatabase db;
-	private DaoMaster daoMaster;
-	private DaoSession daoSession;
 	private AuthorDao authorDao;
 	private AudioDao audioDao;
-	private DevOpenHelper openHelper;
-	private Context context;
 	
 	public DefaultAuthorDao(Context c){
 		this.context    = c;
