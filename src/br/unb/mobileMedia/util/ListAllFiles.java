@@ -9,25 +9,36 @@ import android.os.Environment;
 import android.util.Log;
 import br.unb.mobileMedia.core.domain.AudioFormats;
 
-public class ListAllFiles {
+public class ListAllFiles{
 
-	private File sdcard, extSdcard;
 	private List<File> result;
 
-	public ListAllFiles() {
-		
+	private static File DOWNLOAD_DIR = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+	private static File MUSIC_DIR = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC);///mnt/sdcard/Music
+	private static File DCIM_DIR =Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_DCIM);
+	private static File PICTURE_DIR = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+	private static File MOVIES_DIR = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
+//	private static File EXTSDCARD_DIR = new File("/mnt/sdcard/extSdcard");
+			
+	public ListAllFiles(){	
 		result = new ArrayList<File>();
-		sdcard = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
-		extSdcard = new File("/mnt/extSdCard/");
-	
 	}
+
 
 	
 	public List<File> getAllMusic(){
 		
 		try {
-			listAllDirs(sdcard);
-			listAllDirs(extSdcard);
+			
+//			Log.e("Path", EXTSDCARD_DIR.getAbsolutePath());
+			
+			listAllDirs(DOWNLOAD_DIR);
+			listAllDirs(MUSIC_DIR);
+			listAllDirs(DCIM_DIR);
+			listAllDirs(PICTURE_DIR);
+			listAllDirs(MOVIES_DIR);
+//			listAllDirs(EXTSDCARD_DIR);
+			
 		} catch (IOException e) {
 			Log.e(ListAllFiles.class.getCanonicalName(),
 					e.getLocalizedMessage());
@@ -40,7 +51,6 @@ public class ListAllFiles {
 		Log.i("Music Found:", ""+result.size());
 		
 		return result;
-
 	}
 	
 	
@@ -58,9 +68,7 @@ public class ListAllFiles {
 					for (AudioFormats extensionAccepted : AudioFormats.values()) {
 						if (temp.getAbsolutePath().endsWith(extensionAccepted.getFormatAsString()) && !temp.isHidden()) {
 							try{
-								
-								result.add(new File(temp.getAbsolutePath()));	
-							
+								result.add(new File(temp.getAbsolutePath()));								
 							}catch(Exception e){
 								throw e;
 							}

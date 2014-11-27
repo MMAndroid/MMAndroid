@@ -18,7 +18,8 @@ public class Album {
     private Long id;
     /** Not-null value. */
     private String name;
-    private long autorId;
+    private byte[] Image;
+    private long authorId;
 
     /** Used to resolve relations */
     private transient DaoSession daoSession;
@@ -38,10 +39,11 @@ public class Album {
         this.id = id;
     }
 
-    public Album(Long id, String name, long autorId) {
+    public Album(Long id, String name, byte[] Image, long authorId) {
         this.id = id;
         this.name = name;
-        this.autorId = autorId;
+        this.Image = Image;
+        this.authorId = authorId;
     }
 
     /** called by internal mechanisms, do not call yourself. */
@@ -68,17 +70,25 @@ public class Album {
         this.name = name;
     }
 
-    public long getAutorId() {
-        return autorId;
+    public byte[] getImage() {
+        return Image;
     }
 
-    public void setAutorId(long autorId) {
-        this.autorId = autorId;
+    public void setImage(byte[] Image) {
+        this.Image = Image;
+    }
+
+    public long getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(long authorId) {
+        this.authorId = authorId;
     }
 
     /** To-one relationship, resolved on first access. */
     public Author getAuthor() {
-        long __key = this.autorId;
+        long __key = this.authorId;
         if (author__resolvedKey == null || !author__resolvedKey.equals(__key)) {
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
@@ -95,12 +105,12 @@ public class Album {
 
     public void setAuthor(Author author) {
         if (author == null) {
-            throw new DaoException("To-one property 'autorId' has not-null constraint; cannot set to-one to null");
+            throw new DaoException("To-one property 'authorId' has not-null constraint; cannot set to-one to null");
         }
         synchronized (this) {
             this.author = author;
-            autorId = author.getId();
-            author__resolvedKey = autorId;
+            authorId = author.getId();
+            author__resolvedKey = authorId;
         }
     }
 
@@ -112,6 +122,7 @@ public class Album {
             }
             AudioDao targetDao = daoSession.getAudioDao();
             List<Audio> audioAlbumNew = targetDao._queryAlbum_AudioAlbum(id);
+            
             synchronized (this) {
                 if(audioAlbum == null) {
                     audioAlbum = audioAlbumNew;
@@ -120,7 +131,8 @@ public class Album {
         }
         return audioAlbum;
     }
-
+    
+  
     /** Resets a to-many relationship, making the next get call to query for a fresh result. */
     public synchronized void resetAudioAlbum() {
         audioAlbum = null;

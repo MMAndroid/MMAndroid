@@ -23,18 +23,47 @@ public class DefaultPlaylistDao implements IPlayListDao {
 	
 	public DefaultPlaylistDao(Context c){
 		this.context = c;
+	}
+	
+	private void initWrite(){
 		this.openHelper = new DaoMaster.DevOpenHelper(this.context, DBConstants.DATABASE_NAME, null);
+
 		this.db = this.openHelper.getWritableDatabase();
 		this.daoMaster = new DaoMaster(this.db);
 		this.daoSession = this.daoMaster.newSession();
-		this.playlistDao = this.daoSession.getPlaylistDao();
+	}
+	
+	private void initRead(){
+		this.openHelper = new DaoMaster.DevOpenHelper(this.context, DBConstants.DATABASE_NAME, null);
+
+		this.db = this.openHelper.getReadableDatabase();
+		this.daoMaster = new DaoMaster(this.db);
+		this.daoSession = this.daoMaster.newSession();
+	}
+	
+	private void endTx(){
+		if (db.inTransaction()) {
+			db.endTransaction();
+		}
+		
+		if(this.daoSession != null)
+			this.daoSession.clear();
+		
+		if(db.isOpen())
+			db.close();
+		
+		this.openHelper.close();
 	}
 	
 	public void newPlaylist(Playlist playlist) throws DBException {
 		try {
+			initWrite();
+			this.playlistDao = this.daoSession.getPlaylistDao();
+			this.db.beginTransaction();
 			QueryBuilder<Playlist> qb = playlistDao.queryBuilder();
 			qb.where(Properties.Title.eq(playlist.getTitle()));
 			//check is playlist not exists
+			this.db.setTransactionSuccessful();
 			
 			if(qb.list().size() == 0)
 				this.playlistDao.insert(playlist);
@@ -43,11 +72,14 @@ public class DefaultPlaylistDao implements IPlayListDao {
 			
 		
 		}catch (SQLiteException e) {
-			e.printStackTrace();
-			Log.e(DefaultAudioDao.class.getCanonicalName(), e.getLocalizedMessage());
+			Log.e(DefaultAudioDao.class.getCanonicalName(), e.getLocalizedMessage() + "DefaultPlaylistDao");
 			throw new DBException();
 
-		} 
+		} finally {
+			
+			endTx();
+			
+		}
 		
 	}
 
@@ -72,10 +104,14 @@ public class DefaultPlaylistDao implements IPlayListDao {
 
 		} catch (SQLiteException e) {
 //			trataException(e);
-		} 
+		} finally{
+			endTx();
+		}
 	}
 
 	public List<Playlist> listPlaylists() throws DBException {
+		initRead();
+		this.playlistDao = this.daoSession.getPlaylistDao();
 		return playlistDao.loadAll();
 	}
 	
@@ -122,6 +158,8 @@ public class DefaultPlaylistDao implements IPlayListDao {
 				
 		}catch(DBException e){
 			throw e;
+		}finally{
+			endTx();
 		}
 		
 	}

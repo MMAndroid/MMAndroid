@@ -11,14 +11,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class NavDrawerListAdapter extends BaseAdapter {
+public class NavDrawerListAdapter extends  BaseAdapter{
 	
 	private Context context;
 	private ArrayList<NavDrawerItem> navDrawerItems;
 	
-	public NavDrawerListAdapter(Context context, ArrayList<NavDrawerItem> navDrawerItems){
+	public NavDrawerListAdapter(Context context, ArrayList<NavDrawerItem> items){
 		this.context = context;
-		this.navDrawerItems = navDrawerItems;
+		this.navDrawerItems = items;
 	}
 
 	public int getCount() {
@@ -77,14 +77,16 @@ public class NavDrawerListAdapter extends BaseAdapter {
         return convertView;
 	}
 	
+
 	
-	
-	public void swapItem(ArrayList<NavDrawerItem> navDrawerItems) {
- 		
-//    	this.navDrawerItems.addAll(navDrawerItems);
-    	
-    	notifyDataSetChanged();
+	public void clear(){
+		navDrawerItems.clear();
 	}
 	
+	public void swapItems(ArrayList<NavDrawerItem> items){
+		this.navDrawerItems.addAll(items);
+		notifyDataSetChanged();
+    }
+
 
 }

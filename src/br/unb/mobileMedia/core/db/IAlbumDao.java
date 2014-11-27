@@ -49,7 +49,7 @@ public interface IAlbumDao {
 	 * 
 	 * @return A list with all audio data within the database
 	 */
-	public Long countAlbum();
+	public Long countAlbum() throws DBException;
 	
 	
 }

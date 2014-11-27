@@ -27,12 +27,15 @@ public class AlbumListFragment extends ListFragment {
 		getActivity().setTitle("All Album");
 		try {
 			List<Album> albums = Manager.instance().listAlbums(getActivity().getApplicationContext());
-
+			
 			if (albums == null || albums.size() == 0) {
 				String[] values = new String[] { "No album found." };
 				ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, values);
 				setListAdapter(adapter);
 			} else {
+				
+//				List<Audio> audios = Manager.instance().listAllAudio(getActivity().getApplicationContext());
+				
 				AlbumArrayAdapter adapter = new AlbumArrayAdapter(getActivity(), albums);
 				setListAdapter(adapter);
 			}

@@ -1,8 +1,12 @@
 package br.unb.mobileMedia.core.db;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import br.unb.mobileMedia.core.domain.Album;
 import br.unb.mobileMedia.core.domain.Author;
 import de.greenrobot.dao.AbstractDao;
 import de.greenrobot.dao.Property;
@@ -114,5 +118,64 @@ public class AuthorDao extends AbstractDao<Author, Long> {
     protected boolean isEntityUpdateable() {
         return true;
     }
+    
+    
+    
+    public List<Album> getAlbumByAuthor(Long authorId){
+    	
+    	List<Album> albums = new ArrayList<Album>();
+    	
+    	
+    	Cursor cursorAuthor = super.db.rawQuery(DBConstants.SELECT_AUTHORS_BY_ID,
+				new String[] { authorId.toString() });
+
+		if (cursorAuthor.getCount() == 1 && cursorAuthor.moveToFirst()) {
+			Author author = this.cursorToAuthor(cursorAuthor);
+			
+			Cursor cursorAlbum = super.db.rawQuery(DBConstants.SELECT_ALBUMS_BY_AUTHOR, new String[]{author.getId().toString()});
+			
+			if(cursorAlbum.getCount() > 0 && cursorAlbum.moveToFirst()){
+				do{
+					albums.add(cursorToAlbum(cursorAlbum));
+				}while(cursorAlbum.moveToNext());
+			}
+			
+			cursorAlbum.close();
+			
+		}
+		
+		cursorAuthor.close();
+		
+		return albums;
+    }
+    
+    
+    /*
+	 * Converts a cursor into an Album.
+	 */
+	private Album cursorToAlbum(Cursor cursor){
+		
+		Long id = cursor.getLong(cursor.getColumnIndex(DBConstants.ALBUM_ID_COLUMN));
+		String name = cursor.getString(cursor.getColumnIndex(DBConstants.ALBUM_NAME_COLUMN));
+		byte [] image = cursor.getBlob(cursor.getColumnIndex(DBConstants.ALBUM_IMAGE_COLUNM));
+		Long authorId = cursor.getLong(cursor.getColumnIndex(DBConstants.ALBUM_AUTHOR_ID));
+		
+		Album album = new Album(id, name, image, authorId);
+		return album;
+	}
+	
+	
+	/*
+	 * Converts a cursor into an Author.
+	 */
+	private Author cursorToAuthor(Cursor cursor) {
+		Long id = cursor.getLong(cursor
+				.getColumnIndex(DBConstants.AUTHOR_ID_COLUMN));
+		String name = cursor.getString(cursor
+				.getColumnIndex(DBConstants.AUTHOR_NAME_COLUMN));
+		Author author = new Author(id, name);
+		return author;
+	}
+
     
 }

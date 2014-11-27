@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import br.unb.mobileMedia.core.domain.Album;
+import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Author;
 import de.greenrobot.dao.AbstractDao;
 import de.greenrobot.dao.Property;
@@ -30,7 +31,8 @@ public class AlbumDao extends AbstractDao<Album, Long> {
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Name = new Property(1, String.class, "name", false, "NAME");
-        public final static Property AutorId = new Property(2, long.class, "autorId", false, "AUTOR_ID");
+        public final static Property Image = new Property(2, byte[].class, "Image", false, "IMAGE");
+        public final static Property AuthorId = new Property(3, long.class, "authorId", false, "AUTHOR_ID");
     };
 
     private DaoSession daoSession;
@@ -52,7 +54,8 @@ public class AlbumDao extends AbstractDao<Album, Long> {
         db.execSQL("CREATE TABLE " + constraint + "'ALBUM' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
                 "'NAME' TEXT NOT NULL ," + // 1: name
-                "'AUTOR_ID' INTEGER NOT NULL );"); // 2: autorId
+                "'IMAGE' BLOB," + // 2: Image
+                "'AUTHOR_ID' INTEGER NOT NULL );"); // 3: authorId
     }
 
     /** Drops the underlying database table. */
@@ -71,7 +74,12 @@ public class AlbumDao extends AbstractDao<Album, Long> {
             stmt.bindLong(1, id);
         }
         stmt.bindString(2, entity.getName());
-        stmt.bindLong(3, entity.getAutorId());
+ 
+        byte[] Image = entity.getImage();
+        if (Image != null) {
+            stmt.bindBlob(3, Image);
+        }
+        stmt.bindLong(4, entity.getAuthorId());
     }
 
     @Override
@@ -92,7 +100,8 @@ public class AlbumDao extends AbstractDao<Album, Long> {
         Album entity = new Album( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.getString(offset + 1), // name
-            cursor.getLong(offset + 2) // autorId
+            cursor.isNull(offset + 2) ? null : cursor.getBlob(offset + 2), // Image
+            cursor.getLong(offset + 3) // authorId
         );
         return entity;
     }
@@ -102,7 +111,8 @@ public class AlbumDao extends AbstractDao<Album, Long> {
     public void readEntity(Cursor cursor, Album entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setName(cursor.getString(offset + 1));
-        entity.setAutorId(cursor.getLong(offset + 2));
+        entity.setImage(cursor.isNull(offset + 2) ? null : cursor.getBlob(offset + 2));
+        entity.setAuthorId(cursor.getLong(offset + 3));
      }
     
     /** @inheritdoc */
@@ -129,16 +139,16 @@ public class AlbumDao extends AbstractDao<Album, Long> {
     }
     
     /** Internal query to resolve the "albuns" to-many relationship of Author. */
-    public List<Album> _queryAuthor_Albuns(long autorId) {
+    public List<Album> _queryAuthor_Albuns(long authorId) {
         synchronized (this) {
             if (author_AlbunsQuery == null) {
                 QueryBuilder<Album> queryBuilder = queryBuilder();
-                queryBuilder.where(Properties.AutorId.eq(null));
+                queryBuilder.where(Properties.AuthorId.eq(null));
                 author_AlbunsQuery = queryBuilder.build();
             }
         }
         Query<Album> query = author_AlbunsQuery.forCurrentThread();
-        query.setParameter(0, autorId);
+        query.setParameter(0, authorId);
         return query.list();
     }
 
@@ -151,7 +161,7 @@ public class AlbumDao extends AbstractDao<Album, Long> {
             builder.append(',');
             SqlUtils.appendColumns(builder, "T0", daoSession.getAuthorDao().getAllColumns());
             builder.append(" FROM ALBUM T");
-            builder.append(" LEFT JOIN AUTHOR T0 ON T.'AUTOR_ID'=T0.'_id'");
+            builder.append(" LEFT JOIN AUTHOR T0 ON T.'AUTHOR_ID'=T0.'_id'");
             builder.append(' ');
             selectDeep = builder.toString();
         }
@@ -235,4 +245,34 @@ public class AlbumDao extends AbstractDao<Album, Long> {
         return loadDeepAllAndCloseCursor(cursor);
     }
  
+    
+    
+    public List<Audio> getAudioByAlbum(Long albumId){
+    	List<Audio> audios = new ArrayList<Audio>();
+    	
+    	Cursor cursor = super.db.rawQuery(DBConstants.SELECT_AUDIO_BY_ALBUM, new String[]{albumId.toString()});
+    	
+    	if(cursor.getCount() > 0 && cursor.moveToFirst()){
+    		do{
+    			audios.add(cursorToAudio(cursor));
+    		}while(cursor.moveToNext());
+    	}
+    	
+    	return audios;
+    }
+    
+    
+    /*
+	 * Converts a cursor into an Audio.
+	 */
+	private Audio cursorToAudio(Cursor cursor){
+		
+		Long id = cursor.getLong(cursor.getColumnIndex(DBConstants.AUDIO_ID_COLUMN));
+		String title = cursor.getString(cursor.getColumnIndex(DBConstants.AUDIO_TITLE_COLUMN));
+		String url   = cursor.getString(cursor.getColumnIndex(DBConstants.AUDIO_URL_COLUMN));
+		Long albumId = cursor.getLong(cursor.getColumnIndex(DBConstants.AUDIO_ALBUM_ID_COLUMN));
+		
+		Audio audio = new Audio(id, title, url, albumId);
+		return audio;
+	}
 }

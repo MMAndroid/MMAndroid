@@ -32,6 +32,20 @@ public class DefaultPlaylistMediaDao implements IPlaylistMediaDao {
 
 	}
 
+	private void endTx(){
+		if (db.inTransaction()) {
+			db.endTransaction();
+		}
+		
+		if(this.daoSession != null)
+			this.daoSession.clear();
+		
+		if(db.isOpen())
+			db.close();
+		
+		this.openHelper.close();
+	}
+	
 	public void addAudioToPlaylist(Long idAudio, Playlist playlist) throws DBException {
 		try {
 
@@ -48,11 +62,12 @@ public class DefaultPlaylistMediaDao implements IPlaylistMediaDao {
 			// Log.i(audio.getTitle(), "In Database");
 
 		} catch (SQLiteException e) {
-			e.printStackTrace();
 			Log.e(DefaultAudioDao.class.getCanonicalName(),
-					e.getLocalizedMessage());
+					e.getLocalizedMessage() + "DefaultPlaylistMediaDao");
 			throw new DBException();
 
+		}finally {
+			endTx();
 		}
 
 	}

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -25,14 +26,17 @@ public class AuthorListFragment extends ListFragment {
 		super.onCreate(savedInstanceState);
 		getActivity().setTitle("All artists");
 		try {
-			List<Author> authors = Manager.instance().listAuthors(getActivity().getApplicationContext());
+			List<Author> authors =  Manager.instance().listAuthors(getActivity().getApplicationContext());
 
+			Log.i("AuthorListFragment", authors.size()+"");
+			
 			if (authors == null || authors.size() == 0) {
 				String[] values = new String[] { "No author found." };
 				ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, values);
 				setListAdapter(adapter);
 			} else {
 				AuthorArrayAdapter adapter = new AuthorArrayAdapter(getActivity(), authors);
+				
 				setListAdapter(adapter);
 			}
 		} catch (DBException e) {

@@ -3,7 +3,6 @@ package br.unb.mobileMedia.core.extractor;
 import java.io.File;
 import java.util.List;
 
-import android.graphics.Bitmap;
 import br.unb.mobileMedia.Exception.ExceptionMediaExtractor;
 import br.unb.mobileMedia.core.domain.Album;
 import br.unb.mobileMedia.core.domain.Audio;

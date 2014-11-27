@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import android.content.Context;
+import android.media.MediaMetadataRetriever;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import br.unb.mobileMedia.R;
+import br.unb.mobileMedia.core.domain.Album;
 import br.unb.mobileMedia.core.domain.Author;
+import br.unb.mobileMedia.core.manager.Manager;
 
 public class AuthorArrayAdapter extends ArrayAdapter<Author> {
 
@@ -29,7 +32,7 @@ public class AuthorArrayAdapter extends ArrayAdapter<Author> {
 			this.add(iterator.next());
 		}
 	}
-
+ 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		
@@ -52,7 +55,15 @@ public class AuthorArrayAdapter extends ArrayAdapter<Author> {
 		
 		v.imageArt.setBackgroundResource(R.drawable.adele);
 		v.nameAuthor.setText(item.getName());
-		v.numAlbumAuthor.setText("Albums: "+item.getAlbuns().size()+".");
+
+		List<Album>AlbumAuthor = Manager.instance().getAlbumByAuthor(context, item.getId()) ;
+
+		if(AlbumAuthor == null)
+			v.numAlbumAuthor.setText("Albums: "+ 0	+".");
+		else
+			v.numAlbumAuthor.setText("Albums: "+ AlbumAuthor.size()	+".");
+		
+
 
 		
 		return convertView;
