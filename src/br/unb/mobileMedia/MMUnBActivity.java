@@ -49,8 +49,8 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
 		
 		builder.setTitle("Você não tem músicas para executar."); 
 		
-		builder.setMessage("Gostaria de sincronizar suas músicas?"); 
 		
+		builder.setMessage("Gostaria de sincronizar suas músicas?"); 
 		builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() { 
 			
 			public void onClick(DialogInterface arg0, int arg1) { 
