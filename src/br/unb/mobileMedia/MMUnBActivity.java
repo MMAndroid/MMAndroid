@@ -5,7 +5,6 @@ import java.util.Observable;
 import java.util.Observer;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.AsyncTask;
@@ -51,8 +50,7 @@ public class MMUnBActivity extends FragmentActivity implements Observer{
 	private NavDrawerListAdapter adapter;
 
 	private MenuItem menuItem;
-	private ActionBar actionBar;
-
+	
 	private Preferences preferences;
 
 	
@@ -92,11 +90,11 @@ public class MMUnBActivity extends FragmentActivity implements Observer{
 			R.drawable.ic_drawer, R.string.drawer_open,
 			R.string.drawer_close) {
 			    
-			    /** Called when drawer is closed */
-			    public void onDrawerClosed(View view) {
-			        getActionBar().setTitle(mTitle);
-			        invalidateOptionsMenu();
-			    }
+//			    /** Called when drawer is closed */
+//			    public void onDrawerClosed(View view) {
+//			        getActionBar().setTitle(mTitle);
+//			        invalidateOptionsMenu();
+//			    }
 			    
 			    /** Called when a drawer is opened */
 			    public void onDrawerOpened(View drawerView) {
@@ -124,31 +122,28 @@ public class MMUnBActivity extends FragmentActivity implements Observer{
 		mDrawerToggle.syncState();
 		 
 		//se nao existir musica no banco de dados eh exec o primeiro sync
-		if(Manager.instance().countAllAudio(getApplicationContext()) == 0){
+		if(Manager.instance().countMedias(getApplicationContext()) == 0){
 			new SyncAudios(this.getApplicationContext()).execute();	
 		}
 		
+		
+		Log.i("Number playlist", Manager.instance().countPlaylists(getApplicationContext())+"");
 		
 	}
 	
 	
 	public void update(Observable observable, Object data) {
 		
-//		Log.i("countAllAuthor",   ""+Manager.instance().countAllAuthor(getApplicationContext()).intValue());
-//		Log.i("countAllAlbum",    ""+Manager.instance().countAllAlbum(getApplicationContext()).intValue());
-//		Log.i("countAllAudio",    ""+Manager.instance().countAllAudio(getApplicationContext()).intValue());
-//		Log.i("countAllPlaylist", ""+Manager.instance().countAllPlaylist(getApplicationContext()).intValue());
-		
-		preferences.setTotalAuthor(Manager.instance().countAllAuthor(getApplicationContext()).intValue());
-		preferences.setTotalAlbum(Manager.instance().countAllAlbum(getApplicationContext()).intValue());
-		preferences.setTotalAudio(Manager.instance().countAllAudio(getApplicationContext()).intValue());
-		preferences.setTotalPlaylist(Manager.instance().countAllPlaylist(getApplicationContext()).intValue());
+		preferences.setTotalAuthor(Manager.instance().countAuthors(getApplicationContext()).intValue());
+		preferences.setTotalAlbum(Manager.instance().countAlbum(getApplicationContext()).intValue());
+		preferences.setTotalAudio(Manager.instance().countMedias(getApplicationContext()).intValue());
+		preferences.setTotalPlaylist(Manager.instance().countPlaylists(getApplicationContext()).intValue());
 		
 		adapter.clear();
 		
 		
 		runOnUiThread (new Thread(new Runnable() { 
-	         public void run() {
+	         public void run(){
 	    
 	        	 adapter.swapItems(createNavDrawer());
 	        	 
@@ -335,26 +330,6 @@ public class MMUnBActivity extends FragmentActivity implements Observer{
 				menuItem.setActionView(null);
 			}
 			
-//			int totalAudio = 0;
-//			int totalAlbum = 0;
-//			int totalAuthor = 0;
-//			int totalPlaylist = 0;
-//			
-//			try {
-//				totalAudio = Manager.instance().countAllAudio(getApplicationContext()).intValue();
-//				totalAlbum = Manager.instance().countAllAlbum(getApplicationContext()).intValue();
-//				totalAuthor = Manager.instance().listAuthors(getApplicationContext()).size();
-//				totalPlaylist = Manager.instance().listPlaylists(getApplicationContext()).size();
-//			} catch (DBException e) {
-//				e.printStackTrace();
-//			}
-//			
-//			preferences.SetSyncPreference(true,
-//					totalAudio,
-//					totalAlbum,
-//					totalAuthor,
-//					totalPlaylist);
-						
 			Log.i("onPostExecute", "MMUnBActivity");
 
 		}

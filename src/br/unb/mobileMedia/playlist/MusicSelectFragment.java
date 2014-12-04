@@ -24,13 +24,18 @@ import br.unb.mobileMedia.core.manager.Manager;
 
 public class MusicSelectFragment extends ListFragment {
 
+	public final static String SELECTED_PLAYLIST_ID = "idPlaylist";
+	public final static String SELECTED_PLAYLIST_NAME = "namePlaylist";
+
+	
 	public final int menuInflate = R.menu.save_audio_playlist;
 	private final int ITEMS_PER_PAGE = 20;
-	private Long totalAudioInDb = (long)0;
+	private Integer totalAudioInDb = 0;
 	private List<Audio> audios = null;
 
-	private List<Long> selecteds = new ArrayList<Long>();
+	private List<Integer> selecteds = new ArrayList<Integer>();
 	private int playListId;
+	private String namePlaylist;
 
 	private ArrayAdapterAudio adapter;
 	private Context context;
@@ -45,7 +50,7 @@ public class MusicSelectFragment extends ListFragment {
 		this.context = getActivity().getApplicationContext();
 
 		mediaExtractor = new DefaultAudioExtractor(context);
-
+	
 	}
 
 	@Override
@@ -54,24 +59,14 @@ public class MusicSelectFragment extends ListFragment {
 
 		Bundle extras = getArguments();
 
-		this.playListId = extras
-				.getInt(MainPlaylistListFragment.SELECTED_PLAYLIST_ID);
+		this.playListId = extras.getInt(SELECTED_PLAYLIST_ID);
+		
+		this.namePlaylist = extras.getString(SELECTED_PLAYLIST_NAME);
 
-		try {
-			getActivity().getActionBar().setSubtitle(
-					"Add Music in PLaylist: "
-							+ Manager.instance()
-									.getPlaylistById(getActivity(), playListId)
-									.getTitle());
+		getActivity().getActionBar().setSubtitle("Add Music in PLaylist: "+ namePlaylist);
 			
-			this.totalAudioInDb = Manager.instance().countAllAudio(context);
+		this.totalAudioInDb = Manager.instance().countMedias(context);
 			
-			
-		} catch (DBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 		Log.i("totalAudioInDb", ""+totalAudioInDb);
 		
 		loadMore(0, 0);//Show first Items in ListView
@@ -91,7 +86,6 @@ public class MusicSelectFragment extends ListFragment {
 		super.onViewCreated(view, savedInstanceState);
 		// remove the dividers from the ListView of the ListFragment
 
-		
 		getListView().setDivider(getResources().getDrawable(android.R.color.background_dark));
 		getListView().setDividerHeight(2);
 		getListView().setSelector(R.drawable.list_selector);
@@ -182,7 +176,7 @@ public class MusicSelectFragment extends ListFragment {
 			// Closes the activity. Only one music can be added per time.
 			getActivity().getSupportFragmentManager().popBackStack();
 
-		} catch (DBException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			Log.i("DBException", "in saveMedia - MusicSelectFragment");
 		}
@@ -192,7 +186,7 @@ public class MusicSelectFragment extends ListFragment {
 
 	private void loadMore(final int page, final int totalItemsCount) {
 
-		Log.e("Page", page + "-" + totalItemsCount);
+//		Log.e("Page", page + "-" + totalItemsCount);
 
 		new AsyncTask<Void, Void, Void>() {
 			
@@ -201,16 +195,16 @@ public class MusicSelectFragment extends ListFragment {
 				// Simulating delay to get more items from an API.
 				try {
 				
-					Log.e("totalItemsCount: ", "" + totalItemsCount);
+//					Log.e("totalItemsCount: ", "" + totalItemsCount);
 					
 					int offset = 1 + ITEMS_PER_PAGE * (page-1);
 					
-						audios = Manager.instance()
-								.listAllAudioPaginated(context,
-										offset, ITEMS_PER_PAGE);
+					audios = Manager.instance().listAllAudioPaginated(context,	offset, ITEMS_PER_PAGE);
+					
+//					Log.i("doInBackground", ""+audios.size());
 						
-				} catch (Exception e) {
-					e.getStackTrace();
+				} catch (DBException e) {
+					Log.e("DBException", e.getMessage());
 				}
 
 				return null;
@@ -224,7 +218,6 @@ public class MusicSelectFragment extends ListFragment {
 				if(totalItemsCount < totalAudioInDb){
 					adapter.swapItem(audioViewItem(audios));
 				}
-					
 				
 				Log.e("onPostExecute: ", "onPostExecute");
 
@@ -243,11 +236,11 @@ public class MusicSelectFragment extends ListFragment {
 
 				mediaExtractor.setMMR(audio.getUrl());
 
-				Long id = audio.getId();
-				String title = audio.getTitle();
-				String album = mediaExtractor.getAlbum();
-				String author = mediaExtractor.getAuthor();
-				String bitRate = mediaExtractor.getBitRate();
+				Integer id = audio.getId();
+				String title = mediaExtractor.getTitle(audio.getUrl());
+				String album = mediaExtractor.getAlbum(audio.getUrl());
+				String author =  mediaExtractor.getAuthor(audio.getUrl());
+				String bitRate = mediaExtractor.getBitRate(audio.getUrl());
 				
 				
 				mItemsTemp.add(new AudioViewItem(id, title,

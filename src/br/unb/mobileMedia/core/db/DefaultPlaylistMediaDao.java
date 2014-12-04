@@ -1,152 +1,135 @@
 package br.unb.mobileMedia.core.db;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
-import br.unb.mobileMedia.core.db.DaoMaster.DevOpenHelper;
-import br.unb.mobileMedia.core.db.PlaylistMediaDao.Properties;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Playlist;
 import br.unb.mobileMedia.core.domain.PlaylistMedia;
-import de.greenrobot.dao.query.QueryBuilder;
 
 public class DefaultPlaylistMediaDao implements IPlaylistMediaDao {
 
 	private Context context;
+	private DBHelper dbHelper;
 	private SQLiteDatabase db;
-	private DaoMaster daoMaster;
-	private DaoSession daoSession;
-	private DevOpenHelper openHelper;
-	private PlaylistMediaDao playlistMediaDao;
+	
 
-	public DefaultPlaylistMediaDao(Context context) {
-		this.context = context;
-		this.openHelper = new DaoMaster.DevOpenHelper(this.context,	DBConstants.DATABASE_NAME, null);
-		this.db = openHelper.getWritableDatabase();
-		this.daoMaster = new DaoMaster(db);
-		this.daoSession = daoMaster.newSession();
-		this.playlistMediaDao = daoSession.getPlaylistMediaDao();
-
+	public DefaultPlaylistMediaDao(Context c) {
+		this.context = c;
+		this.dbHelper = new DBHelper(context, DBConstants.DATABASE_NAME, null,
+				DBConstants.DATABASE_VERSION);
 	}
-
-	private void endTx(){
+	
+	private void endDb() {
 		if (db.inTransaction()) {
 			db.endTransaction();
 		}
-		
-		if(this.daoSession != null)
-			this.daoSession.clear();
-		
-		if(db.isOpen())
+	
+		if (db.isOpen() || db.isReadOnly())
 			db.close();
-		
-		this.openHelper.close();
+	
+		dbHelper.close();
 	}
 	
-	public void addAudioToPlaylist(Long idAudio, Playlist playlist) throws DBException {
+	
+	public void addMediaToPlaylist(Integer audioId, Integer playlistId)
+			throws DBException {
+		
 		try {
+			
+			this.db = this.dbHelper.getWritableDatabase();
+			
+			Cursor cursor = this.db.rawQuery(DBConstants.SELECT_MEDIA_FROM_PLAYLIST, new String[]{audioId.toString(), playlistId.toString()});
 
-			// Log.i("Audio Title", ""+ audio.getTitle());
-			// Log.i("Audio Path", ""+audio.getUrl());
-			// Log.i("listAudioByPath()", ""+listAudioByPath(audio).size());
-
-			if (!listAudioInPlaylistMedia(idAudio, playlist)){
-				//PlaylistMedia(Long id, long videoPlaylistMediaId, long audioPlaylistMediaId, long playlistId) 
-				this.playlistMediaDao.insert(new PlaylistMedia(null, (Long)null, idAudio,  playlist.getId()));
+		    if(cursor.getCount() == 0){
+		    	ContentValues values = new ContentValues();
+				values.put(DBConstants.PLAYLIST_MEDIA_FK_MEDIA_COLUNM, audioId);
+				values.put(DBConstants.PLAYLIST_MEDIA_FK_PLAYLIST_COLUNM, playlistId);
 				
-			}
-			// else
-			// Log.i(audio.getTitle(), "In Database");
-
+				this.db.beginTransaction();
+				this.db.insert(DBConstants.PLAYLIST_MEDIA_TABLE, null, values);
+				this.db.setTransactionSuccessful();
+		    }
+					
+					
+					
 		} catch (SQLiteException e) {
-			Log.e(DefaultAudioDao.class.getCanonicalName(),
-					e.getLocalizedMessage() + "DefaultPlaylistMediaDao");
-			throw new DBException();
+			Log.e("DefaultPlaylistMediaDao", e.getLocalizedMessage());
+
+			throw new DBException("DefaultPlaylistMediaDao-addAudioToPlaylist: "
+					+ e.getLocalizedMessage());
 
 		}finally {
-			endTx();
+			endDb();
 		}
 
+		
+	}
+
+	public PlaylistMedia getPlaylistByMediaInPlaylist(Audio audio,
+			Playlist playlist) throws DBException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void removeMediaFromPlaylist(Integer idMediaPlaylist)
+			throws DBException {
+		// TODO Auto-generated method stub
+		
 	}
 
 	
-	public List<PlaylistMedia> getMusicFromPlaylist(Long idPlaylist) throws DBException{
-		try{
+	public List<PlaylistMedia> getMusicFromPlaylist(Integer playlistId) throws DBException{
+
+		try {
+
+			List<PlaylistMedia> playlistMedias = new ArrayList<PlaylistMedia>();
+			this.db = this.dbHelper.getReadableDatabase();
 			
-			QueryBuilder<PlaylistMedia> qb = this.playlistMediaDao.queryBuilder();
-			qb.where(Properties.PlaylistId.eq(idPlaylist));
+			Cursor cursor = this.db.rawQuery(DBConstants.SELECT_MEDIAS_FROM_PLAYLIST, new String[]{playlistId.toString()});
 			
-			return qb.list();
+			if(cursor.moveToFirst())
+				do{
+					playlistMedias.add(cursorToPlaylistMedia(cursor));
+				}while(cursor.moveToNext());
+			
+			cursor.close();
+			
+			return playlistMedias;
 			
 		} catch (SQLiteException e) {
-			e.printStackTrace();
-			Log.e(DefaultAudioDao.class.getCanonicalName(),
-					e.getLocalizedMessage());
-			throw new DBException();
+			Log.e("DefaultPlaylistMediaDao", e.getLocalizedMessage());
+
+			throw new DBException("DefaultPlaylistMediaDao-addAudioToPlaylist: "
+					+ e.getLocalizedMessage());
+
+		}finally {
+			endDb();
 		}
 	}
 	
-	private boolean listAudioInPlaylistMedia(Long idAudio, Playlist playlist) {
-
-		QueryBuilder<PlaylistMedia> qb = playlistMediaDao.queryBuilder();
-
-		qb.where(Properties.AudioPlaylistMediaId.eq(idAudio),
-				Properties.Id.eq(playlist.getId()));
-
-		if (qb.list().size() > 0) {
-			return true;
-		}
-
-		return false;
-
-	}
-	
-	
-	public PlaylistMedia getPlaylistByMediaInPlaylist(Audio audio, Playlist playlist) throws DBException{
-		QueryBuilder<PlaylistMedia> qb = playlistMediaDao.queryBuilder();
-
-		qb.where(Properties.AudioPlaylistMediaId.eq(audio.getId()),
-				Properties.PlaylistId.eq(playlist.getId()) );
-
-		if (qb.list().size() > 0) {
-			return qb.list().get(0);
-		}
-
-		throw new DBException();
-
-	}
 
 	
 	
 	
-	public List<PlaylistMedia> getMusicFromPlaylistPaginate(Playlist playlist, int init, int limit) throws DBException{
+	private PlaylistMedia cursorToPlaylistMedia(Cursor cursor){
 		
-		QueryBuilder<PlaylistMedia> qb = playlistMediaDao.queryBuilder();
-
-		qb.where(Properties.PlaylistId.eq(playlist.getId()) );
-		qb.offset(init);
-		qb.limit(limit);
-
-		if (qb.list().size() > 0) {
-			return qb.list();
-		}
-
+		Integer id = cursor.getInt(cursor.getColumnIndex(DBConstants.PLAYLIST_MEDIA_ID_COLUNM));
+		Integer Fk_Media_Id = cursor.getInt(cursor.getColumnIndex(DBConstants.PLAYLIST_MEDIA_FK_MEDIA_COLUNM));
+		Integer Fk_Playlist_Id = cursor.getInt(cursor.getColumnIndex(DBConstants.PLAYLIST_MEDIA_FK_PLAYLIST_COLUNM));
 		
-
-		throw new DBException();
-
+		return new PlaylistMedia(id, Fk_Media_Id, Fk_Playlist_Id);
 	}
+
+
+
 	
-	public void removeMediaFromPlaylist(Long idMediaPlaylist) throws DBException{
-		
-		playlistMediaDao.deleteByKey(idMediaPlaylist);
 
-	}
 
-	public void addToPlaylist(int idPlaylist, List<Integer> mediaList) {
-		
-	}
 }

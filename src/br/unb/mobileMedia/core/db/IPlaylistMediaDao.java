@@ -9,15 +9,11 @@ import br.unb.mobileMedia.core.domain.PlaylistMedia;
 
 public interface IPlaylistMediaDao {
 
-	void addAudioToPlaylist(Long idAudio, Playlist playlist) throws DBException;
-
-	void addToPlaylist(int idPlaylist, List<Integer> mediaList); 
+	public void addMediaToPlaylist(Integer idAudio, Integer playlistId) throws DBException;
 	
-	List<PlaylistMedia> getMusicFromPlaylist(Long idPlaylist) throws DBException;
-	List<PlaylistMedia> getMusicFromPlaylistPaginate(Playlist playlist, int init, int limit) throws DBException;
+	public List<PlaylistMedia> getMusicFromPlaylist(Integer idPlaylist) throws DBException;
 	
+	public PlaylistMedia getPlaylistByMediaInPlaylist(Audio audio, Playlist playlist) throws DBException;
 	
-	PlaylistMedia getPlaylistByMediaInPlaylist(Audio audio, Playlist playlist) throws DBException;
-	
-	void removeMediaFromPlaylist(Long idMediaPlaylist) throws DBException;
+	public void removeMediaFromPlaylist(Integer idMediaPlaylist) throws DBException;
 }

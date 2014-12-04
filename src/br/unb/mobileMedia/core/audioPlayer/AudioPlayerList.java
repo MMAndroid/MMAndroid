@@ -203,7 +203,8 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	 * @return name of current music
 	 */
 	public String getTitleSong() {
-		return audioList.get(currentSongIndex).getTitle();
+		return null;
+//		return audioList.get(currentSongIndex).getTitle();
 	}
 
 	public int getDuration() {
@@ -244,15 +245,16 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	
 	
 	public String getAuthor(){
-		return audioExtractor.getAuthor();
+		return audioExtractor.getAuthor(audioList.get(currentSongIndex).getUrl());
 	}
 	
 	public String getAlbum(){
-		return audioExtractor.getAlbum();
+		return audioExtractor.getAlbum(audioList.get(currentSongIndex).getUrl());
 	}
 	
 	
 	public String getGenre(){
-		return audioExtractor.getGenre(); 
+//		return audioExtractor.getGenre();
+		return null;
 	}
 }

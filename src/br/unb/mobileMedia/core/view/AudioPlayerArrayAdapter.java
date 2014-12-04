@@ -33,7 +33,7 @@ public class AudioPlayerArrayAdapter extends ArrayAdapter<Audio> {
 		View rowView = inflater.inflate(R.layout.author_row, parent,false);
 		TextView textView = (TextView) rowView.findViewById(R.id.NameAuthor);
 		
-		textView.setText(getItem(position).getTitle());
+		textView.setText("Position: "+getItem(position)+" getTitle with mediaExtractor");
 		
 		return rowView;
 	}

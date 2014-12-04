@@ -14,12 +14,12 @@ public class DefaultDBFactory extends DBFactory {
 	
 	
 	@Override
-	public IAudioDao createAudioDAO() {
-		return new DefaultAudioDao(context);
+	public IMediaDao createAudioDao() {
+		return new DefaultMediaDao(context);
 	}
 	
 	@Override
-	public IPlayListDao createPlaylistDao() {
+	public IPlaylistDao createPlaylistDao() {
 		return new DefaultPlaylistDao(context);
 	}
 	

@@ -5,42 +5,49 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.app.ExpandableListActivity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ExpandableListAdapter;
-import android.widget.ExpandableListView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.SimpleExpandableListAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import br.unb.mobileMedia.R;
+import br.unb.mobileMedia.core.domain.Album;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.manager.Manager;
 
-public class AudioExpandableListFragment extends ExpandableListFragment {
+public class AudioExpandableListFragment extends ListFragment {
 
 	public static final String SELECTED_ARTIST_ID = "SELECTED_AUTHOR_ID";
 	public static final String SELECTED_ARTIST_NAME = "SELECTED_ARTIST_NAME";
-	
+
 	private static final String ALBUM = "ALBUM";
 	private static final String TITLE = "TITLE";
 	private List<Map<String, String>> groupList;
 	private List<List<Map<String, String>>> childList;
 	private Map<String, List<Audio>> albuns;
 	
+	
+	private List<Album> albumsByAuthor;
+	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        Bundle args = getArguments();
+    	
+    	if(args!=null && args.containsKey(SELECTED_ARTIST_ID) && args.getLong(SELECTED_ARTIST_ID, -1) != -1) {
+//    		albumsByAuthor = Manager.instance().getAlbumByAuthor(getActivity().getApplicationContext(), args.getLong(SELECTED_ARTIST_ID, -1));
+        }
+    	
+        
+    	
+		getActivity().getActionBar().setTitle(
+							getActivity().getResources().getString(R.string.title_author_expandable_list) +" "+
+							args.getString(SELECTED_ARTIST_NAME)
+							);
+
     }
 	
 	@Override
@@ -51,34 +58,43 @@ public class AudioExpandableListFragment extends ExpandableListFragment {
         	
        		Bundle args = getArguments();
         	
-        	if(args!=null && args.containsKey(SELECTED_ARTIST_ID) && args.getInt(SELECTED_ARTIST_ID, -1) != -1) {
-            	production = Manager.instance().listProductionByAuthorPK(getActivity().getApplicationContext(), args.getInt(SELECTED_ARTIST_ID, -1));
+        	if(args!=null && args.containsKey(SELECTED_ARTIST_ID) && args.getLong(SELECTED_ARTIST_ID, -1) != -1) {
+//        		albumsByAuthor = Manager.instance().getAlbumByAuthor(getActivity().getApplicationContext(), args.getLong(SELECTED_ARTIST_ID, -1));
             }
-        	else { 
-        		production = Manager.instance().listAllProduction(getActivity().getApplication());
-        	} 
+        	
+        	
         	
         	albuns = groupByAlbum(production);
         	
-        	getActivity().setTitle("Albuns from " + args.getString(SELECTED_ARTIST_NAME));
+        	String[] values =  new String[]{"Cheese", "Pepperoni", "Black Olives"};
+//        	for(Album album : albumsByAuthor){
+//        		values[i] = album.getName();
+//        		i++;
+//        	}
         	
-        	groupList = createGroupList(albuns);
-        	childList = createChildList(albuns);
+        	
+        	ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, values);
+			setListAdapter(adapter);
+        	
+//        	getActivity().setTitle("Albuns from " + args.getString(SELECTED_ARTIST_NAME));
+//        	
+//        	groupList = createGroupList(albuns);
+//        	childList = createChildList(albuns);
         	 
-        	SimpleExpandableListAdapter expListAdapter =
-        			new SimpleExpandableListAdapter(
-        				getActivity(),
-        				groupList,								// groupData describes the first-level entries
-        				R.layout.child_row,						// Layout for the first-level entries
-        				new String[] { ALBUM },					// Key in the groupData maps to display
-        				new int[] { R.id.childname },			// Data under "colorName" key goes into this TextView
-        				childList,								// childData describes second-level entries
-        				R.layout.child_row,						// Layout for second-level entries
-        				new String[] { TITLE },					// Keys in childData maps to display
-        				new int[] { R.id.childname }			// Data under the keys above go into these TextViews
-        			);
-        	setListAdapter( expListAdapter );
-        	getExpandableListView().setOnChildClickListener(this);
+//        	SimpleExpandableListAdapter expListAdapter =
+//        			new SimpleExpandableListAdapter(
+//        				getActivity(),
+//        				groupList,								// groupData describes the first-level entries
+//        				R.layout.child_row,						// Layout for the first-level entries
+//        				new String[] { ALBUM },					// Key in the groupData maps to display
+//        				new int[] { R.id.childname },			// Data under "colorName" key goes into this TextView
+//        				childList,								// childData describes second-level entries
+//        				R.layout.child_row,						// Layout for second-level entries
+//        				new String[] { TITLE },					// Keys in childData maps to display
+//        				new int[] { R.id.childname }			// Data under the keys above go into these TextViews
+//        			);
+//        	setListAdapter( expListAdapter );
+//        	getExpandableListView().setOnChildClickListener(this);
         }
         catch(Exception e) {
         	e.printStackTrace();
@@ -88,45 +104,45 @@ public class AudioExpandableListFragment extends ExpandableListFragment {
 		
 	}
 
-	@Override
-	public boolean onChildClick(ExpandableListView parent, View v,
-			int groupPosition, int childPosition, long id) {
-	
-		Toast.makeText(getActivity().getApplicationContext(), "Abrindo player...", Toast.LENGTH_SHORT).show();
-		try {
-			String albumName = groupList.get(groupPosition).get(ALBUM);
-			List<Audio> album = albuns.get(albumName);
-			List<Audio> listTmp = album.subList(childPosition, album.size());
-			Audio[] executionList = new Audio[listTmp.size()]; 
-			
-			listTmp.toArray(executionList);
-		
-			Bundle args = new Bundle();
-//			args.putParcelableArray(AudioPlayerFragment.EXECUTION_LIST, executionList);
-			
-			// TODO Extract this to a method (repeated in MMUnBActivity too)
-			Fragment newFragment = new AudioPlayerFragment();
-			newFragment.setArguments(args);
-			
-			FragmentManager manager = getActivity().getSupportFragmentManager();
-			FragmentTransaction transaction = manager.beginTransaction();
-			
-			if(getActivity().findViewById(R.id.main) != null){
-				transaction.replace(R.id.main, newFragment);
-				transaction.addToBackStack(null);
-			}else{
-				transaction.replace(R.id.content, newFragment);
-				transaction.addToBackStack(null);
-			}
-			transaction.commit();
-			
-			return true;
-		}
-		catch(Throwable e) {
-        	Toast.makeText(getActivity().getApplicationContext(), "Error... could not play the selected audio.", Toast.LENGTH_SHORT).show();
-        	return false;
-		}
-	}
+//	@Override
+//	public boolean onChildClick(ExpandableListView parent, View v,
+//			int groupPosition, int childPosition, long id) {
+//	
+//		Toast.makeText(getActivity().getApplicationContext(), "Abrindo player...", Toast.LENGTH_SHORT).show();
+//		try {
+//			String albumName = groupList.get(groupPosition).get(ALBUM);
+//			List<Audio> album = albuns.get(albumName);
+//			List<Audio> listTmp = album.subList(childPosition, album.size());
+//			Audio[] executionList = new Audio[listTmp.size()]; 
+//			
+//			listTmp.toArray(executionList);
+//		
+//			Bundle args = new Bundle();
+////			args.putParcelableArray(AudioPlayerFragment.EXECUTION_LIST, executionList);
+//			
+//			// TODO Extract this to a method (repeated in MMUnBActivity too)
+//			Fragment newFragment = new AudioPlayerFragment();
+//			newFragment.setArguments(args);
+//			
+//			FragmentManager manager = getActivity().getSupportFragmentManager();
+//			FragmentTransaction transaction = manager.beginTransaction();
+//			
+//			if(getActivity().findViewById(R.id.main) != null){
+//				transaction.replace(R.id.main, newFragment);
+//				transaction.addToBackStack(null);
+//			}else{
+//				transaction.replace(R.id.content, newFragment);
+//				transaction.addToBackStack(null);
+//			}
+//			transaction.commit();
+//			
+//			return true;
+//		}
+//		catch(Throwable e) {
+//        	Toast.makeText(getActivity().getApplicationContext(), "Error... could not play the selected audio.", Toast.LENGTH_SHORT).show();
+//        	return false;
+//		}
+//	}
 
 	/**
 	 * Creates the grop list out of the albuns map according to structure 
@@ -157,7 +173,7 @@ public class AudioExpandableListFragment extends ExpandableListFragment {
 			
 			for(Audio audio : albuns.get(album)) {
 				Map<String, String> musics = new HashMap<String, String>();
-				musics.put(TITLE, audio.getTitle());
+				musics.put(TITLE, "getTitle with mediaExtractor");
 				children.add(musics);
 			}
 			result.add(children);
@@ -179,9 +195,9 @@ public class AudioExpandableListFragment extends ExpandableListFragment {
     	for(Audio a : production) {
 			List<Audio> musics = new ArrayList<Audio>();
 			
-    		if(albuns.containsKey(a.getAlbum())) {
-    			musics = albuns.get(a.getAlbum());
-			}
+//    		if(albuns.containsKey(a.getAlbum())) {
+//    			musics = albuns.get(a.getAlbum());
+//			}
     		musics.add(a);
     		
 //    		albuns.put(a.getAlbum(), musics);

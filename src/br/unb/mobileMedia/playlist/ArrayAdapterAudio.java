@@ -57,8 +57,8 @@ public class ArrayAdapterAudio extends ArrayAdapter<AudioViewItem> {
 		h.artistaAlbum.setText(item.artistaAudio);
 		h.albumAudio.setText(item.albumAudio);
 	
-		int br = Integer.parseInt(item.bitRate);
-		br = (br == 0) ? 0 : (br/1000);
+		Integer br = Integer.valueOf(item.bitRate);
+		br = br == null || br == 0 ? br : (br/1000);
 		h.bitRate.setText(br + " kbps"); 
 		
 		return row;

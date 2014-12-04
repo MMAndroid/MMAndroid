@@ -13,24 +13,14 @@ import java.util.Observable;
 import java.util.TreeMap;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.util.Log;
-import br.unb.mobileMedia.core.db.AlbumDao;
-import br.unb.mobileMedia.core.db.AudioDao;
-import br.unb.mobileMedia.core.db.AuthorDao;
-import br.unb.mobileMedia.core.db.DBConstants;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.db.DBFactory;
-import br.unb.mobileMedia.core.db.DaoMaster;
-import br.unb.mobileMedia.core.db.DaoMaster.DevOpenHelper;
-import br.unb.mobileMedia.core.db.DaoSession;
-import br.unb.mobileMedia.core.db.IAudioDao;
+import br.unb.mobileMedia.core.db.IAlbumDao;
+import br.unb.mobileMedia.core.db.IMediaDao;
 import br.unb.mobileMedia.core.db.IAuthorDao;
-import br.unb.mobileMedia.core.db.IPlayListDao;
+import br.unb.mobileMedia.core.db.IPlaylistDao;
 import br.unb.mobileMedia.core.db.IPlaylistMediaDao;
-import br.unb.mobileMedia.core.db.PlaylistDao;
 import br.unb.mobileMedia.core.domain.Album;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Author;
@@ -50,15 +40,6 @@ public class Manager extends Observable {
 	/* singleton instance of the manager class */
 	private static Manager instance;
 
-	private DevOpenHelper openHelper;
-	private SQLiteDatabase db;
-	private DaoMaster daoMaster;
-	private DaoSession daoSession;
-	private AuthorDao authorDao;
-	private AlbumDao albumDao;
-	private AudioDao audioDao;
-	private PlaylistDao playlistDao;
-
 	/*
 	 * Private constructor according to the single design pattern
 	 */
@@ -66,42 +47,6 @@ public class Manager extends Observable {
 		setChanged();
 		notifyObservers();
 	};
-
-	private void openDbWrite(Context context) {
-		try {
-			openHelper = new DaoMaster.DevOpenHelper(context,
-					DBConstants.DATABASE_NAME, null);
-			db = openHelper.getWritableDatabase();
-			daoMaster = new DaoMaster(db);
-			daoSession = daoMaster.newSession();
-		} catch (Exception e) {
-			Log.e("openDbWrite", e.getMessage());
-		}
-	}
-
-	private void openDbRead(Context context) {
-		try {
-			openHelper = new DaoMaster.DevOpenHelper(context,
-					DBConstants.DATABASE_NAME, null);
-			db = openHelper.getReadableDatabase();
-			daoMaster = new DaoMaster(db);
-			daoSession = daoMaster.newSession();
-		} catch (Exception e) {
-			Log.e("openDbRead", e.getMessage());
-		}
-	}
-
-	private void endTx() {
-		if (db.inTransaction()) {
-			db.endTransaction();
-		}
-
-		if (daoSession != null)
-			daoSession.clear();
-
-		if (db.isOpen())
-			db.close();
-	}
 
 	/**
 	 * Single method to obtain an instance of the Manager class.
@@ -128,10 +73,9 @@ public class Manager extends Observable {
 
 		Preferences preferences = new Preferences(context);
 
-		preferences.SetSyncPreference(true, this.countAllAudio(context)
-				.intValue(), this.listAlbums(context).size(),
-				this.listAuthors(context).size(), this.listPlaylists(context)
-						.size());
+		preferences.SetSyncPreference(true, this.countMedias(context),
+				this.countAlbum(context), this.countAuthors(context),
+				this.countPlaylists(context));
 
 		setChanged();
 		notifyObservers();
@@ -165,7 +109,7 @@ public class Manager extends Observable {
 			}
 
 			// extract all authors of audio in device
-			List<String> authors = extractor
+			List<Author> authors = extractor
 					.extractAllAuthors(TListFiles.files);
 
 			// save authors in database
@@ -179,15 +123,19 @@ public class Manager extends Observable {
 					list_authors);
 
 			// save all album with respective authorId in db
-			saveAlbum(context, albums);
+			for (Album album : albums)
+				saveAlbum(context, album);
 
 			// Get all albums put in database to get id of all album
+			albums.clear();
 			albums = this.listAlbums(context);
 
 			// prepare all audio to persist in database
 			List<Audio> audios = extractor.processAudio(TListFiles.files,
 					albums);
-			saveAudios(context, audios);
+
+			for (Audio audio : audios)
+				saveAudios(context, audio);
 
 		}
 	}
@@ -208,97 +156,37 @@ public class Manager extends Observable {
 
 	}
 
-	public List<Audio> listAllAudioByAlbum(Context context, Long albumId) {
-		IAudioDao dao = DBFactory.factory(context).createAudioDAO();
+
+	public void saveAuthors(Context context, List<Author> authors) {
+
+		IAuthorDao daoAuthor = DBFactory.factory(context).createAuthorDao();
+
+		for (Author author : authors) {
+			try {
+				daoAuthor.saveAuthor(author);
+			} catch (DBException e) {
+				Log.e("Manager.saveAuthors", e.getMessage());
+			}
+		}
+
+	}
+
+	public void saveAlbum(Context context, Album album) {
+
+		IAlbumDao albumDao = DBFactory.factory(context).createAlbumDao();
 
 		try {
-			return dao.listAllAudioByAlbum(albumId);
+			albumDao.saveAlbum(album);
 		} catch (DBException e) {
 			e.printStackTrace();
 		}
-		return null;
-	}
-
-	public void saveAuthors(Context context, List<String> nameAuthors) {
-		try {
-
-			for (String nameAuthor : nameAuthors) {
-				openDbWrite(context);
-				authorDao = daoSession.getAuthorDao();
-
-				// Select to check if exists an Author with the same namer
-				Cursor cursor = db.rawQuery(DBConstants.SELECT_AUTHORS_BY_NAME,
-						new String[] { nameAuthor });
-				if (cursor.getCount() == 0) {
-					db.beginTransaction();
-					authorDao.insert(new Author(null, nameAuthor));
-					db.setTransactionSuccessful();
-				}
-
-				cursor.close();
-
-				endTx();
-			}
-
-		} catch (Exception e) {
-			Log.e("saveAuthors", e.getMessage().toString());
-			endTx();
-		}
 
 	}
 
-	public void saveAlbum(Context context, List<Album> albums) {
-		try {
-			for (Album album : albums) {
+	private void saveAudios(Context context, Audio audio) throws DBException {
+		IMediaDao audioDao = DBFactory.factory(context).createAudioDao();
 
-				openDbWrite(context);
-				albumDao = daoSession.getAlbumDao();
-
-				Cursor cursor = db.rawQuery(DBConstants.SELECT_ALBUMS_BY_NAME,
-						new String[] { album.getName() });
-				db.beginTransaction();
-
-				if (cursor.getCount() == 0)
-					albumDao.insert(album);
-
-				db.setTransactionSuccessful();
-				endTx();
-			}
-
-		} catch (Exception e) {
-			Log.e("saveAlbum", e.getLocalizedMessage());
-			endTx();
-		}
-
-	}
-
-	private void saveAudios(Context context, List<Audio> audios)
-			throws DBException {
-		try {
-
-			for (Audio audio : audios) {
-				openDbWrite(context);
-				audioDao = daoSession.getAudioDao();
-
-				db.beginTransaction();
-
-				if (audioDao
-						.queryBuilder()
-						.where(br.unb.mobileMedia.core.db.AudioDao.Properties.Url
-								.eq(audio.getUrl())).list().size() == 0) {
-
-					audioDao.insert(audio);
-
-				}
-				db.setTransactionSuccessful();
-
-				endTx();
-			}
-
-		} catch (Exception e) {
-			Log.e("saveAudios", e.getLocalizedMessage());
-			endTx();
-		}
+		audioDao.saveAudio(audio);
 
 	}
 
@@ -314,23 +202,9 @@ public class Manager extends Observable {
 
 		List<Audio> audioByAuthor = new ArrayList<Audio>();
 
-		try {
-			openDbRead(context);
-
-			albumDao = daoSession.getAlbumDao();
-			audioDao = daoSession.getAudioDao();
-
-			List<Album> albums = this.albumDao._queryAuthor_Albuns(authorId);
-
-			for (Album album : albums) {
-				audioByAuthor.addAll(this.audioDao._queryAlbum_AudioAlbum(album
-						.getId()));
-			}
-
-			endTx();
-		} catch (Exception e) {
-			e.getStackTrace();
-		}
+		/**
+		 * Listar todos os albums desse author e depois listar todas a musicas desses albums
+		 */
 
 		return audioByAuthor;
 	}
@@ -344,27 +218,17 @@ public class Manager extends Observable {
 	 * @throws DBException
 	 */
 	public List<Author> listAuthors(Context context) throws DBException {
-		List<Author> authors = new ArrayList<Author>();
-		try {
-			openDbRead(context);
-			authorDao = daoSession.getAuthorDao();
-			authors = authorDao.loadAll();
-			endTx();
-		} catch (Exception e) {
-			e.getStackTrace();
-		}
+		IAuthorDao authorDao = DBFactory.factory(context).createAuthorDao();
+
+		List<Author> authors = authorDao.listAuthors();
 
 		return authors;
 	}
 
 	public List<Album> listAlbums(Context context) throws DBException {
+		IAlbumDao albumDao = DBFactory.factory(context).createAlbumDao();
 
-		openDbRead(context);
-		albumDao = daoSession.getAlbumDao();
-		List<Album> albums = albumDao.loadAll();
-		endTx();
-
-		return albums;
+		return albumDao.listAlbums();
 
 	}
 
@@ -388,10 +252,10 @@ public class Manager extends Observable {
 	 * @return
 	 * @throws DBException
 	 */
-	public List<Audio> listAllAudioPaginated(Context context, int init,
-			int limit) throws DBException {
+	public List<Audio> listAllAudioPaginated(Context context, int init, int limit) throws DBException {
+		
 		DBFactory factory = DBFactory.factory(context);
-		final IAudioDao audioDao = factory.createAudioDAO();
+		final IMediaDao audioDao = factory.createAudioDao();
 
 		return audioDao.listAllAudioPaginated(init, limit);
 	}
@@ -404,80 +268,124 @@ public class Manager extends Observable {
 	 */
 	public List<Audio> listAllAudio(Context context) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final IAudioDao audioDao = factory.createAudioDAO();
+		final IMediaDao audioDao = factory.createAudioDao();
 		return audioDao.listAllAudio();
-		// DBFactory factory = DBFactory.factory(context);
-		// final IPlayListDao playlistDao = factory.createPlaylistDao();
-		// playlistDao.deletePlaylist(namePlaylist);
+
 	}
 
-	public Long countAllAuthor(Context context) {
-		Long size = (long) 0;
+	public Integer countAuthors(Context context) {
 
-		openDbRead(context);
-		this.authorDao = this.daoSession.getAuthorDao();
-		size = this.authorDao.count();
-		endTx();
-		return size;
+		IAuthorDao authorDao = DBFactory.factory(context).createAuthorDao();
+
+		Integer count = 0;
+
+		try {
+			count = authorDao.countAuthors();
+		} catch (DBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		Log.e("countAllAuthor:", count +"");
+
+		return count;
 	}
 
-	public Long countAllAlbum(Context context) {
+	public Integer countAlbum(Context context) {
 
-		Long size = (long) 0;
+		IAlbumDao albumDao = DBFactory.factory(context).createAlbumDao();
 
-		openDbRead(context);
-		this.albumDao = this.daoSession.getAlbumDao();
-		size = this.albumDao.count();
-		endTx();
-		return size;
+		Integer count = 0;
+
+		try {
+			count = albumDao.countAlbum();
+		} catch (DBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return count;
 	}
 
-	public Long countAllAudio(Context context) {
+	public Integer countMedias(Context context) {
 
-		Long size = null;
-		openDbRead(context);
-		this.audioDao = this.daoSession.getAudioDao();
-		size = this.audioDao.count();
-		endTx();
+		IMediaDao audioDao = DBFactory.factory(context).createAudioDao();
 
-		return size;
+		Integer count = 0;
+
+		try {
+			count = audioDao.countAudios();
+		} catch (DBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+		Log.e("countAllAudio:", count +"");
+		
+		return count;
+	}
+	
+	
+	
+	public Audio listAudioById(Context context, Integer mediaId){
+		IMediaDao audioDao = DBFactory.factory(context).createAudioDao();
+		Audio audio = null;
+		try {
+			audio =  audioDao.listAudioById(mediaId);
+		} catch (DBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return audio;
+	}
+	
+
+	public Integer countPlaylists(Context context) {
+		
+		IPlaylistDao playlistDao = DBFactory.factory(context).createPlaylistDao();
+		
+		Integer count = 0;
+
+		try {
+			count = playlistDao.countPlaylists();
+		} catch (DBException e) {
+			Log.e("DBException", e.getMessage());
+		}
+		
+		return count;
 	}
 
-	public Long countAllPlaylist(Context context) {
-		Long size = (long) 0;
+	
+	public List<Album> listAlbumsByAuthor(Context context, Integer authorId) {
 
-		openDbRead(context);
-		this.playlistDao = this.daoSession.getPlaylistDao();
-		size = this.playlistDao.count();
-		endTx();
-		return size;
-	}
-
-	public List<Album> getAlbumByAuthor(Context context, Long authorId) {
+		IAlbumDao albumDao = DBFactory.factory(context).createAlbumDao();
 		
 		List<Album> albums = new ArrayList<Album>();
 
-		openDbRead(context);
-		this.authorDao = this.daoSession.getAuthorDao();
-		albums = this.authorDao.getAlbumByAuthor(authorId);
-		endTx();
-
+		try {
+			albums = albumDao.listAlbumsByAuthor(authorId);
+		} catch (DBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return albums;
 
 	}
-	
-	
-	public List<Audio> getAudioByAlbum(Context context, Long albumId){
-		
+
+	public List<Audio> listAudioByAlbum(Context context, Integer albumId) {
+
 		List<Audio> audios = new ArrayList<Audio>();
-		
-		openDbRead(context);
-		this.albumDao = this.daoSession.getAlbumDao();
-		audios = this.albumDao.getAudioByAlbum(albumId);
-		endTx();
-		
+		//
+		// openDbRead(context);
+		// this.albumDao = this.daoSession.getAlbumDao();
+		// audios = this.albumDao.getAudioByAlbum(albumId);
+		// endTx();
+
 		return audios;
-		
+
 	}
 
 	/**
@@ -572,8 +480,11 @@ public class Manager extends Observable {
 	public void newPlaylist(Context context, Playlist playlist)
 			throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final IPlayListDao playlistDao = factory.createPlaylistDao();
+		final IPlaylistDao playlistDao = factory.createPlaylistDao();
 		playlistDao.newPlaylist(playlist);
+
+		this.setChanged();
+		this.notifyObservers();
 		// final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
 		// playlistDAO.newPlaylist(playlist);
 	}
@@ -592,7 +503,7 @@ public class Manager extends Observable {
 	public void editPlaylist(Context context, Playlist editedPlaylist)
 			throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final IPlayListDao playlistDao = factory.createPlaylistDao();
+		final IPlaylistDao playlistDao = factory.createPlaylistDao();
 		playlistDao.editPlaylist(editedPlaylist);
 	}
 
@@ -606,12 +517,12 @@ public class Manager extends Observable {
 	 *            from the playlist to be removed
 	 * @throws DBException
 	 */
-	public void removePlaylist(Context context, Long idPlaylist)
+	public void removePlaylist(Context context, Integer idPlaylist)
 			throws DBException {
 
 		DBFactory factory = DBFactory.factory(context);
 
-		final IPlayListDao playlistDao = factory.createPlaylistDao();
+		final IPlaylistDao playlistDao = factory.createPlaylistDao();
 		final IPlaylistMediaDao playlistMediaDao = factory
 				.createPlaylistMediaDao();
 
@@ -620,7 +531,7 @@ public class Manager extends Observable {
 			removeAllMediaFromPlaylist(context, idPlaylist);
 
 			// delete playlist
-			playlistDao.deletePlaylist(idPlaylist);
+			playlistDao.deletePlaylist((long)idPlaylist);
 
 		} catch (DBException e) {
 			Log.e("Erro", e.getCause().toString());
@@ -641,7 +552,7 @@ public class Manager extends Observable {
 	public void addPositionPlaylist(Context context, Playlist playlist,
 			double latitude, double longitude) throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final IPlayListDao playlistDao = factory.createPlaylistDao();
+		final IPlaylistDao playlistDao = factory.createPlaylistDao();
 		playlistDao.addPositionPlaylist(playlist, latitude, longitude);
 		// final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
 		// playlistDAO.addPositionPlaylist(playlist,latitude,longitude);
@@ -659,10 +570,12 @@ public class Manager extends Observable {
 	 * @return a playlist object
 	 * @throws DBException
 	 */
-	public Playlist getPlaylistById(Context context, int id) throws DBException {
-		DBFactory factory = DBFactory.factory(context);
-		final IPlayListDao playlistDao = factory.createPlaylistDao();
+	public Playlist getPlaylistById(Context context, Integer id) throws DBException {
+		
+		IPlaylistDao playlistDao = DBFactory.factory(context).createPlaylistDao();
+		
 		return playlistDao.getPlaylistById(id);
+		
 	}
 
 	/**
@@ -679,104 +592,53 @@ public class Manager extends Observable {
 	public Playlist getPlaylistByName(Context context, String name)
 			throws DBException {
 		DBFactory factory = DBFactory.factory(context);
-		final IPlayListDao playlistDao = factory.createPlaylistDao();
+		final IPlaylistDao playlistDao = factory.createPlaylistDao();
 		return playlistDao.getPlaylistByName(name);
 		// final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
 		// return playlistDAO.getSimplePlaylist(name);
 	}
 
-	/**
-	 * Return a playlists identified by its id
-	 * 
-	 * @param context
-	 *            the application context
-	 * @param id
-	 *            from the playlist to be found
-	 * @return a playlist object
-	 * @throws DBException
-	 */
-	public Playlist getPlaylist(Context context, int id) throws DBException {
-		DBFactory factory = DBFactory.factory(context);
-		final IPlayListDao playlistDao = factory.createPlaylistDao();
-		return playlistDao.getPlaylist(id);
-		// final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
-		// return playlistDAO.getPlaylist(id);
+
+
+	public List<Playlist> listPlaylists(Context context){
+		
+		IPlaylistDao playlistDao = DBFactory.factory(context).createPlaylistDao();
+		
+		List<Playlist> playlists = new ArrayList<Playlist>();
+		
+		try {
+			playlists.addAll(playlistDao.listPlaylists());
+		} catch (DBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return playlists;
 	}
 
-	/**
-	 * Return a playlists identified by its name
-	 * 
-	 * @param context
-	 *            the application context
-	 * @param name
-	 *            from the playlist to be found
-	 * @return a playlist object
-	 * @throws DBException
-	 */
-	public Playlist getPlaylist(Context context, String name)
-			throws DBException {
-		DBFactory factory = DBFactory.factory(context);
-		final IPlayListDao playlistDao = factory.createPlaylistDao();
-		return playlistDao.getPlaylistByName(name);
-		// final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
-		// return playlistDAO.getPlaylist(name);
-	}
-
-	/**
-	 * Return all playlists persisted. The playlist returned do not have any
-	 * media
-	 * 
-	 * @param context
-	 *            the application context
-	 * @return the list of all playlists
-	 * @throws DBException
-	 */
-	public List<Playlist> listSimplePlaylists(Context context)
-			throws DBException {
-		DBFactory factory = DBFactory.factory(context);
-		final IPlayListDao playlistDao = factory.createPlaylistDao();
-		return playlistDao.listSimplePlaylists();
-
-		// final PlaylistDAOOld playlistDAO = factory.createPlaylistDAO();
-		// return playlistDAO.listSimplePlaylists();
-	}
-
-	/**
-	 * Return all playlists persisted
-	 * 
-	 * @param context
-	 *            the application context
-	 * @return the list of all playlists
-	 * @throws DBException
-	 */
-	public List<Playlist> listPlaylists(Context context) throws DBException {
-		DBFactory factory = DBFactory.factory(context);
-		final IPlayListDao playlistDao = factory.createPlaylistDao();
-		return playlistDao.listPlaylists();
-	}
-
+	
+	
 	/**
 	 * Add a media to a playlist
-	 * 
-	 * @param context
-	 *            the application context
-	 * @param id
-	 *            from the playlist
-	 * @param list
-	 *            of ids of medias
+	 * @param context the application context
+	 * @param id from the playlist
+	 * @param list of ids of medias
 	 * @throws DBException
 	 */
-	public void addMediaToPlaylist(Context context, int idPlaylist,
-			List<Long> mediaList) throws DBException {
-		DBFactory factory = DBFactory.factory(context);
-		final IPlaylistMediaDao playlistMediaDao = factory
-				.createPlaylistMediaDao();
+	public void addMediaToPlaylist(Context context, Integer playlistId, List<Integer> mediaList) {
 
-		Playlist platlist = new Playlist((long) idPlaylist);
+		IPlaylistMediaDao playlistMediaDao = DBFactory.factory(context).createPlaylistMediaDao();
+		 for (Integer audioId : mediaList) {
+			 try {
+				playlistMediaDao.addMediaToPlaylist(audioId, playlistId);
+			} catch (DBException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		 }
 
-		for (Long idAudio : mediaList) {
-			playlistMediaDao.addAudioToPlaylist(idAudio, platlist);
-		}
+		this.setChanged();
+		this.notifyObservers();
 	}
 
 	/**
@@ -790,7 +652,7 @@ public class Manager extends Observable {
 	 *            of ids of medias
 	 * @throws DBException
 	 */
-	public void removeAllMediaFromPlaylist(Context context, Long idPlaylist)
+	public void removeAllMediaFromPlaylist(Context context, Integer idPlaylist)
 			throws DBException {
 		DBFactory factory = DBFactory.factory(context);
 		final IPlaylistMediaDao playlistMediaDao = factory
@@ -803,7 +665,7 @@ public class Manager extends Observable {
 
 			if (pl != null) {
 				for (int i = 0; i < pl.size(); i++) {
-					playlistMediaDao.removeMediaFromPlaylist(pl.get(i).getId());
+					// playlistMediaDao.removeMediaFromPlaylist(pl.get(i).getId());
 				}
 
 			}
@@ -837,10 +699,11 @@ public class Manager extends Observable {
 
 			try {
 				pl = playlistMediaDao.getPlaylistByMediaInPlaylist(audio,
-						new Playlist((long) idPlaylist));
+						new Playlist(idPlaylist));
 
-				if (pl != null)
-					playlistMediaDao.removeMediaFromPlaylist(pl.getId());
+				if (pl != null) {
+					// playlistMediaDao.removeMediaFromPlaylist(pl.getId());
+				}
 
 			} catch (DBException e) {
 				e.getStackTrace();
@@ -860,21 +723,18 @@ public class Manager extends Observable {
 	 *            from the playlist
 	 * @throws DBException
 	 */
-	public List<Audio> getMusicFromPlaylist(Context context, int idPlaylist)
-			throws DBException {
-		DBFactory factory = DBFactory.factory(context);
-		final IPlaylistMediaDao playlistMediaDao = factory
-				.createPlaylistMediaDao();
-		final IAudioDao audioDao = factory.createAudioDAO();
+	public List<Audio> getMusicFromPlaylist(Context context, Integer idPlaylist) throws DBException {
+		
+		final IPlaylistMediaDao playlistMediaDao = DBFactory.factory(context).createPlaylistMediaDao();
 
-		List<PlaylistMedia> playlist = playlistMediaDao
-				.getMusicFromPlaylist((long) idPlaylist);
+		List<PlaylistMedia> playlist = playlistMediaDao.getMusicFromPlaylist(idPlaylist);
 
+		final IMediaDao audioDao = DBFactory.factory(context).createAudioDao();
+		
 		List<Audio> audiosInPlaylist = new ArrayList<Audio>();
 
 		for (PlaylistMedia media : playlist) {
-			audiosInPlaylist.add(audioDao.listAudioById(new Audio(media
-					.getAudioPlaylistMediaId())));
+			audiosInPlaylist.add(audioDao.listAudioById(media.getFK_Media_Id()));
 		}
 
 		return audiosInPlaylist;
@@ -885,18 +745,18 @@ public class Manager extends Observable {
 		DBFactory factory = DBFactory.factory(context);
 		final IPlaylistMediaDao playlistMediaDao = factory
 				.createPlaylistMediaDao();
-		final IAudioDao audioDao = factory.createAudioDAO();
+		final IMediaDao audioDao = factory.createAudioDao();
 
-		List<PlaylistMedia> playlist = playlistMediaDao
-				.getMusicFromPlaylistPaginate(new Playlist((long) idPlaylist),
-						init, limit);
-		//
+//		List<PlaylistMedia> playlist = playlistMediaDao
+//				.getMusicFromPlaylistPaginate(new Playlist(idPlaylist), init,
+//						limit);
+//		//
 		List<Audio> audiosInPlaylist = new ArrayList<Audio>();
 		//
-		for (PlaylistMedia media : playlist) {
-			audiosInPlaylist.add(audioDao.listAudioById(new Audio(media
-					.getAudioPlaylistMediaId())));
-		}
+//		for (PlaylistMedia media : playlist) {
+//			audiosInPlaylist.add(audioDao.listAudioById(new Audio(media
+//					.getAudioPlaylistMediaId())));
+//		}
 		//
 		Log.i("init " + init, "limit " + limit);
 

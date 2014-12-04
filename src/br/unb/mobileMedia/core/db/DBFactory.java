@@ -25,37 +25,39 @@ public abstract class DBFactory{
 		this.context = context;
 	}
 	
+	
 
-	
 	/**
-	 * Returns an instance of AudioDao.
-	 * @return an instance of AudioDao
-	 */
-	public abstract IAudioDao createAudioDAO();
-	
-	
-	/**
-	 * Returns an instance of AuthorDao.
 	 * @return an instance of AuthorDao
 	 */
 	public abstract IAuthorDao createAuthorDao();
 	
+
 	/**
-	 * Returns an instance of PlaylistDao.
-	 * @return an instance of PlaylistDao
+	 * 
+	 * @return an instance of AlbumDao
 	 */
-	public abstract IPlayListDao createPlaylistDao();
-
-	
-	
-	
-	public abstract IPlaylistMediaDao createPlaylistMediaDao();
-
-	
-	
 	public abstract IAlbumDao createAlbumDao();
 	
 	
+	/**
+	 * @return an instance of AudioDao
+	 */
+	public abstract IMediaDao createAudioDao();
+	
+	
+	/**
+	 * @return an instance of PlaylistDao
+	 */
+	public abstract IPlaylistDao createPlaylistDao();
+
+	
+	
+	/**
+	 * @return an instance of PlailistMediaDao
+	 */
+	public abstract IPlaylistMediaDao createPlaylistMediaDao();
+
 	
 	
 	

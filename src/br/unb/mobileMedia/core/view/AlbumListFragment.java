@@ -57,7 +57,7 @@ public class AlbumListFragment extends ListFragment {
 		Author item = (Author) getListAdapter().getItem(position);
 		
 		Bundle args = new Bundle();
-//		args.putInt(AudioExpandableListFragment.SELECTED_ARTIST_ID, item.getId());
+		args.putInt(AudioExpandableListFragment.SELECTED_ARTIST_ID, item.getId().intValue());
 		args.putString(AudioExpandableListFragment.SELECTED_ARTIST_NAME, item.getName());
 		
 		// TODO Extract this to a method (repeated in MMUnBActivity too)

@@ -29,20 +29,18 @@ public interface MediaExtractor {
 	
 	public List<Author> processFiles(List<File> audioFiles);
 	
-	public List<String> extractAllAuthors(List<File> audiosFiles);
+	public List<Author> extractAllAuthors(List<File> audiosFiles);
 	
 	public List<Album> extractAllAlbum(List<File> audioFiles, List<Author> authors);
 	
 	public List<Audio> processAudio(List<File> files, List<Album> albums);
 	
-	public String getAuthor();
+	public String getTitle(String mediaPath);
 	
-	public String getAlbum();
+	public String getAuthor(String mediaPath);
 	
-	public String getGenre();
-
-	public byte[] getAlbumArt();
-	
-	public String getBitRate();
+	public String getAlbum(String mediaPath);
+		
+	public String getBitRate(String mediaPath);
 
 }
