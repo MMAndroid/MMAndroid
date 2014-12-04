@@ -4,7 +4,7 @@ import java.util.List;
 
 import br.unb.mobileMedia.core.domain.Audio;
 
-public interface IAudioDao {
+public interface IMediaDao {
 		
 	/**
 	 * Save an audio in the audio's database.
@@ -18,7 +18,7 @@ public interface IAudioDao {
 	 * List all audio of the MMUAndroid database.
 	 * @return list of registered audios.
 	 */
-	public Audio listAudioById(Audio audio) throws DBException;
+	public Audio listAudioById(Integer audioId) throws DBException;
 	
 	
 	/**
@@ -32,7 +32,7 @@ public interface IAudioDao {
 	 * List all audio of the MMUAndroid database.
 	 * @return list of registered audios.
 	 */
-	public List<Audio> listAudioByAlbum(Long albumId) throws DBException;
+	public List<Audio> listAudioByAlbum(Integer albumId) throws DBException;
 	
 	/**
 	 * List all audio of the MMUAndroid database.
@@ -45,16 +45,14 @@ public interface IAudioDao {
 	
 	public List<Audio> listAllAudio() throws DBException;
 	
+		
 	
 	/**
-	 * @param albumId
-	 * @return list content all audio of an album
+	 * 
+	 * @return number of audios in database
+	 * @throws DBException if anything goes wrong with the database query
 	 */
-	public List<Audio> listAllAudioByAlbum(Long albumId) throws DBException;
-	
-	
-	public Long countAllAudio() throws DBException;
-	
+	public Integer countAudios() throws DBException;
 	
 	/**
 	 * Update audio of the MMUAndroid database.
@@ -72,7 +70,7 @@ public interface IAudioDao {
 	public boolean deleteAudio(Audio audio) throws DBException;
 	
 	
-	List<Audio> listAllAudioPaginated( int ofset, int limit) throws DBException;
+	public List<Audio> listAllAudioPaginated(Integer ofset, Integer limit) throws DBException;
 
 	
 }

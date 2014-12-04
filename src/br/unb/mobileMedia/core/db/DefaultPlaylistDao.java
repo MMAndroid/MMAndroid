@@ -1,84 +1,74 @@
 package br.unb.mobileMedia.core.db;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import de.greenrobot.dao.query.QueryBuilder;
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
-import br.unb.mobileMedia.core.db.AudioDao.Properties;
-import br.unb.mobileMedia.core.db.DaoMaster.DevOpenHelper;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Playlist;
 
-public class DefaultPlaylistDao implements IPlayListDao {
+public class DefaultPlaylistDao implements IPlaylistDao {
 
 	private Context context;
+	private DBHelper dbHelper;
 	private SQLiteDatabase db;
-	private DaoMaster daoMaster;
-	private DaoSession daoSession;
-	private PlaylistDao playlistDao;
-	private DevOpenHelper openHelper;
+
 	
 	public DefaultPlaylistDao(Context c){
 		this.context = c;
+		this.dbHelper = new DBHelper(context, DBConstants.DATABASE_NAME, null,
+				DBConstants.DATABASE_VERSION);
 	}
 	
-	private void initWrite(){
-		this.openHelper = new DaoMaster.DevOpenHelper(this.context, DBConstants.DATABASE_NAME, null);
-
-		this.db = this.openHelper.getWritableDatabase();
-		this.daoMaster = new DaoMaster(this.db);
-		this.daoSession = this.daoMaster.newSession();
-	}
 	
-	private void initRead(){
-		this.openHelper = new DaoMaster.DevOpenHelper(this.context, DBConstants.DATABASE_NAME, null);
-
-		this.db = this.openHelper.getReadableDatabase();
-		this.daoMaster = new DaoMaster(this.db);
-		this.daoSession = this.daoMaster.newSession();
-	}
-	
-	private void endTx(){
+	private void endDb() {
 		if (db.inTransaction()) {
 			db.endTransaction();
 		}
-		
-		if(this.daoSession != null)
-			this.daoSession.clear();
-		
-		if(db.isOpen())
+
+		if (db.isOpen() || db.isReadOnly())
 			db.close();
-		
-		this.openHelper.close();
+
+		dbHelper.close();
 	}
+
 	
 	public void newPlaylist(Playlist playlist) throws DBException {
 		try {
-			initWrite();
-			this.playlistDao = this.daoSession.getPlaylistDao();
-			this.db.beginTransaction();
-			QueryBuilder<Playlist> qb = playlistDao.queryBuilder();
-			qb.where(Properties.Title.eq(playlist.getTitle()));
-			//check is playlist not exists
-			this.db.setTransactionSuccessful();
-			
-			if(qb.list().size() == 0)
-				this.playlistDao.insert(playlist);
-			else
-				Log.i("Playlist: "+playlist.getTitle(), "In Database");
-			
-		
-		}catch (SQLiteException e) {
-			Log.e(DefaultAudioDao.class.getCanonicalName(), e.getLocalizedMessage() + "DefaultPlaylistDao");
-			throw new DBException();
+
+			this.db = this.dbHelper.getWritableDatabase();
+
+			Cursor cursor = db.rawQuery(DBConstants.SELECT_PLAYLIST_BY_NAME,
+					new String[] { playlist.getName() });
+
+			if (cursor.getCount() == 0) {
+
+				// here we must save the author, since it does not exist.
+				ContentValues values = new ContentValues();
+
+				values.put(DBConstants.PLAYLIST_NAME_COLUMN, playlist.getName());
+
+				this.db.beginTransaction();
+				this.db.insert(DBConstants.PLAYLIST_TABLE, null, values);
+				this.db.setTransactionSuccessful();
+			}
+
+		} catch (SQLiteException e) {
+
+			Log.e("DefaultPlaylistDao", e.getLocalizedMessage());
+
+			throw new DBException("DefaultPlaylistDao-newPlaylist: "
+					+ e.getLocalizedMessage());
 
 		} finally {
-			
-			endTx();
-			
+
+			this.endDb();
+
 		}
 		
 	}
@@ -105,44 +95,113 @@ public class DefaultPlaylistDao implements IPlayListDao {
 		} catch (SQLiteException e) {
 //			trataException(e);
 		} finally{
-			endTx();
+//			endTx();
 		}
 	}
 
 	public List<Playlist> listPlaylists() throws DBException {
-		initRead();
-		this.playlistDao = this.daoSession.getPlaylistDao();
-		return playlistDao.loadAll();
-	}
-	
-	
-	public List<Playlist> listSimplePlaylists() throws DBException {
-		return playlistDao.loadAll();
-	}
+		try{
+			
+			List<Playlist> playlists = new ArrayList<Playlist>();
+			
+			this.db = this.dbHelper.getReadableDatabase();
+			
+			Cursor cursor = this.db.rawQuery(DBConstants.SELECT_PLAYLISTS, null);
+			
+			if(cursor.moveToFirst()){
+				do{
+					playlists.add(cursorToPlaylist(cursor));
+				}while(cursor.moveToNext());
+			}
+			
+			cursor.close();
+			
+			return playlists;
+			
+		}catch(SQLiteException e){
+			Log.e("DefaultPlaylistDao", e.getLocalizedMessage());
 
-	public Playlist getPlaylistById(int idPlaylist) throws DBException {
+			throw new DBException("DefaultPlaylistDao-listPlaylists: "
+					+ e.getLocalizedMessage());
+		}finally{
+			endDb();
+		}
+	}
 	
-		QueryBuilder<Playlist> qb = playlistDao.queryBuilder();
-		qb.where(Properties.Id.eq(idPlaylist));
+	
+	public Integer countPlaylists() throws DBException{
+		try{
+			
+			this.db = this.dbHelper.getReadableDatabase();
+			
+			Cursor cursor = this.db.rawQuery(DBConstants.COUNT_PLAYLISTS, null);
+			
+			int count = 0;
+			
+			if(cursor.moveToFirst())
+				count = cursor.getInt(0);
+
+			cursor.close();
+			
+			return count;
+			
+		} catch (SQLiteException e) {
+			Log.e("DefaultPlaylistDao", e.getLocalizedMessage());
+
+			throw new DBException("DefaultPlaylistDao-countPlaylists: "
+					+ e.getLocalizedMessage());
+		} finally {
+			endDb();
+		}
+	}
+	
+	
+
+
+	public Playlist getPlaylistById(Integer playlistId) throws DBException {
 		
-		return qb.list().get(0);
+		try{
+		
+			Playlist playlist = null;
+			this.db = this.dbHelper.getReadableDatabase();
+			
+			Cursor cursor = db.rawQuery(DBConstants.SELECT_SIMPLE_PLAYLIST_BY_ID,	new String[] { playlistId.toString()});
+
+			if(cursor.moveToFirst()){
+				playlist = cursorToPlaylist(cursor);
+			}
+			
+			cursor.close();
+			
+			return playlist;
+			
+		} catch (SQLiteException e) {
+			Log.e("DefaultPlaylistDao", e.getLocalizedMessage());
+
+			throw new DBException("DefaultPlaylistDao-getPlaylistById: "
+					+ e.getLocalizedMessage());
+		} finally {
+			endDb();
+		}
 	}
 	
 	public Playlist getPlaylistByName(String name) throws DBException {
-		QueryBuilder<Playlist> qb = playlistDao.queryBuilder();
-		qb.where(Properties.Title.eq(name));
+//		QueryBuilder<Playlist> qb = playlistDao.queryBuilder();
+//		qb.where(Properties.Title.eq(name));
+//		
+//		return qb.list().get(0);
+//	}
+//	
+//	public Playlist getPlaylist(int idPlaylist) throws DBException {
+//		
+//		Playlist p = this.playlistDao.load((long)idPlaylist);
+//		
+//		if(p == null)
+//			throw new DBException();
+//		
+//		return p;
 		
-		return qb.list().get(0);
-	}
-	
-	public Playlist getPlaylist(int idPlaylist) throws DBException {
-		
-		Playlist p = this.playlistDao.load((long)idPlaylist);
-		
-		if(p == null)
-			throw new DBException();
-		
-		return p;
+		return null;
 	}
 
 
@@ -150,24 +209,25 @@ public class DefaultPlaylistDao implements IPlayListDao {
 	
 	public void deletePlaylist(Long id) throws DBException {
 		
-		try{
-			Playlist playlist = getPlaylist(id.intValue());
-			
-			if(playlist != null)
-				playlistDao.delete(playlist);
-				
-		}catch(DBException e){
-			throw e;
-		}finally{
-			endTx();
-		}
 		
+//		try{
+//			Playlist playlist = getPlaylist(id.intValue());
+//			
+//			if(playlist != null)
+//				playlistDao.delete(playlist);
+//				
+//		}catch(DBException e){
+//			throw e;
+//		}finally{
+//			endTx();
+//		}
+//		
 	}
 	
 	
 	public void editPlaylist(Playlist editedPlaylist) throws DBException {
 		
-		this.playlistDao.update(editedPlaylist);
+//		this.playlistDao.update(editedPlaylist);
 			
 	}
 	
@@ -180,7 +240,24 @@ public class DefaultPlaylistDao implements IPlayListDao {
 
 	public List<Audio> getMusicFromPlaylist(int idPlaylist) throws DBException {
 		// TODO Auto-generated method stub
-		return null;
+		List<Audio> audios = new ArrayList<Audio>();
+		audios.add(new Audio(5));
+		return audios;
 	}
 
+
+	
+	
+	
+	
+	private Playlist cursorToPlaylist(Cursor cursor){
+		
+		Integer id = cursor.getInt(cursor.getColumnIndex(DBConstants.PLAYLISTID_COLUMN));
+		String name = cursor.getString(cursor.getColumnIndex(DBConstants.PLAYLIST_NAME_COLUMN));
+		
+		return new Playlist(id, name);
+	}
+
+
+	
 }

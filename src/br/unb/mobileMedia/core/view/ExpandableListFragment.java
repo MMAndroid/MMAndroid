@@ -33,6 +33,8 @@ public class ExpandableListFragment extends Fragment
 
     static final int INTERNAL_EMPTY_ID = 0x00ff0001;
     static final int INTERNAL_LIST_CONTAINER_ID = 0x00ff0003;
+    
+	
 
     final private Handler mHandler = new Handler();
 

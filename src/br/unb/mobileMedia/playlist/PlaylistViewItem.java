@@ -2,14 +2,14 @@ package br.unb.mobileMedia.playlist;
 
 public class PlaylistViewItem {
 
-	public final Long   id;
-	public final String title;
+	public final Integer   id;
+	public final String name;
 	public final String counter;
 
 	
-	public PlaylistViewItem(Long id, String title, String counter){
+	public PlaylistViewItem(Integer id, String name, String counter){
 		this.id       = id;	
-		this.title = title;
+		this.name = name;
 		this.counter = counter;
 	}
 

@@ -6,6 +6,7 @@ import java.util.List;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,6 +20,8 @@ import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.audioPlayer.AudioPlayerList;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.domain.Audio;
+import br.unb.mobileMedia.core.extractor.DefaultAudioExtractor;
+import br.unb.mobileMedia.core.extractor.MediaExtractor;
 import br.unb.mobileMedia.core.manager.Manager;
 import br.unb.mobileMedia.playlist.PlayListManager;
 
@@ -27,10 +30,16 @@ public class AudioSelectFragment extends Fragment{
 	List<Audio> musicas = new ArrayList<Audio>();
 	List<Integer> musicasAdicionadasId = new ArrayList<Integer>();
 	private String names[];
+	private MediaExtractor mediaExtractor;
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		mediaExtractor = new DefaultAudioExtractor(this.getActivity().getApplicationContext());
+
+		
 	}
 
 	@Override
@@ -58,13 +67,24 @@ public class AudioSelectFragment extends Fragment{
 		ListView listMusicLists = (ListView) getActivity().findViewById(R.id.list_musiclistselect);
 
 		try {
-			musicas = Manager.instance().listAllProduction(getActivity());
+			musicas = Manager.instance().listAllAudio(getActivity());
 		}
 		catch (DBException e) {e.printStackTrace();}
 
 		names = new String[musicas.size()];
 		int i=0;
-		for (Audio aux : musicas){names[i++]=aux.getTitle();}
+		
+		Log.i("Colocar o loop em uma thread",  "IMPORTANTISSIMO");
+		Log.i("E PAGINAR A LISTVIEW",  "IMPORTANTISSIMO");
+
+		for (Audio aux : musicas){
+			
+			String mediaPath = Manager.instance().listAudioById(getActivity(), aux.getId()).getUrl();
+			
+			names[i++]= this.mediaExtractor.getTitle(mediaPath);
+					 
+					//"ID: "+aux.getId()+" getTitle with mediaExtractor";
+		}
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), 
 				android.R.layout.simple_list_item_1, 

@@ -110,22 +110,22 @@ public class DefaultVideoExtractor implements MediaExtractor {
 		return null;
 	}
 
-	public String getBitRate() {
+	public String getBitRate(String mediaPath) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public String getAuthor() {
+	public String getAuthor(String mediaPath) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public String getAlbum() {
+	public String getAlbum(String mediaPath) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public String getGenre() {
+	public String getGenre(String mediaPath) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -137,12 +137,17 @@ public class DefaultVideoExtractor implements MediaExtractor {
 
 
 
-	public List<String> extractAllAuthors(List<File> audiosFiles) {
+	public List<Author> extractAllAuthors(List<File> audiosFiles) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public List<Album> extractAllAlbum(List<File> audioFiles, List<Author> authors) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getTitle(String mediaPath) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -1,7 +1,7 @@
 <resources>
 
     <string name="hello">Hello World, MMUnBActivity!</string>
-    <string name="app_name">MMUnB</string>
+    <string name="app_name">MMAndroid</string>
     <string name="btn_list_authors">Artists</string>
     <string name="btn_media">Media</string>
     <string name="btn_open_music_player">Open Music Player</string>
@@ -16,7 +16,8 @@
     <string name="btn_addPlaylist">Add a new playlist</string>
     <string name="btn_share">Share</string>
     <string name="btn_synchronize">Synchronize</string>
-    <string name="title_activity_author_list">AuthorListActivity</string>
+    <string name="title_author_list_fragment">Authors</string>
+    <string name="title_author_expandable_list">Albums of</string>
     <string name="title_activity_audio_table">AudioTableActivity</string>
     <string name="title_activity_audio_player">AudioPlayerActivity</string>
     <string name="message_synchronization_finished">The database content has been synchronized</string>

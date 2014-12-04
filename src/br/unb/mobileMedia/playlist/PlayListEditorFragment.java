@@ -20,7 +20,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import br.unb.mobileMedia.R;
-import br.unb.mobileMedia.Exception.ExceptionMediaExtractor;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.extractor.DefaultAudioExtractor;
@@ -31,13 +30,16 @@ import br.unb.mobileMedia.core.view.AudioPlayerFragment;
 public class PlayListEditorFragment extends ListFragment {
 
 	public final static String SELECTED_PLAYLIST_ID = "idPlaylist";
+	public final static String SELECTED_PLAYLIST_NAME = "namePlaylist";
+
 	public final static int menuInflate = R.menu.remove_audio_playlist;
 
 	private final int ITEMS_PER_PAGE = 9;
 	private int totalAudioInDb = 0;
 	private View footerView;
 	private ListView list = null;
-	private int playListId;
+	private Integer playListId;
+	private String  namePlaylist;
 
 	private List<AudioViewItem> mItems;
 
@@ -85,18 +87,12 @@ public class PlayListEditorFragment extends ListFragment {
 		
 		Bundle extras = getArguments();
 
-		this.playListId = extras
-				.getInt(MainPlaylistListFragment.SELECTED_PLAYLIST_ID);
+		this.playListId   = extras.getInt(MainPlaylistListFragment.SELECTED_PLAYLIST_ID);
+		this.namePlaylist = extras.getString(MainPlaylistListFragment.SELECTED_PLAYLIST_NAME);
 				
-		try {
-			getActivity().getActionBar().setSubtitle("Playlist: " + Manager.instance().getPlaylistById(getActivity(), playListId).getTitle());
-		} catch (DBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		getActivity().getActionBar().setSubtitle("Playlist: " + namePlaylist);
+		
 
-
-		Log.e("playListId", "" + playListId);
 
 		// this.list = (ListView)
 		// getActivity().findViewById(R.id.list_musiclist);
@@ -128,31 +124,30 @@ public class PlayListEditorFragment extends ListFragment {
 
 		try {
 			
-			this.musicList = Manager.instance().getMusicFromPlaylist(context,
-					playListId);
+			this.musicList = Manager.instance().getMusicFromPlaylist(context, playListId);
+			
+			for(Audio audio : musicList){
+				Log.i("AudioPath:" ,  audio.getUrl());
+			}
 			
 			for(Audio audio: musicList){
 				
-				Long   id    = null;
+				Integer   id    = null;
 				String title = null;
 				String album = null;
 				String author = null;
 				String bitRate = null;
 				
-				
 				try {
-					
-					this.mediaExtractor.setMMR(audio.getUrl());
-					
+										
 					id       = audio.getId();
-					title    = audio.getTitle();
-					album    = this.mediaExtractor.getAlbum(); 
-//					artAlbum = this.mediaExtractor.getAlbumArt();
-					author   = this.mediaExtractor.getAuthor();
-					bitRate  = this.mediaExtractor.getBitRate();
+					title    = this.mediaExtractor.getTitle(audio.getUrl());
+					album    = this.mediaExtractor.getAlbum(audio.getUrl()); 
+					author   = this.mediaExtractor.getAuthor(audio.getUrl());
+					bitRate  = this.mediaExtractor.getBitRate(audio.getUrl());
 					
-				} catch (ExceptionMediaExtractor e1) {
-					
+				} catch (Exception e1) {
+					bitRate  = this.mediaExtractor.getBitRate(audio.getUrl());
 					Log.e("ExceptionMediaExtractor", e1.getMessage());
 					
 				}
@@ -192,10 +187,11 @@ public class PlayListEditorFragment extends ListFragment {
 	}
 
 	private void addMusicInPlayList() {
-		// when button is clicked, start activity and wait for result.
-		// result is caught in method onActivityResult.
+		
 		Bundle args = new Bundle();
 		args.putInt(SELECTED_PLAYLIST_ID, playListId);
+		args.putString(SELECTED_PLAYLIST_NAME, namePlaylist);
+		
 		// TODO Extract this to a method (repeated in MMUnBActivity too)
 		Fragment newFragment = new MusicSelectFragment();
 		newFragment.setArguments(args);

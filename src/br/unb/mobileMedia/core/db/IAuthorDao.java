@@ -13,7 +13,7 @@ public interface IAuthorDao {
 	 * 
 	 * @param author - the author that will be persisted. 
 	 */
-	public void saveAuthor(String author) throws DBException;
+	public void saveAuthor(Author author) throws DBException;
 	
 	/**
 	 * Persist an media and relates it to author in the database
@@ -28,6 +28,15 @@ public interface IAuthorDao {
 	 * @throws DBException if anything goes wrong with the database query
 	 */
 	public List<Author> listAuthors() throws DBException;
+	
+	
+	/**
+	 * 
+	 * @return number of authors in database
+	 * @throws DBException if anything goes wrong with the database query
+	 */
+	public Integer countAuthors() throws DBException;
+	
 	
 	/**
 	 * Query an author by name

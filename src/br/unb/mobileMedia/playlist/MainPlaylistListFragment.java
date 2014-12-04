@@ -45,6 +45,7 @@ public class MainPlaylistListFragment extends ListFragment {
 	private Context context;
 	private ArrayAdapterPlaylist adapter;
 	public final static String SELECTED_PLAYLIST_ID = "idPlaylist";
+	public final static String SELECTED_PLAYLIST_NAME = "namePlaylist";
 	
 
 	@Override
@@ -93,7 +94,9 @@ public class MainPlaylistListFragment extends ListFragment {
 		
 		try {
 
-			playlists = Manager.instance().listSimplePlaylists(getActivity());
+			playlists = Manager.instance().listPlaylists(getActivity());
+			
+//			Log.i("Jshkfjhsdkfj", Manager.instance().listPlaylists(getActivity()).size()+"");
 
 			// check if there is any playlist
 			if (playlists == null || playlists.size() == 0) {
@@ -108,16 +111,16 @@ public class MainPlaylistListFragment extends ListFragment {
 
 			} else {
 				
+				
 				for (Playlist p : playlists) {
 					
-					
-				 	int audioInPlaylist = Manager.instance().getMusicFromPlaylist(context, p.getId().intValue()).size();
-					
-				 
+				 	int audioInPlaylist = Manager.instance().getMusicFromPlaylist(context, p.getId()).size();
+				 					 	
 				 	audioInPlaylist = (audioInPlaylist == 0) ? 0 : (audioInPlaylist);
 					
-					mItems.add(new PlaylistViewItem(p.getId(), p.getTitle(),
-							""+audioInPlaylist));
+				 	Log.i("audioInPlaylist", Manager.instance().getMusicFromPlaylist(context, p.getId()).size()+"");
+				 	
+					mItems.add(new PlaylistViewItem(p.getId(), p.getName(),	""+audioInPlaylist));
 				}
 
 				adapter = new ArrayAdapterPlaylist(getActivity()
@@ -127,7 +130,7 @@ public class MainPlaylistListFragment extends ListFragment {
 				this.setListAdapter(adapter);
 
 			}
-		} catch (DBException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -238,10 +241,14 @@ public class MainPlaylistListFragment extends ListFragment {
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
 				.getMenuInfo();
 
-		Long idPlaylist = mItems.get(info.position).id;;
+		Log.i("Id", mItems.get(info.position).id.toString());
+		
+		int idPlaylist      = mItems.get(info.position).id;
+		String namePlaylist = mItems.get(info.position).name;
 
 		Bundle args = new Bundle();
-		args.putInt(SELECTED_PLAYLIST_ID, idPlaylist.intValue());
+		args.putInt(SELECTED_PLAYLIST_ID, idPlaylist);
+		args.putString(SELECTED_PLAYLIST_NAME, namePlaylist);
 
 		Fragment newFragment = new PlayListEditorFragment();
 		newFragment.setArguments(args);
@@ -269,7 +276,7 @@ public class MainPlaylistListFragment extends ListFragment {
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
 				.getMenuInfo();
 
-		final Long idPlaylist = mItems.get(info.position).id;
+		final Long idPlaylist =(long) mItems.get(info.position).id;
 		List<Audio> listTmp = null;
 
 		try {
@@ -332,7 +339,7 @@ public class MainPlaylistListFragment extends ListFragment {
 
 					editedPlaylist = Manager.instance().getPlaylistByName(
 							getActivity(), listItemName);
-					editedPlaylist.setTitle(newName);// playlist with new values
+					editedPlaylist.setName(newName);// playlist with new values
 					Manager.instance().editPlaylist(getActivity(),
 							editedPlaylist);
 
@@ -354,13 +361,13 @@ public class MainPlaylistListFragment extends ListFragment {
 				.getMenuInfo();
 
 		// Retrieve the playlist name that we will be working on...
-		final Long idPlaylist = mItems.get(info.position).id;
+		final Long idPlaylist = (long)mItems.get(info.position).id;
 
 		Log.e("Delete", ""+idPlaylist);
 
 		try {
 
-			Manager.instance().removePlaylist(context, idPlaylist);			
+			Manager.instance().removePlaylist(context, idPlaylist.intValue());			
 			refreshListPlayLists();
 			
 		} catch (DBException e1) {

@@ -12,7 +12,25 @@ public interface IAlbumDao {
 	 * 
 	 * @param author - the author that will be persisted. 
 	 */
-	public void saveAlbum(Album album) throws DBException;
+	public void saveAlbum(Album albums) throws DBException;
+	
+	
+
+	/**
+	 * Return the albums of an author in database
+	 * 
+	 * @return A list with all album an specific author within the database
+	 */
+	public List<Album> listAlbumsByAuthor(Integer authorId) throws DBException;
+	
+	
+	
+	/**
+	 * Return the production of the whole database
+	 * 
+	 * @return A list with all audio data within the database
+	 */
+	public List<Audio> listAllProductionOfAlbum(Integer albumId) throws DBException;
 	
 	
 	/**
@@ -32,16 +50,7 @@ public interface IAlbumDao {
 	 */
 	public Album findByName(String name) throws DBException;
 	
-	
-	
-	/**
-	 * Return the production of the whole database
-	 * 
-	 * @return A list with all audio data within the database
-	 */
-	public List<Audio> listAllProductionOfAlbum(long albumId) throws DBException;
-	
-	
+
 	
 	
 	/**
@@ -49,7 +58,7 @@ public interface IAlbumDao {
 	 * 
 	 * @return A list with all audio data within the database
 	 */
-	public Long countAlbum() throws DBException;
+	public Integer countAlbum() throws DBException;
 	
 	
 }

@@ -57,7 +57,7 @@ public class ArrayAdapterPlaylist extends ArrayAdapter<PlaylistViewItem> {
 		
         PlaylistViewItem item = items.get(position);
         
-        h.titlePlaylist.setText(item.title);
+        h.titlePlaylist.setText(item.name);
 		h.totalAudioInPlaylist.setText(item.counter);
 		
 		return row;
