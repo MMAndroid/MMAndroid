@@ -13,6 +13,8 @@ Micro Edition.
 
 Features dessa versao
 ===========================
+* As imagens que são exibidas em ListView estão sendo adicionadas em cache.
+* Paginção dos resultados das consultas no DB para popular ListView.
 
 Player basico para execucao de videos armazenados em todo dispositiovo.
 Em mais detalhes, cobre:
@@ -39,7 +41,10 @@ tais fotos foram tiradas nesse evento, etc.
 
 * Executar midias que estao em um servidor remoto
 
-* ...
+* Load Datas in background with interface LoaderManager.
+* Implementar a possibilidade do usuário listar em quais diretórios seja pesquisado as medias.
+* Implementar a possibilidade de multi seleção para listview de medias e adicionar diretamente em uma plylist existente.
+
 
 
 Para colaboradores
