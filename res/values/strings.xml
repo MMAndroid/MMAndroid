@@ -33,6 +33,7 @@
     <string name="title_activity_select_activity">AudioSelectActivity</string>
     
     <string name="name">Name:</string>
+    <string name="end">End</string>
     
     <string name="sync_music">Sync complete</string>
 	<string name="sync_music_not_ok">Error during sync</string>
@@ -48,11 +49,19 @@
     <string name="menu_settings_play_headphone_on_subtitle">Resume the music when the headphone is reconnected ?</string>
 	<string name="menu_settings_version_title">MMUnB Version</string>
     <string name="menu_settings_info_title">Music Library Info</string>
-    	
+    
 	<!-- SERVICE MESSAGES -->
 	<string name="service_music_play_headphone_on">Headphone connected</string>
 	<string name="service_music_play_headphone_off">Headphone disconnected</string>    
 
+	<!-- NOTIFICATION -->
+	<string name="notification_button_play">Play</string>
+    <string name="notification_button_skip">Skip</string>
+	
+	<!-- MENU -->
+	<string name="menu_main_settings">Settings</string>
+    <string name="menu_main_now_playing">Now Playing</string>
+	
     <!-- Action Bar Strings MMUnBActivity -->
     <string name="play_list_ab">Play List</string>
     <string name="facebook_ab">Facebook</string>
@@ -101,5 +110,30 @@
     </array>
     
     <string name="desc_list_item_icon">Item Icon</string>
+    
+    <!-- THEMES -->
+    <string-array name="themes">
+        <item>Device Default</item>
+        <item>Light</item>
+        <item>Dark</item>
+        <item>Solarized Dark</item>
+        <item>Wallpaper</item>
+        <item>Dialog Light</item>
+        <item>Dialog Dark</item>
+        <item>Light (simple)</item>
+        <item>Dark (simple)</item>
+    </string-array>
+
+    <string-array name="themes_values">
+        <item>default</item>
+        <item>light</item>
+        <item>dark</item>
+        <item>solarized_dark</item>
+        <item>wallpaper</item>
+        <item>dialog_light</item>
+        <item>dialog_dark</item>
+        <item>light_simple</item>
+        <item>dark_simple</item>
+    </string-array>
     
 </resources>
