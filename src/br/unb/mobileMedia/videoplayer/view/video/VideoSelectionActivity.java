@@ -19,11 +19,8 @@ import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
 import br.unb.mobileMedia.R;
-import br.unb.mobileMedia.util.MMConstants;
-
 
 public class VideoSelectionActivity extends Activity {
-
 	
 	private ServiceConnection connection = null;
 	private File file = null;
@@ -71,7 +68,7 @@ public class VideoSelectionActivity extends Activity {
 		((ImageButton)findViewById(R.id.btn_start)).setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				
-				Log.i(MMConstants.TAG,"Caminho para o SDCard:" + Environment.getExternalStorageDirectory().getPath());
+				Log.i("MMUnB","Caminho para o SDCard:" + Environment.getExternalStorageDirectory().getPath());
 
 				VideoView videoView = (VideoView) findViewById(R.id.vv_video);
 				MediaController mediaController = new MediaController(VideoSelectionActivity.this);
@@ -87,7 +84,7 @@ public class VideoSelectionActivity extends Activity {
 						videoView.setVideoURI(imageUri);
 						videoView.setMediaController(mediaController);
 						videoView.start();
-						Log.i(MMConstants.TAG,file.getPath());
+						Log.i("MMUnB",file.getPath());
 					}else{
 						Toast.makeText(getApplicationContext(), "V�deo n�o existe", Toast.LENGTH_LONG);
 					}
@@ -141,7 +138,7 @@ public class VideoSelectionActivity extends Activity {
 			try{
 				this.unbindService(connection);
 			}catch (Exception e) {
-				Log.e(MMConstants.TAG, "N�o foi poss�vel desconectar a aplica��o");
+				Log.e("MMUnB", "N�o foi poss�vel desconectar a aplica��o");
 			}
 		}
 	}

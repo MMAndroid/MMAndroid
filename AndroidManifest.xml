@@ -5,8 +5,8 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="14"
-        android:targetSdkVersion="16" />
+        android:minSdkVersion="16"
+        android:targetSdkVersion="19" />
 
     <!-- Indicam que a aplicação tem acesso ao envio e leitura de SMS -->
     <uses-permission android:name="android.permission.SEND_SMS" />

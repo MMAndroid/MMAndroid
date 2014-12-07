@@ -34,6 +34,9 @@
     <string name="title_activity_select_activity">AudioSelectActivity</string>
     <string name="need_to_be_implemented">Need to be implemented.</string>
     <string name="name">Name:</string>
+    
+    <string name="sync_music">Sync complete</string>
+	<string name="sync_music_not_ok">Error during sync</string>    
 
     <!-- Action Bar Strings MMUnBActivity -->
     <string name="play_list_ab">Play List</string>

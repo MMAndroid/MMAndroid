@@ -4,7 +4,7 @@
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="Settings"/>
+        android:title="@string/menu_settings"/>
     <item
         android:id="@+id/syncFiles"
         android:icon="@drawable/navigation_refresh"

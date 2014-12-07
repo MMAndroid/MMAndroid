@@ -1,4 +1,4 @@
-package br.unb.mobileMedia.Exception;
+package br.unb.mobileMedia.exception;
 
 public class ExceptionMediaExtractor extends Exception{
 

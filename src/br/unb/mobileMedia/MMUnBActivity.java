@@ -27,10 +27,11 @@ import br.unb.mobileMedia.core.manager.Preferences;
 import br.unb.mobileMedia.core.view.AlbumListFragment;
 import br.unb.mobileMedia.core.view.AudioSelectFragment;
 import br.unb.mobileMedia.core.view.AuthorListFragment;
+import br.unb.mobileMedia.helpers.SingleToast;
 import br.unb.mobileMedia.playlist.MainPlaylistListFragment;
 
 @SuppressLint("NewApi")
-public class MMUnBActivity extends FragmentActivity implements Observer{
+public class MMUnBActivity extends FragmentActivity implements Observer {
 
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
@@ -126,11 +127,9 @@ public class MMUnBActivity extends FragmentActivity implements Observer{
 			new SyncAudios(this.getApplicationContext()).execute();	
 		}
 		
-		
 		Log.i("Number playlist", Manager.instance().countPlaylists(getApplicationContext())+"");
 		
 	}
-	
 	
 	public void update(Observable observable, Object data) {
 		
@@ -141,20 +140,14 @@ public class MMUnBActivity extends FragmentActivity implements Observer{
 		
 		adapter.clear();
 		
-		
 		runOnUiThread (new Thread(new Runnable() { 
 	         public void run(){
-	    
 	        	 adapter.swapItems(createNavDrawer());
-	        	 
 	         }
 		}));
-
 		
 		Log.i("Observable", "Observer MMUnB ");
-		
 	}
-
 
 	private ArrayList<NavDrawerItem> createNavDrawer(){
 		
@@ -178,7 +171,6 @@ public class MMUnBActivity extends FragmentActivity implements Observer{
 		return items;		
 		
 	}
-	
 
 	/* Slide menuItem click listener */
 	private class SlideMenuClickListener implements
@@ -196,9 +188,6 @@ public class MMUnBActivity extends FragmentActivity implements Observer{
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
-
-
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -268,7 +257,6 @@ public class MMUnBActivity extends FragmentActivity implements Observer{
 			break;
 		}
 
-
 		if (fragment != null) {
 			FragmentManager fragmentManager = getSupportFragmentManager();
 			fragmentManager.beginTransaction().replace(R.id.main, fragment).commit();
@@ -295,11 +283,9 @@ public class MMUnBActivity extends FragmentActivity implements Observer{
 					Toast.LENGTH_LONG).show();
 		}
 	}
-
-	
 	
 	// Parametro, Progresso, Resultado
-	private class SyncAudios extends AsyncTask<Void, Void, Void> {
+	private class SyncAudios extends AsyncTask<String, Integer, String> {
 
 		private Context context;
 
@@ -308,34 +294,32 @@ public class MMUnBActivity extends FragmentActivity implements Observer{
 		}
 
 		@Override
-		protected Void doInBackground(Void... v) {
-
+		protected String doInBackground(String... parameters) {
 			try {
-				
 				Manager.instance().synchronizeMedia(context);
-				
+				return MMUnBActivity.this.getString(R.string.sync_music);
 			} catch (DBException e) {
 				Log.i("Exception", e.getCause().toString());
 				e.getStackTrace();
+				return MMUnBActivity.this.getString(R.string.sync_music_not_ok);
 			}
-			
-			return null;
 		}
 
+		/**
+		 * Called when the background processing is done.
+		 */
 		@Override
-		protected void onPostExecute(Void v) {
-
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			SingleToast.show(MMUnBActivity.this, result, Toast.LENGTH_LONG);
+			
 			if (menuItem != null && menuItem.getActionView() != null) {
 				menuItem.collapseActionView();
 				menuItem.setActionView(null);
 			}
 			
 			Log.i("onPostExecute", "MMUnBActivity");
-
 		}
-
 	}
-
-
 
 }

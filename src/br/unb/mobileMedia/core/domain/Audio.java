@@ -1,12 +1,19 @@
 package br.unb.mobileMedia.core.domain;
 
+/**
+ * This class represents a single audio file.
+ *
+ * It's a simple pojo, just a data container.
+ *
+ */
 public class Audio {
 
     private Integer id;
-    private String url;
+    private String filePath;
     private Integer albumId;
 
     public Audio() {
+    	
     }
 
     public Audio(Integer id) {
@@ -15,7 +22,7 @@ public class Audio {
 
     public Audio(Integer id, String url, Integer albumId) {
         this.id = id;
-        this.url = url;
+        this.filePath = url;
         this.albumId = albumId;
     }
 
@@ -27,14 +34,12 @@ public class Audio {
         this.id = id;
     }
 
- 
-
     public String getUrl() {
-        return url;
+        return filePath;
     }
 
     public void setUrl(String url) {
-        this.url = url;
+        this.filePath = url;
     }
 
     public Integer getAlbumId() {

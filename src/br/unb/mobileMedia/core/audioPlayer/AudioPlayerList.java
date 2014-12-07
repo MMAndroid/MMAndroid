@@ -9,10 +9,10 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import br.unb.mobileMedia.Exception.ExceptionMediaExtractor;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.extractor.DefaultAudioExtractor;
 import br.unb.mobileMedia.core.extractor.MediaExtractor;
+import br.unb.mobileMedia.exception.ExceptionMediaExtractor;
 
 public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	private static volatile AudioPlayerList uniqueInstance;

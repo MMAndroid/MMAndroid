@@ -6,7 +6,6 @@ import java.util.List;
 
 import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.util.FileUtility;
-import br.unb.mobileMedia.util.MMConstants;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -50,7 +49,7 @@ public class VideoListActivity extends ListActivity {
 				Intent intent = new Intent(VideoListActivity.this.getApplicationContext(),VideoSelectionActivity.class);
 				intent.putExtra(FILE_OBJ_PARAMETER, file);
 				startActivity(intent);			
-				Log.i(MMConstants.TAG,"Arquivo selecionado: "+file.getPath());
+				Log.i("MMUnB","Arquivo selecionado: "+file.getPath());
 			}
 		});
 		

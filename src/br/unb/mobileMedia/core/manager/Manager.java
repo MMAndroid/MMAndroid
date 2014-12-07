@@ -148,12 +148,9 @@ public class Manager extends Observable {
 			synchronized (this) {
 				ListAllFiles f = new ListAllFiles();
 				files.addAll(f.getAllMusic());
-
 				notify();
 			}
-
 		}
-
 	}
 
 

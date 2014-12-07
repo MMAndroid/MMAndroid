@@ -2,7 +2,6 @@ package br.unb.mobileMedia.core.extractor;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,10 +13,10 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.util.Log;
-import br.unb.mobileMedia.Exception.ExceptionMediaExtractor;
 import br.unb.mobileMedia.core.domain.Album;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Author;
+import br.unb.mobileMedia.exception.ExceptionMediaExtractor;
 
 /**
  * A defaul implementation of an audio extractor.
