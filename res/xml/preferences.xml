@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- EXAMPLE CATEGORY -->
+    <PreferenceCategory
+        android:title="Appearance"
+        android:key="appearance" 
+        >
+        
+    </PreferenceCategory>
+        
+    <PreferenceCategory
+        android:title="Headset"
+        android:key="headset" 
+        >
+        <CheckBoxPreference 
+            android:key="pause_headphone_off"
+            android:title="@string/menu_settings_pause_headphone_off_title"
+            android:summary="@string/menu_settings_pause_headphone_off_subtitle"
+            android:defaultValue="true"
+        />
+        
+        <CheckBoxPreference 
+            android:key="play_headphone_on"
+            android:title="@string/menu_settings_play_headphone_on_title"
+            android:summary="@string/menu_settings_play_headphone_on_subtitle"
+            android:defaultValue="true"
+        />
+                
+    </PreferenceCategory>
+    
+    <PreferenceCategory
+        android:title="\'Now Playing List\'"
+        android:key="nowplayinglist" 
+        >
+        
+    </PreferenceCategory>
+
+    <!-- Informations about the app -->
+    <PreferenceCategory
+        android:title="Other"
+        android:key="other" 
+        >
+        <Preference
+             android:key="version"
+             android:title="@string/menu_settings_version_title"
+         />
+        <Preference
+             android:key="info"
+             android:title="@string/menu_settings_info_title"
+         />
+        
+    </PreferenceCategory>
+</PreferenceScreen>
