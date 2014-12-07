@@ -1,37 +1,42 @@
 <resources>
 
-    <string name="hello">Hello World, MMUnBActivity!</string>
-    <string name="app_name">MMUnB</string>
+    <!-- BUTTONS -->
     <string name="btn_list_authors">Artistas</string>
     <string name="btn_media">Mídia</string>
     <string name="btn_open_music_player">Abrir Music Player</string>
     <string name="btn_exit">Sair</string>
-    <string name="lb_select_media">Selecione um vídeo</string>
-    <string name="lb_instruction">selecione um vídeo para reproduzir</string>
     <string name="btn_play_list">Playlists</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="menu_settings">Configurações</string>
-    <string name="title_activity_play_list">PlayListActivity</string>
-    <string name="btn_addMusiclist">Inserir música</string>
+	<string name="btn_addMusiclist">Inserir música</string>
     <string name="btn_addPlaylist">Adicionar uma nova playlist</string>
     <string name="btn_share">Compartilhar</string>
     <string name="btn_synchronize">Sincronizar</string>
-    <string name="title_activity_author_list">AuthorListActivity</string>
-    <string name="title_activity_audio_table">AudioTableActivity</string>
-    <string name="title_activity_audio_player">AudioPlayerActivity</string>
-    <string name="message_synchronization_finished">O conteúdo do banco de dados foi sincronizado</string>
-    <string name="title_activity_playlist_editor">PlaylistEditorActivity</string>
-    <string name="title_activity_music_select">MusicSelectActivity</string>
     <string name="btn_PlayPlaylist">Tocar Playlist</string>
-    <string name="ff">FF</string>
-    <string name="re">RE</string>
-    <string name="add_a_music">Adicionar uma música</string>
     <string name="btn_top_artists">Top artistas</string>
-    <string name="btn_top_songs">Top músicas</string>
-    <string name="btn_share_app">Compartilhar app</string>
+    <string name="btn_top_songs">Top músicas</string>    
+    
+    <string name="lb_select_media">Selecione um vídeo</string>
+    <string name="lb_instruction">selecione um vídeo para reproduzir</string>
+    
+    <string name="title_author_list_fragment">Autores</string>
+    <string name="title_author_expandable_list">Álbuns de</string>    
+   
     <string name="title_activity_share_list">Compartilhar</string>
-    <string name="title_activity_select_activity">AudioSelectActivity</string>
+    
+    <string name="name">Nome:</string>
+    
+	<string name="sync_music">Sync completo</string>
+	<string name="sync_music_not_ok">Erro durante sync</string>
+	<string name="message_synchronization_finished">O conteúdo do banco de dados foi sincronizado</string>
     
     <string name="need_to_be_implemented">Precisa ser implementado.</string>
-    <string name="name">Nome:</string>
+    
+	<!-- SETTINGS MESSAGE -->
+    <string name="menu_settings">Configurações</string>
+	<string name="menu_settings_pause_headphone_off_title">Pause when Unplugged</string>
+	<string name="menu_settings_pause_headphone_off_subtitle">Pause the music when the headphone is disconnected ?</string>
+	<string name="menu_settings_play_headphone_on_title">Play when Inserted</string>
+    <string name="menu_settings_play_headphone_on_subtitle">Resume the music when the headphone is reconnected ?</string>
+	<string name="menu_settings_version_title">MMUnB Version</string>
+    <string name="menu_settings_info_title">Music Library Info</string>
+    
 </resources>

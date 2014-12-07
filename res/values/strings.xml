@@ -1,42 +1,57 @@
 <resources>
 
-    <string name="hello">Hello World, MMUnBActivity!</string>
     <string name="app_name">MMAndroid</string>
+    
+    <!-- BUTTONS -->
     <string name="btn_list_authors">Artists</string>
     <string name="btn_media">Media</string>
     <string name="btn_open_music_player">Open Music Player</string>
     <string name="btn_exit">Exit</string>
-    <string name="lb_select_media">Select a video</string>
-    <string name="lb_instruction">Select a video for playing</string>
     <string name="btn_play_list">Playlists</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="menu_settings">Settings</string>
-    <string name="title_activity_play_list">PlayListActivity</string>
-    <string name="btn_addMusiclist">Inserir Musica</string>
+	<string name="btn_addMusiclist">Inserir Musica</string>
     <string name="btn_addPlaylist">Add a new playlist</string>
     <string name="btn_share">Share</string>
-    <string name="btn_synchronize">Synchronize</string>
+	<string name="btn_synchronize">Synchronize</string>    
+    <string name="btn_PlayPlaylist">Play Playlist</string>
+	<string name="btn_top_artists">Top Artists</string>
+    <string name="btn_top_songs">Top Songs</string>
+    
+    <string name="lb_select_media">Select a video</string>
+    <string name="lb_instruction">Select a video for playing</string>
+    
     <string name="title_author_list_fragment">Authors</string>
     <string name="title_author_expandable_list">Albums of</string>
-    <string name="title_activity_audio_table">AudioTableActivity</string>
-    <string name="title_activity_audio_player">AudioPlayerActivity</string>
-    <string name="message_synchronization_finished">The database content has been synchronized</string>
-    <string name="title_activity_playlist_editor">PlaylistEditorActivity</string>
-    <string name="title_activity_music_select">MusicSelectActivity</string>
-    <string name="btn_PlayPlaylist">Tocar Playlist</string>
-    <string name="ff">FF</string>
-    <string name="re">RE</string>
-    <string name="add_a_music">Add a music</string>
-    <string name="btn_top_artists">Top Artists</string>
-    <string name="btn_top_songs">Top Songs</string>
-    <string name="btn_share_app">Share App</string>
+    
     <string name="title_activity_share_list">Share</string>
+
+    <string name="title_activity_author_list">AuthorListActivity</string>
+    <string name="title_activity_play_list">PlayListActivity</string>
+    <string name="title_activity_playlist_editor">PlaylistEditorActivity</string>
+    <string name="title_activity_music_select">MusicSelectActivity</string>    
+	<string name="title_activity_audio_table">AudioTableActivity</string>
+    <string name="title_activity_audio_player">AudioPlayerActivity</string>
     <string name="title_activity_select_activity">AudioSelectActivity</string>
-    <string name="need_to_be_implemented">Need to be implemented.</string>
+    
     <string name="name">Name:</string>
     
     <string name="sync_music">Sync complete</string>
-	<string name="sync_music_not_ok">Error during sync</string>    
+	<string name="sync_music_not_ok">Error during sync</string>
+	<string name="message_synchronization_finished">The database content has been synchronized</string>
+
+	<string name="need_to_be_implemented">Needs to be implemented.</string>
+	
+	<!-- SETTINGS MESSAGE -->
+	<string name="menu_settings">Settings</string>
+	<string name="menu_settings_pause_headphone_off_title">Pause when Unplugged</string>
+	<string name="menu_settings_pause_headphone_off_subtitle">Pause the music when the headphone is disconnected ?</string>
+	<string name="menu_settings_play_headphone_on_title">Play when Inserted</string>
+    <string name="menu_settings_play_headphone_on_subtitle">Resume the music when the headphone is reconnected ?</string>
+	<string name="menu_settings_version_title">MMUnB Version</string>
+    <string name="menu_settings_info_title">Music Library Info</string>
+    	
+	<!-- SERVICE MESSAGES -->
+	<string name="service_music_play_headphone_on">Headphone connected</string>
+	<string name="service_music_play_headphone_off">Headphone disconnected</string>    
 
     <!-- Action Bar Strings MMUnBActivity -->
     <string name="play_list_ab">Play List</string>
@@ -53,24 +68,18 @@
     <string name="manager_playlist_exec">play</string>
     <string name="add_geographical_position">Add Position GPS</string>
     
-    
-    
     <!-- Action Bar Strings PlayListActivity -->
     <string name="add_play_list_ab">New Play List</string>
     <string name="add_music_in_play_list_ab">Add Music</string>
     <string name="execute_play_list">Play</string>
     
-    
     <string name="saveMedia">Save</string>
     <string name="removeMedia">Delete</string>
     
-    
     <string name="noMediaFound">Nenhuma Musica Encontrada.</string>
     
-    
     <string name="drawer_open">Open Drawer</string>
-		<string name="drawer_close">Close Drawer</string>
-    
+	<string name="drawer_close">Close Drawer</string>
     
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
@@ -80,8 +89,6 @@
         <item >Playlist</item>
         <item >Musics</item>
     </string-array>
-    
-    
     
     <!-- Nav Drawer List Item Icons -->
     <!-- Keep them in order as the titles are in -->
@@ -93,8 +100,6 @@
         <item>@drawable/ic_music</item>
     </array>
     
-    
     <string name="desc_list_item_icon">Item Icon</string>
-    
     
 </resources>
