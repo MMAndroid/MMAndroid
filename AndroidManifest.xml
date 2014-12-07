@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="br.unb.mobileMedia"
+    android:installLocation="auto"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="0.0.1" >
 
     <uses-sdk
         android:minSdkVersion="16"
         android:targetSdkVersion="19" />
 
-    <!-- Indicam que a aplicação tem acesso ao envio e leitura de SMS -->
-    <uses-permission android:name="android.permission.SEND_SMS" />
-    <uses-permission android:name="android.permission.READ_SMS" />
-     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- PERMISSOES DA APLICACAO -->
+    <uses-permission android:name="android.permission.SEND_SMS" />					<!-- A aplicacao tem acesso ao envio de SMS -->
+    <uses-permission android:name="android.permission.READ_SMS" />					<!-- A aplicacao tem acesso a leitura de SMS -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />	<!-- A aplicacao tem acesso a escrita em memoria externa -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />		<!-- A aplicacao tem acesso a leitura em memoria externa -->	
+    <uses-permission android:name="android.permission.STORAGE" />					<!-- A aplicacao tem acesso ao armazenamento -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />					<!-- A aplicacao tem permissao para continuar a execucao de medias em idle -->
 
     <application
         android:allowBackup="true"
@@ -21,18 +23,22 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.MyAppTheme">
         <activity
-            android:name=".MMUnBActivity"
-            android:label="@string/app_name" >
+            android:name="br.unb.mobileMedia.activities.MMUnBActivity"
+            android:label="@string/app_name" 
+            android:launchMode="singleTop" 
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.video.VideoSelectionActivity" >
+        <activity 
+            android:name=".activities.VideoSelectionActivity" >
         </activity>
-        <activity android:name=".view.video.VideoListActivity" >
+        <activity 
+            android:name=".activities.VideoListActivity" >
         </activity>
+       
         <activity
             android:name=".playlist.MainPlaylistListActivity"
             android:label="@string/title_activity_play_list" >
@@ -62,7 +68,6 @@
             android:label="@string/title_activity_playlist_editor" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -71,10 +76,25 @@
             android:label="@string/title_activity_music_select" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <!-- SERVICES -->
+        <service android:name=".services.ServicePlayMusic" />
+        
+         <!-- HANDLING BROADCASTS -->
+        <receiver android:name="NotificationMusic$NotificationPlayButtonHandler" />
+        <receiver android:name="NotificationMusic$NotificationSkipButtonHandler" />
+
+        <!-- BROADCAST RECEIVERS -->
+        <receiver android:name=".services.ServicePlayMusic$ExternalBroadcastReceiver" >
+            <intent-filter>
+                <!-- Disconnected Headphones -->
+                <action android:name="android.media.AUDIO_BECOMING_NOISY" />
+            </intent-filter>
+        </receiver>
+        
     </application>
 
 </manifest>
