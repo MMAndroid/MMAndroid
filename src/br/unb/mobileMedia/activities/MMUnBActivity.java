@@ -1,4 +1,4 @@
-package br.unb.mobileMedia;
+package br.unb.mobileMedia.activities;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -21,6 +21,16 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+import br.unb.mobileMedia.ExampleFragment;
+import br.unb.mobileMedia.NavDrawerItem;
+import br.unb.mobileMedia.NavDrawerListAdapter;
+import br.unb.mobileMedia.R;
+import br.unb.mobileMedia.R.array;
+import br.unb.mobileMedia.R.drawable;
+import br.unb.mobileMedia.R.id;
+import br.unb.mobileMedia.R.layout;
+import br.unb.mobileMedia.R.menu;
+import br.unb.mobileMedia.R.string;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.manager.Manager;
 import br.unb.mobileMedia.core.manager.Preferences;

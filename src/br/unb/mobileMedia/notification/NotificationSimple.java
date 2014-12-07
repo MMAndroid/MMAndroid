@@ -13,7 +13,6 @@ import android.content.Intent;
  *
  * Extends this class and add your custom needs if you want o use it.
  * 
- * @author daniel--santos
  */
 public abstract class NotificationSimple {
 

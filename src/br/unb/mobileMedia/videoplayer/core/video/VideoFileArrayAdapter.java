@@ -1,4 +1,4 @@
-package br.unb.mobileMedia.videoplayer.view.video;
+package br.unb.mobileMedia.videoplayer.core.video;
 
 import java.io.File;
 import java.util.Iterator;

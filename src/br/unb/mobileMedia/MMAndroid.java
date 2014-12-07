@@ -2,6 +2,7 @@ package br.unb.mobileMedia;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.IBinder;
+import br.unb.mobileMedia.activities.ActivityQuit;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.services.ServicePlayMusic;
 import br.unb.mobileMedia.services.ServicePlayMusic.MusicBinder;
@@ -141,4 +143,14 @@ public class MMAndroid {
 		MMAndroid.musicService = null;
 	}
 
+	/**
+	 * Forces the application to exit.
+	 */
+	public static void forceExit(Activity c) {
+		Intent intent = new Intent(c, ActivityQuit.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);		// Clear all other Activities
+		c.startActivity(intent);
+		c.finish();												//Clear the Activity calling this function
+	}
+	
 }

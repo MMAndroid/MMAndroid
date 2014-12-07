@@ -1,4 +1,4 @@
-package br.unb.mobileMedia.videoplayer.view.video;
+package br.unb.mobileMedia.activities;
 
 import java.io.File;
 
@@ -20,7 +20,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 import br.unb.mobileMedia.R;
 
-public class VideoSelectionActivity extends Activity {
+public class ActivityVideoSelection extends Activity {
 	
 	private ServiceConnection connection = null;
 	private File file = null;
@@ -60,8 +60,8 @@ public class VideoSelectionActivity extends Activity {
 
 	private void configureUI() {
 
-		if(getIntent().hasExtra(VideoListActivity.FILE_OBJ_PARAMETER)){
-			this.file = (File) getIntent().getExtras().get(VideoListActivity.FILE_OBJ_PARAMETER);
+		if(getIntent().hasExtra(ActivityVideoList.FILE_OBJ_PARAMETER)){
+			this.file = (File) getIntent().getExtras().get(ActivityVideoList.FILE_OBJ_PARAMETER);
 		}
 		
 		
@@ -71,7 +71,7 @@ public class VideoSelectionActivity extends Activity {
 				Log.i("MMUnB","Caminho para o SDCard:" + Environment.getExternalStorageDirectory().getPath());
 
 				VideoView videoView = (VideoView) findViewById(R.id.vv_video);
-				MediaController mediaController = new MediaController(VideoSelectionActivity.this);
+				MediaController mediaController = new MediaController(ActivityVideoSelection.this);
 				mediaController.setAnchorView(videoView);
 
 //				Recupera um v�deo local da aplica��o

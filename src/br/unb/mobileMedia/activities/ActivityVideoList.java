@@ -1,4 +1,4 @@
-package br.unb.mobileMedia.videoplayer.view.video;
+package br.unb.mobileMedia.activities;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -6,6 +6,7 @@ import java.util.List;
 
 import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.util.FileUtility;
+import br.unb.mobileMedia.videoplayer.core.video.VideoFileArrayAdapter;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -17,7 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-public class VideoListActivity extends ListActivity {
+public class ActivityVideoList extends ListActivity {
 
 		
 	public static final String FILE_OBJ_PARAMETER = "FILE_OBJECT_PARAMETER";
@@ -46,7 +47,7 @@ public class VideoListActivity extends ListActivity {
 		lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
 				File file = fileList.get(position);
-				Intent intent = new Intent(VideoListActivity.this.getApplicationContext(),VideoSelectionActivity.class);
+				Intent intent = new Intent(ActivityVideoList.this.getApplicationContext(),ActivityVideoSelection.class);
 				intent.putExtra(FILE_OBJ_PARAMETER, file);
 				startActivity(intent);			
 				Log.i("MMUnB","Arquivo selecionado: "+file.getPath());
