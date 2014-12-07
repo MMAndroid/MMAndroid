@@ -1,4 +1,4 @@
-package br.unb.mobileMedia.playlist;
+package br.unb.mobileMedia.util;
 
 import android.view.ActionMode;
 import android.view.Menu;

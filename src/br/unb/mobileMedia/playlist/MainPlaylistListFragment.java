@@ -96,8 +96,6 @@ public class MainPlaylistListFragment extends ListFragment {
 
 			playlists = Manager.instance().listPlaylists(getActivity());
 			
-//			Log.i("Jshkfjhsdkfj", Manager.instance().listPlaylists(getActivity()).size()+"");
-
 			// check if there is any playlist
 			if (playlists == null || playlists.size() == 0) {
 				names = new String[1];

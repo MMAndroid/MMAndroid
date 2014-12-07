@@ -21,6 +21,7 @@ import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.extractor.DefaultAudioExtractor;
 import br.unb.mobileMedia.core.extractor.MediaExtractor;
 import br.unb.mobileMedia.core.manager.Manager;
+import br.unb.mobileMedia.util.EndlessScrollListener;
 
 public class MusicSelectFragment extends ListFragment {
 
@@ -151,10 +152,9 @@ public class MusicSelectFragment extends ListFragment {
 					int position, long id, boolean checked) {
 				// Capture total checked items
 				final int checkedCount = getListView().getCheckedItemCount();
-				// Set the CAB title according to total checked items
+
 				mode.setTitle(checkedCount + " Selected");
 
-				// getListView().getAdapter().
 				adapter.toggleSelection(position);
 
 				onChooseMore(position);

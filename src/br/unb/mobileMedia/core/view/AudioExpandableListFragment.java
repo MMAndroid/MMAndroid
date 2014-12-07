@@ -15,7 +15,6 @@ import android.widget.Toast;
 import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.domain.Album;
 import br.unb.mobileMedia.core.domain.Audio;
-import br.unb.mobileMedia.core.manager.Manager;
 
 public class AudioExpandableListFragment extends ListFragment {
 

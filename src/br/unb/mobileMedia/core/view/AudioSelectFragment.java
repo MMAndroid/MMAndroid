@@ -3,128 +3,291 @@ package br.unb.mobileMedia.core.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.Intent;
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.ListFragment;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
+import android.view.ActionMode;
 import android.view.Menu;
-import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.ListView;
 import br.unb.mobileMedia.R;
-import br.unb.mobileMedia.core.audioPlayer.AudioPlayerList;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.domain.Audio;
+import br.unb.mobileMedia.core.domain.Playlist;
 import br.unb.mobileMedia.core.extractor.DefaultAudioExtractor;
 import br.unb.mobileMedia.core.extractor.MediaExtractor;
 import br.unb.mobileMedia.core.manager.Manager;
-import br.unb.mobileMedia.playlist.PlayListManager;
+import br.unb.mobileMedia.playlist.ArrayAdapterAudio;
+import br.unb.mobileMedia.playlist.AudioViewItem;
+import br.unb.mobileMedia.playlist.PlayListEditorFragment;
+import br.unb.mobileMedia.util.EndlessScrollListener;
 
-public class AudioSelectFragment extends Fragment{
+public class AudioSelectFragment extends ListFragment {
 
-	List<Audio> musicas = new ArrayList<Audio>();
-	List<Integer> musicasAdicionadasId = new ArrayList<Integer>();
-	private String names[];
+	public final static String SELECTED_PLAYLIST_ID = "idPlaylist";
+	public final static String SELECTED_PLAYLIST_NAME = "namePlaylist";
+	
+	private final int GROUP_PLAYLIST_ID = 999;
+	private final int ITEMS_PER_PAGE = 20;
+	private List<Integer> selecteds = new ArrayList<Integer>();
+	private Integer totalAudioInDb = 0;
+	private List<Audio> audios = null;
 	private MediaExtractor mediaExtractor;
-
+	private ArrayAdapterAudio adapter;
+	private Context context;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		mediaExtractor = new DefaultAudioExtractor(this.getActivity().getApplicationContext());
 
-		
+		this.context = getActivity().getApplicationContext();
+		this.totalAudioInDb = Manager.instance().countMedias(context);
+
+		this.mediaExtractor = new DefaultAudioExtractor(this.getActivity()
+				.getApplicationContext());
+
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		getActivity().setTitle(R.string.add_a_music);
-		return inflater.inflate(R.layout.activity_playlist_music_select, container, false);
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
+		getListView().setDivider(
+				getResources().getDrawable(android.R.color.background_dark));
+		getListView().setDividerHeight(2);
+		getListView().setSelector(R.drawable.list_selector);
+		getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+
 	}
-	
+
+	public void onChooseMore(int position) {
+		if (!selecteds.contains(adapter.getItem(position).id)) {
+			selecteds.add(adapter.getItem(position).id);
+			Log.i("adicionado", "" + adapter.getItem(position).id.intValue());
+
+		} else {
+			selecteds.remove(adapter.getItem(position).id);
+			Log.i("removido", "" + adapter.getItem(position).id.intValue());
+		}
+	}
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		
+
+		loadMore(0, 0);// Show first Items in ListView
+
+		// create adapter with kind of data: ArrayList<AudioViewItem>
+		adapter = new ArrayAdapterAudio(context, R.layout.audio_row,
+				new ArrayList<AudioViewItem>(), getListView());
+
+		setListAdapter(adapter);
+
 		refreshListMusicLists();
 	}
-	
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.save_audio_playlist, menu);
-	}
 
-	//updates the listview with all the musics from the DB
-	private void refreshListMusicLists(){
+	// updates the listview with all the musics from the DB
+	private void refreshListMusicLists() {
 
-		ListView listMusicLists = (ListView) getActivity().findViewById(R.id.list_musiclistselect);
+		getListView().setOnScrollListener(new EndlessScrollListener() {
 
-		try {
-			musicas = Manager.instance().listAllAudio(getActivity());
-		}
-		catch (DBException e) {e.printStackTrace();}
+			@Override
+			public void onLoadMore(int page, int totalItemsCount) {
+				Log.e("Page", "" + page);
+				loadMore(page, totalItemsCount);
+			}
 
-		names = new String[musicas.size()];
-		int i=0;
-		
-		Log.i("Colocar o loop em uma thread",  "IMPORTANTISSIMO");
-		Log.i("E PAGINAR A LISTVIEW",  "IMPORTANTISSIMO");
+		});
 
-		for (Audio aux : musicas){
-			
-			String mediaPath = Manager.instance().listAudioById(getActivity(), aux.getId()).getUrl();
-			
-			names[i++]= this.mediaExtractor.getTitle(mediaPath);
-					 
-					//"ID: "+aux.getId()+" getTitle with mediaExtractor";
-		}
+		getListView().setMultiChoiceModeListener(new MultiChoiceModeListener() {
 
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), 
-				android.R.layout.simple_list_item_1, 
-				android.R.id.text1, 
-				names);
-		listMusicLists.setAdapter(adapter);
+			//Add submenu for playlist
+			public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+				// create SubMenu for add media direct in an playlist
+				SubMenu sub = menu.addSubMenu("").setIcon(
+						R.drawable.ic_add_playlist);
 
-		//Calls the Playlist Editor when a playlist is pressed.
-		listMusicLists.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id)  {
-
-				Audio aux = musicas.get(position);
-				musicasAdicionadasId.add(aux.getId().intValue());
-
-				AudioPlayerList.getInstance(getActivity().getApplicationContext()).addMusic(aux);
+				List<Playlist> playlists = Manager.instance().listPlaylists(
+						getActivity().getApplicationContext());
 				
-				Fragment target = getTargetFragment();
-				if(target instanceof PlayListManager) {
-					((PlayListManager) target).addMusic(aux);
+				
+				
+				for (Playlist playlist : playlists) {
+//					sub.add(groupId, itemId, order, title)
+					sub.add(GROUP_PLAYLIST_ID, playlist.getId() , Menu.NONE, playlist.getName());
 				}
+
+				return getActivity().onCreateOptionsMenu(menu);
+
+			}
+
+			public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+				Log.i("MenuItem selected", item.getItemId() + " " );
+				
+				switch (item.getGroupId() ) {
+				
+					//Case groupId is group Playlists
+					case GROUP_PLAYLIST_ID:
+						saveItems(item.getItemId(), String.valueOf(item.getTitle()));
+						mode.finish();
 				
 				
-			    getActivity().getSupportFragmentManager().popBackStack();
+					default:
+						return false;
+				}
+			}
+
+			public void onDestroyActionMode(ActionMode mode) {
+				 adapter.removeSelection();
+			}
+
+			public void onItemCheckedStateChanged(ActionMode mode,
+					int position, long id, boolean checked) {
+				// Capture total checked items
+				final int checkedCount = getListView().getCheckedItemCount();
+
+				mode.setTitle(checkedCount + " Selected");
+
+				adapter.toggleSelection(position);
+
+				onChooseMore(position);
+
 			}
 		});
+
+		// // Calls the Playlist Editor when a playlist is pressed.
+		// listMusicLists.setOnItemClickListener(new
+		// AdapterView.OnItemClickListener() {
+		//
+		// public void onItemClick(AdapterView<?> parent, View view,
+		// int position, long id) {
+		//
+		// Audio aux = musicas.get(position);
+		// musicasAdicionadasId.add(aux.getId().intValue());
+		//
+		// AudioPlayerList.getInstance(
+		// getActivity().getApplicationContext())
+		// .addMusic(aux);
+		//
+		// Fragment target = getTargetFragment();
+		// if (target instanceof PlayListManager) {
+		// ((PlayListManager) target).addMusic(aux);
+		// }
+		//
+		// getActivity().getSupportFragmentManager()
+		// .popBackStack();
+		// }
+		// });
 	}
 
+	
+	/*
+	 * save audios selecteds in playlistmedia
+	 * */
+	public void saveItems(int playListId, String namePlaylist) {
+		try {
+			
+			Manager.instance().addMediaToPlaylist(
+					getActivity().getBaseContext(), playListId, selecteds);
 
-	//when back button is pressed, saves the ids selected and return the array to the previous activity.
-	//@Override
-	// TODO review this method
-	public boolean onKeyDown(int keyCode, KeyEvent event)  {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			Intent intent=new Intent();
-			getActivity().setResult(getActivity().RESULT_CANCELED, intent);
-			getActivity().finish();
-			return true;
+			
+			Bundle args = new Bundle();
+			args.putInt(SELECTED_PLAYLIST_ID, playListId);
+			args.putString(SELECTED_PLAYLIST_NAME, namePlaylist);
+
+			Fragment newFragment = new PlayListEditorFragment();
+			newFragment.setArguments(args);
+
+			FragmentTransaction transaction = getActivity()
+					.getSupportFragmentManager().beginTransaction();
+
+			if (getActivity().findViewById(R.id.main) != null) {
+				transaction.replace(R.id.main, newFragment);
+				transaction.addToBackStack(null);
+			} else {
+				transaction.replace(R.id.content, newFragment);
+				transaction.addToBackStack(null);
+			}
+
+			transaction.commit();
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.i("DBException", "in saveMedia - AudioSelectFragment");
 		}
-		//return super.onKeyDown(keyCode, event);
-		return false;
 	}
+	
+	
+	
+	private void loadMore(final int page, final int totalItemsCount) {
+
+		new AsyncTask<Void, Void, Void>() {
+
+			@Override
+			protected Void doInBackground(Void... voids) {
+
+				try {
+					int offset = 1 + ITEMS_PER_PAGE * (page - 1);
+
+					audios = Manager.instance().listAllAudioPaginated(context,
+							offset, ITEMS_PER_PAGE);
+
+				} catch (DBException e) {
+					Log.e("DBException", e.getMessage());
+				}
+
+				return null;
+			}
+
+			@Override
+			protected void onPostExecute(Void result) {
+
+				if (totalItemsCount < totalAudioInDb) {
+					adapter.swapItem(audioViewItem(audios));
+				}
+
+				Log.e("onPostExecute: ", "onPostExecute");
+
+			}
+		}.execute();
+
+	}
+
+	private List<AudioViewItem> audioViewItem(List<Audio> audios) {
+
+		List<AudioViewItem> mItemsTemp = new ArrayList<AudioViewItem>();
+		for (Audio audio : audios) {
+			try {
+				
+				Integer id = audio.getId();
+				String title = mediaExtractor.getTitle(audio.getUrl());
+				String album = mediaExtractor.getAlbum(audio.getUrl());
+				String author = mediaExtractor.getAuthor(audio.getUrl());
+				String bitRate = mediaExtractor.getBitRate(audio.getUrl());
+
+				mItemsTemp.add(new AudioViewItem(id, title, album, author,
+						bitRate));
+
+			} catch (Exception e1) {
+				Log.e("ExceptionMediaExtractor", e1.getMessage());
+			}
+
+		}
+
+		return mItemsTemp;
+	}
+
 }

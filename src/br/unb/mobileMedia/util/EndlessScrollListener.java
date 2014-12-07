@@ -1,4 +1,4 @@
-package br.unb.mobileMedia.playlist;
+package br.unb.mobileMedia.util;
 
 import android.util.Log;
 import android.widget.AbsListView;

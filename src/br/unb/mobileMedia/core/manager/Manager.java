@@ -628,6 +628,7 @@ public class Manager extends Observable {
 	public void addMediaToPlaylist(Context context, Integer playlistId, List<Integer> mediaList) {
 
 		IPlaylistMediaDao playlistMediaDao = DBFactory.factory(context).createPlaylistMediaDao();
+		
 		 for (Integer audioId : mediaList) {
 			 try {
 				playlistMediaDao.addMediaToPlaylist(audioId, playlistId);

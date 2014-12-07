@@ -114,12 +114,13 @@ public interface DBConstants {
 	public String COUNT_ALBUMS = "SELECT  COUNT(ID) FROM "+ ALBUM_TABLE;
 	
 	
-	public String SELECT_MEDIAS                    = "SELECT ID, URL, FK_ALBUM_ID FROM " + MEDIA_TABLE;
-	public String SELECT_MEDIA_BY_ID               = "SELECT ID, URL, FK_ALBUM_ID FROM " + MEDIA_TABLE + " WHERE ID = ?";
-	public String SELECT_MEDIA_BY_ALBUM            = "SELECT ID, URL, FK_ALBUM_ID FROM " + MEDIA_TABLE + " WHERE FK_ALBUM_ID = ?";
-	public String SELECT_MEDIA_BY_PATH             = "SELECT URL FROM " + MEDIA_TABLE + " WHERE URL = ?";
-	public String SELECT_MEDIA_PAGINATED           = "SELECT * FROM " + MEDIA_TABLE + " LIMIT ?, ?";
-	public String COUNT_MEDIA                     = "SELECT COUNT(ID) FROM " + MEDIA_TABLE + "";
+	public String SELECT_MEDIAS             = "SELECT ID, URL, FK_ALBUM_ID FROM " + MEDIA_TABLE;
+	public String SELECT_MEDIA_BY_ID        = "SELECT ID, URL, FK_ALBUM_ID FROM " + MEDIA_TABLE + " WHERE ID = ?";
+	public String SELECT_MEDIA_BY_AUTHOR    = "SELECT ID, URL, FK_ALBUM_ID FROM " + MEDIA_TABLE + " WHERE FK_ ALBUM_ID IN (" + SELECT_ALBUMS_BY_AUTHOR + ")";
+	public String SELECT_MEDIA_BY_ALBUM     = "SELECT ID, URL, FK_ALBUM_ID FROM " + MEDIA_TABLE + " WHERE FK_ALBUM_ID = ?";
+	public String SELECT_MEDIA_BY_PATH      = "SELECT URL FROM " + MEDIA_TABLE + " WHERE URL = ?";
+	public String SELECT_MEDIA_PAGINATED    = "SELECT * FROM " + MEDIA_TABLE + " LIMIT ?, ?";
+	public String COUNT_MEDIA               = "SELECT COUNT(ID) FROM " + MEDIA_TABLE + "";
 
 	
 	
