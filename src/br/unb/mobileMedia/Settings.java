@@ -1,0 +1,59 @@
+package br.unb.mobileMedia;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+/**
+ * Application's settings.
+ *
+ * When calling any `get()` there must be `res/xml/preferences.xml` 
+ * and the specific key
+ * 
+ */
+public class Settings {
+
+	/**
+	 * Current app's preferences.
+	 * They're read and saved on `res/xml/preferences.xml`.
+	 */
+	private SharedPreferences preferences = null;
+	
+	/**
+	 * Initializes the internal settings
+	 */
+	public void load(Context c) {
+        preferences = PreferenceManager.getDefaultSharedPreferences(c);
+	}
+	
+	/**
+	 * Resets all settings to default.
+	 */
+	public void reset() {
+		preferences.edit().clear().commit();
+	}
+	
+	/**
+	 * Get methods
+	 * */
+	public boolean get(String key, boolean defaultValue) {
+		if (preferences == null) {
+			return defaultValue;
+		}
+		return preferences.getBoolean(key, defaultValue);
+	}
+	
+	public String get(String key, String defaultValue) {
+		if (preferences == null) { 
+			return defaultValue;
+		}
+		return preferences.getString(key, defaultValue);
+	}
+	
+	public int get(String key, int defaultValue) {
+		if (preferences == null) {
+			return defaultValue;
+		}
+		return preferences.getInt(key, defaultValue);
+	}
+}
