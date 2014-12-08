@@ -16,6 +16,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/btn_open_music_player" 
+        android:drawableLeft="@drawable/music"
+        />
+    
+    <Button
+        android:id="@+id/btn_open_streaming_player"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_open_streaming_player" 
+        android:drawableLeft="@drawable/streaming"
+        />
+    
+    <Button
+        android:id="@+id/btn_open_video_player"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_open_video_player" 
         android:drawableLeft="@drawable/video"
         />
 

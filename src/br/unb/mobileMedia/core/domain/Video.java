@@ -43,6 +43,7 @@ public class Video extends MultimediaContent implements Parcelable {
 		super(title, uri);
 	}
 
+	
 	/* getters and setters. there is not much to explain. */
 	
 	public String toString() {

@@ -10,6 +10,7 @@ import android.util.Log;
 import br.unb.mobileMedia.R;
 import br.unb.mobileMedia.core.FileChooser.FileDetail;
 import br.unb.mobileMedia.core.domain.AudioFormats;
+import br.unb.mobileMedia.core.domain.VideoFormats;
 
 public class ListAllFiles {
 
@@ -40,6 +41,47 @@ public class ListAllFiles {
 		return result;
 
 	}
+	
+	public List<FileDetail> getAllMovie() {
+		
+		try {
+			listAllDirsMovie(sdcard);
+			listAllDirsMovie(extSdcard);
+
+		} catch (IOException e) {
+			Log.i("IOException", e.getMessage());
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+
+		return result;
+
+	}
+
+	private void listAllDirsMovie(File file) throws IOException {
+	
+		if (!file.exists()) {
+			throw new IOException("File " + file.getAbsolutePath() + " not exists.");
+		} else if (!file.canRead()) {
+			throw new IOException("Permission denied in: " + file.getAbsolutePath());
+		} else {
+			for (File temp : file.listFiles()) {
+				if (temp.isDirectory()) {
+					listAllDirsMovie(temp);
+				} else {
+					for (VideoFormats extensionAccepted : VideoFormats.values()) {
+						if (temp.getAbsolutePath().endsWith(extensionAccepted.getFormatAsString()) && !temp.isHidden()) {
+							result.add(new FileDetail(R.drawable.icon_video, temp.getName(), "File Size: " + (temp.length() / 1000000) + "Mb", temp.getAbsolutePath()));
+						}
+					}
+				}
+			}
+		}
+	
+		return;
+	
+	}
+
 	
 	
 	private void listAllDirs(File file) throws IOException {

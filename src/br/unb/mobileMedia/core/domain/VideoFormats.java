@@ -3,19 +3,19 @@ package br.unb.mobileMedia.core.domain;
 /**
  * An enumeration for the supported video formats.
  * 
- * @author WillianJunior
+ * @author michael
  */
 public enum VideoFormats {
 	
-	MP3("mp4");
+	MP4("mp4"), _3GP("3gp");
 	
 	private String format;
 	
 	private VideoFormats(String format) {
-		this.format = format;
+		this.format = format.replace("_", "");
 	}
 	
 	public String getFormatAsString() {
-		return format;
+		return format.replace("_", "");
 	}
 }

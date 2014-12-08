@@ -16,10 +16,13 @@ import br.unb.mobileMedia.core.manager.Manager;
 import br.unb.mobileMedia.core.view.AudioPlayerFragment;
 import br.unb.mobileMedia.core.view.AuthorListFragment;
 import br.unb.mobileMedia.core.view.ShareListFragment;
+import br.unb.mobileMedia.core.view.StreamingPlayerFragment;
+import br.unb.mobileMedia.core.view.VideoPlayerFragment;
 import br.unb.mobileMedia.playlist.MainPlaylistListFragment;
 import br.unb.mobileMedia.util.ListAllFiles;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.database.Cursor;
@@ -44,6 +47,7 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
 	 * Alert with question: Do you like Sync yours musics?
 	 */
 	private void mensagemSincronizarVazio() { 
+		
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		
@@ -178,6 +182,7 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
 		}
 		
 		
+		
 		if (newFragment !=null){
 			FragmentManager manager = getSupportFragmentManager();
 			FragmentTransaction transaction = manager.beginTransaction();
@@ -199,7 +204,9 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
 	  
 	
 	public void onItemClicked(int menuItem){
+		
 		Fragment newFragment = null;
+				
 		switch(menuItem){
 			case R.id.btn_list_authors:
 				newFragment = new AuthorListFragment();
@@ -207,6 +214,15 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
 				
 			case R.id.btn_open_music_player:
 				newFragment = new AudioPlayerFragment(); 
+				break;
+				
+			case R.id.btn_open_streaming_player:
+				newFragment = new StreamingPlayerFragment(); 
+				break;
+				
+			/*mm*/
+			case R.id.btn_open_video_player:
+				newFragment = new VideoPlayerFragment(); 
 				break;
 
 			case R.id.exitActionBar:
@@ -271,6 +287,7 @@ public class MMUnBActivity extends FragmentActivity implements OnItemClickedCall
                   list.addAll(f[0].getAllMusic());
         
                   num_music = list.size();
+                  
                   
                 }catch (Exception e){
                     e.printStackTrace();

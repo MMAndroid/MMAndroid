@@ -5,6 +5,8 @@
     <string name="btn_list_authors">Artists</string>
     <string name="btn_media">Media</string>
     <string name="btn_open_music_player">Open Music Player</string>
+    <string name="btn_open_streaming_player">Open Streaming Player</string>
+    <string name="btn_open_video_player">Open Video Player</string>
     <string name="btn_exit">Exit</string>
     <string name="lb_select_media">Select a video</string>
     <string name="lb_instruction">Select a video for playing</string>
@@ -28,6 +30,7 @@
     <string name="add_a_music">Add a music</string>
     <string name="btn_top_artists">Top Artists</string>
     <string name="btn_top_songs">Top Songs</string>
+    <string name="edit_text_streaming">Informe a URL</string>
     <string name="btn_share_app">Share App</string>
     <string name="title_activity_share_list">Share</string>
     <string name="title_activity_select_activity">AudioSelectActivity</string>
