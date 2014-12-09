@@ -35,6 +35,7 @@
     <string name="name">Name:</string>
     <string name="end">End</string>
     
+    <string name="add_a_music">Add a music</string>
     <string name="sync_music">Sync complete</string>
 	<string name="sync_music_not_ok">Error during sync</string>
 	<string name="message_synchronization_finished">The database content has been synchronized</string>

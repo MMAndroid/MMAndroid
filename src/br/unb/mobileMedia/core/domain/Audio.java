@@ -50,4 +50,20 @@ public class Audio {
         this.albumId = albumId;
     }
     
+    public String getTitle() {
+    	return "";
+    }
+    
+    public String getAuthor() {
+    	return "";
+    }
+    
+    public String getAlbum() {
+    	return "";
+    }
+    
+    public String getArtist() {
+    	return "";
+    }
+
 }
