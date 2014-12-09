@@ -23,7 +23,7 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.MyAppTheme">
         <activity
-            android:name="br.unb.mobileMedia.activities.MMUnBActivity"
+            android:name="br.unb.mobileMedia.activities.ActivityMMAndroid"
             android:label="@string/app_name" 
             android:launchMode="singleTop" 
             android:screenOrientation="portrait">
