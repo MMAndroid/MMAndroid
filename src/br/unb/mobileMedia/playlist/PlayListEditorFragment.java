@@ -26,6 +26,7 @@ import br.unb.mobileMedia.core.extractor.DefaultAudioExtractor;
 import br.unb.mobileMedia.core.extractor.MediaExtractor;
 import br.unb.mobileMedia.core.manager.Manager;
 import br.unb.mobileMedia.core.view.AudioPlayerFragment;
+import br.unb.mobileMedia.util.AudioToParcelable;
 
 public class PlayListEditorFragment extends ListFragment {
 
@@ -126,10 +127,6 @@ public class PlayListEditorFragment extends ListFragment {
 			
 			this.musicList = Manager.instance().getMusicFromPlaylist(context, playListId);
 			
-			for(Audio audio : musicList){
-				Log.i("AudioPath:" ,  audio.getUrl());
-			}
-			
 			for(Audio audio: musicList){
 				
 				Integer   id    = null;
@@ -209,17 +206,15 @@ public class PlayListEditorFragment extends ListFragment {
 
 	private void executePlayList() {
 		
-		List<Audio> listTmp = musicList;
+		AudioToParcelable[] audioToParcelable = new AudioToParcelable[musicList.size()];
 		
-		Audio[] executionList = new Audio[listTmp.size()];
-		
-		listTmp.toArray(executionList);
-		
-		Bundle args = new Bundle();
-		
-//		args.putParcelableArray(AudioPlayerFragment.EXECUTION_LIST, executionList);
+		for(int i = 0; i< musicList.size(); i++){
+			audioToParcelable[i] = new AudioToParcelable(musicList.get(i));
+		}
 				
-	
+		Bundle args = new Bundle();
+		args.putParcelableArray(AudioPlayerFragment.EXECUTION_LIST, audioToParcelable);
+				
 		// TODO Extract this to a method (repeated in MMUnBActivity too)
 		Fragment newFragment = new AudioPlayerFragment();
 		newFragment.setArguments(args);

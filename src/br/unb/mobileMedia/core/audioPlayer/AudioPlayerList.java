@@ -7,9 +7,9 @@ import java.util.Random;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import br.unb.mobileMedia.Exception.ExceptionMediaExtractor;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.extractor.DefaultAudioExtractor;
 import br.unb.mobileMedia.core.extractor.MediaExtractor;
@@ -85,7 +85,7 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 			
 //			Log.i("UriEncode: ", Uri.encode(audioList.get(indexFile).getUrl()));
 //			Log.i("UriDecode: ", Uri.decode(audioList.get(indexFile).getUrl()));
-			this.audioExtractor.setMMR(audioList.get(indexFile).getUrl()); 
+//			this.audioExtractor.setMMR(audioList.get(indexFile).getUrl()); 
 			
 			player.reset();
 			player.setDataSource(context, Uri.parse(Uri.encode(audioList.get(indexFile).getUrl())));
@@ -97,9 +97,6 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ExceptionMediaExtractor e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -203,8 +200,7 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	 * @return name of current music
 	 */
 	public String getTitleSong() {
-		return null;
-//		return audioList.get(currentSongIndex).getTitle();
+		return audioExtractor.getTitle(audioList.get(currentSongIndex).getUrl());
 	}
 
 	public int getDuration() {
@@ -239,8 +235,14 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	
 	
 	public Bitmap getAlbumArt(){
+		
+		byte[] imageArt = audioExtractor.getAlbumArt(audioList.get(currentSongIndex).getUrl());
+		
+		if(imageArt != null){
+			return BitmapFactory.decodeByteArray(imageArt, 0, imageArt.length);
+		}
+		
 		return null;
-//		return audioExtractor.getAlbumArt();
 	}
 	
 	
@@ -254,7 +256,6 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	
 	
 	public String getGenre(){
-//		return audioExtractor.getGenre();
-		return null;
+		return audioExtractor.getGenre(audioList.get(currentSongIndex).getUrl());
 	}
 }

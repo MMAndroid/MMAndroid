@@ -96,7 +96,7 @@ public class FileChooserFragment extends ListFragment {
 		//
 		Fragment target = getTargetFragment();
 		if (target instanceof AudioPlayerFragment) {
-			((AudioPlayerFragment) target).receiveFileChooser(fileSelecteds);
+//			((AudioPlayerFragment) target).receiveFileChooser(fileSelecteds);
 		}
 
 		getActivity().getSupportFragmentManager().popBackStack();

@@ -29,6 +29,7 @@ import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Playlist;
 import br.unb.mobileMedia.core.manager.Manager;
 import br.unb.mobileMedia.core.view.AudioPlayerFragment;
+import br.unb.mobileMedia.util.AudioToParcelable;
 
 /**
  * The main Fragment of the Playlist feature.
@@ -274,23 +275,28 @@ public class MainPlaylistListFragment extends ListFragment {
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
 				.getMenuInfo();
 
-		final Long idPlaylist =(long) mItems.get(info.position).id;
-		List<Audio> listTmp = null;
+		final Integer idPlaylist = mItems.get(info.position).id;
+		List<Audio> listTmp = new ArrayList<Audio>();
 
 		try {
 		
-			listTmp = Manager.instance().getMusicFromPlaylist(getActivity(),
-					idPlaylist.intValue());
+			listTmp = Manager.instance().getMusicFromPlaylist(getActivity(), idPlaylist);
 
 		} catch (DBException e) {
 			e.getStackTrace();
 		}
-
-		Audio[] executionList = new Audio[listTmp.size()];
-		listTmp.toArray(executionList);
+		
+		
+		AudioToParcelable[] audioToParcelable = new AudioToParcelable[listTmp.size()];
+		
+		for(int i = 0; i< listTmp.size(); i++){
+			audioToParcelable[i] = new AudioToParcelable(listTmp.get(i));
+		}
+				
 		Bundle args = new Bundle();
+		args.putParcelableArray(AudioPlayerFragment.EXECUTION_LIST, audioToParcelable);
+		
 
-//		args.putParcelableArray(AudioPlayerFragment.EXECUTION_LIST, executionList);
 
 		Fragment newFragment = new AudioPlayerFragment();
 		newFragment.setArguments(args);

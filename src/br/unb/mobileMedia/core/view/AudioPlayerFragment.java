@@ -16,7 +16,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +26,7 @@ import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.extractor.DefaultAudioExtractor;
 import br.unb.mobileMedia.core.extractor.MediaExtractor;
 import br.unb.mobileMedia.playlist.PlayListManager;
+import br.unb.mobileMedia.util.AudioToParcelable;
 
 public class AudioPlayerFragment extends Fragment implements PlayListManager,
 		SeekBar.OnSeekBarChangeListener {
@@ -238,14 +238,13 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager,
 				songCurrentDurationLabel.setText(""+ utils.milliSecondsToTimer(currentDuration));
 				songTitleLabel.setText(player.getTitleSong());
 				
-				
 				author.setText(player.getAuthor());
 				genre.setText(player.getGenre());
 				album.setText(player.getAlbum());
 				
 				albumArt.setImageBitmap(player.getAlbumArt());
 				int progress = (int) (utils.getProgressPercentage(currentDuration,totalDuration));
-		// Log.d("Progress", ""+progress);
+				// Log.d("Progress", ""+progress);
 				songProgressBar.setProgress(progress);
 			}
 			mHandler.postDelayed(this, 100);
@@ -282,7 +281,8 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager,
 			return;
 		}
 		
-		Parcelable[] ps = getArguments().getParcelableArray(EXECUTION_LIST);
+		
+		AudioToParcelable[] ps = (AudioToParcelable[]) getArguments().getParcelableArray(EXECUTION_LIST);
 		
 		if (ps != null) {
 			
@@ -291,8 +291,8 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager,
 			musicList = new ArrayList<Audio>();
 			
 			for (int i = 0; i < ps.length; i++) {
-				musicList.add((Audio) ps[i]);
-				Log.i("AudioPlayerFragment", "Add music to musicList: "	+ (Audio) ps[i]);
+				musicList.add((Audio) ps[i].getAudio());
+				Log.i("AudioPlayerFragment", "Add music to musicList: "	+  ps[i].getAudio().getUrl());
 			}
 		}
 	}
@@ -324,30 +324,7 @@ public class AudioPlayerFragment extends Fragment implements PlayListManager,
 		musicList.add(audio);
 	}
 
-	/**
-	 * Receive the files selecetds in FileChooser
-	 */
-	public void receiveFileChooser(ArrayList<FileDetail> files) {
-		
-		Toast.makeText(getActivity(), "AudioPlayerFragment Receive " + files.size()+" Files of FileChooser", Toast.LENGTH_SHORT).show();
-		
-		String url = null;
-		
-		for (FileDetail file : files) {
-//			try {
-//				
-////				url = Uri.encode(file.getPath());
-//				
-////				addMusic(new Audio(null, file.getName().toString(), file.getPath(), null));
-//				
-//			} catch (URISyntaxException e) {
-//				// TODO Auto-generated catch block
-//				Log.i("Exception", "receiveFileChooser() - URISyntaxException");
-//				e.printStackTrace();
-//			}
-		}
-		
-	}
+
 
 	@Override
 	public void onDestroy() {

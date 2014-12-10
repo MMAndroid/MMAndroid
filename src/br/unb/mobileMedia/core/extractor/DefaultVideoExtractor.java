@@ -7,11 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaScannerConnection;
 import android.util.Log;
-import br.unb.mobileMedia.Exception.ExceptionMediaExtractor;
 import br.unb.mobileMedia.core.domain.Album;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Author;
@@ -105,7 +103,7 @@ public class DefaultVideoExtractor implements MediaExtractor {
 		return null;
 	}
 
-	public byte[] getAlbumArt() {
+	public byte[] getAlbumArt(String mediaPath) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -128,11 +126,6 @@ public class DefaultVideoExtractor implements MediaExtractor {
 	public String getGenre(String mediaPath) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	public void setMMR(String url) throws ExceptionMediaExtractor {
-		// TODO Auto-generated method stub
-		
 	}
 
 

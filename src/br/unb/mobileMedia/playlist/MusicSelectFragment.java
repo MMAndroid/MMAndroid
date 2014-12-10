@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.ListView;
 import br.unb.mobileMedia.R;
-import br.unb.mobileMedia.Exception.ExceptionMediaExtractor;
 import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.extractor.DefaultAudioExtractor;
@@ -234,8 +233,6 @@ public class MusicSelectFragment extends ListFragment {
 		for (Audio audio : audios){
 			try {
 
-				mediaExtractor.setMMR(audio.getUrl());
-
 				Integer id = audio.getId();
 				String title = mediaExtractor.getTitle(audio.getUrl());
 				String album = mediaExtractor.getAlbum(audio.getUrl());
@@ -246,8 +243,8 @@ public class MusicSelectFragment extends ListFragment {
 				mItemsTemp.add(new AudioViewItem(id, title,
 						album, author, bitRate));
 				
-			} catch (ExceptionMediaExtractor e1) {
-				 Log.e("ExceptionMediaExtractor", e1.getMessage());
+			} catch (Exception e) {
+				 Log.e("Exception", e.getMessage());
 			}
 
 		}

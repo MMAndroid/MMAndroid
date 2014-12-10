@@ -3,7 +3,6 @@ package br.unb.mobileMedia.core.extractor;
 import java.io.File;
 import java.util.List;
 
-import br.unb.mobileMedia.Exception.ExceptionMediaExtractor;
 import br.unb.mobileMedia.core.domain.Album;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Author;
@@ -24,9 +23,7 @@ public interface MediaExtractor {
 	 * @return a list of audio data obtained from <i>audioFiles</i>.
 	 */
 	
-	
-	public void setMMR(String url) throws ExceptionMediaExtractor;
-	
+		
 	public List<Author> processFiles(List<File> audioFiles);
 	
 	public List<Author> extractAllAuthors(List<File> audiosFiles);
@@ -42,5 +39,9 @@ public interface MediaExtractor {
 	public String getAlbum(String mediaPath);
 		
 	public String getBitRate(String mediaPath);
+	
+	public String getGenre(String mediaPath);
+	
+	public byte[] getAlbumArt(String mediaPath);
 
 }

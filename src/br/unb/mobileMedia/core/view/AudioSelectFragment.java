@@ -118,7 +118,6 @@ public class AudioSelectFragment extends ListFragment {
 						getActivity().getApplicationContext());
 				
 				
-				
 				for (Playlist playlist : playlists) {
 //					sub.add(groupId, itemId, order, title)
 					sub.add(GROUP_PLAYLIST_ID, playlist.getId() , Menu.NONE, playlist.getName());
