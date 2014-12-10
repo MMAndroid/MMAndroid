@@ -19,6 +19,7 @@ public class NavDrawerListAdapter extends  BaseAdapter{
 	public NavDrawerListAdapter(Context context, ArrayList<NavDrawerItem> items){
 		this.context = context;
 		this.navDrawerItems = items;
+		notifyDataSetChanged();
 	}
 
 	public int getCount() {
@@ -54,9 +55,11 @@ public class NavDrawerListAdapter extends  BaseAdapter{
             v.txtTitle = (TextView) convertView.findViewById(R.id.title);
             v.txtCount = (TextView) convertView.findViewById(R.id.counter);
             
+            notifyDataSetChanged();
             convertView.setTag(v);
             
         }else{
+        	notifyDataSetChanged();
         	v = (ViewHolder) convertView.getTag();
         }
 		
@@ -74,6 +77,7 @@ public class NavDrawerListAdapter extends  BaseAdapter{
         	v.txtCount.setVisibility(View.GONE);
         }
         
+        notifyDataSetChanged();
         return convertView;
 	}
 	
@@ -81,6 +85,7 @@ public class NavDrawerListAdapter extends  BaseAdapter{
 	
 	public void clear(){
 		navDrawerItems.clear();
+		notifyDataSetChanged();
 	}
 	
 	public void swapItems(ArrayList<NavDrawerItem> items){

@@ -27,6 +27,8 @@ import br.unb.mobileMedia.core.manager.Preferences;
 import br.unb.mobileMedia.core.view.AlbumListFragment;
 import br.unb.mobileMedia.core.view.AudioSelectFragment;
 import br.unb.mobileMedia.core.view.AuthorListFragment;
+import br.unb.mobileMedia.core.view.StreamingPlayerFragment;
+import br.unb.mobileMedia.core.view.VideoPlayerFragment;
 import br.unb.mobileMedia.playlist.MainPlaylistListFragment;
 
 @SuppressLint("NewApi")
@@ -175,6 +177,12 @@ public class MMUnBActivity extends FragmentActivity implements Observer{
 		items.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1), true,
 				preferences.getTotalAudio()+""	));// Audios
 		
+		items.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1), true,
+				"0"	));// Videos
+		
+		items.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(6, -1), true,
+				"0"	));// Streaming
+		
 		return items;		
 		
 	}
@@ -262,6 +270,14 @@ public class MMUnBActivity extends FragmentActivity implements Observer{
 			 
 		 case 4:
 			 fragment = new AudioSelectFragment();
+			 break;
+			 
+		 case 5:
+			 fragment = new VideoPlayerFragment(); 
+			 break;
+			 
+		 case 6:
+			 fragment = new StreamingPlayerFragment(); 
 			 break;
 		
 		default:

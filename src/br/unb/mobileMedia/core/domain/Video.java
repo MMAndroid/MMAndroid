@@ -1,46 +1,88 @@
 package br.unb.mobileMedia.core.domain;
 
-public class Video {
+import java.net.URI;
 
-	private Long id;
-	private String title;
-	private String url;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-	public Video() {
+/**
+ * Represents an Video Multimedia content.
+ *
+ * Note, its necessary to implement serializable, because it would 
+ * be necessary to share video between activities. Probably, we should 
+ * turn MediaContent serializable either. 
+ * 
+ * @author WillianJunior
+ */
+public class Video extends MultimediaContent implements Parcelable {
+
+	public static final long serialVersionUID = 1L;
+
+	public Video(Integer pk, Integer id, String title, URI uri) {
+		this(id, title, uri);
+		this.primaryKey = pk;
+	}
+	
+	/**
+	 * Video constructor.
+	 * @param id video id
+	 * @param title video title 
+	 * @param url video url
+	 */
+	
+	public Video(Integer id, String title, URI uri) {
+		super(id, title, uri);
+	}
+	
+	/**
+	 * Video constructor. 
+	 * @param title video title 
+	 * @param url video url
+	 */
+	public Video(String title, URI uri) {
+		super(title, uri);
 	}
 
-	public Video(Long id) {
-		this.id = id;
-	}
-
-	public Video(Long id, String title, String url) {
-		this.id = id;
-		this.title = title;
-		this.url = url;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getTitle() {
+	
+	/* getters and setters. there is not much to explain. */
+	
+	public String toString() {
 		return title;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public int describeContents() {
+		return 0;
 	}
 
-	public String getUrl() {
-		return url;
+	
+	@Override
+	public boolean equals(Object o) {
+		return (o instanceof Video) && ((Video)o).getPrimaryKey().equals(primaryKey);
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeInt(primaryKey);
+		dest.writeInt(id);
+		dest.writeString(title);
+		dest.writeSerializable(uri);
 	}
+	
+	 public static final Parcelable.Creator<Video> CREATOR = new Parcelable.Creator<Video>() {
 
+		public Video createFromParcel(Parcel source) {
+			int pk = source.readInt();
+			int id = source.readInt(); 
+			String title = source.readString();
+			URI uri = (URI)source.readSerializable();
+			
+			Video video = new Video(pk, id, title, uri);
+			
+			return video;
+		}
+
+		public Video[] newArray(int size) {
+			return new Video[size];
+		}
+	
+	 }; 
 }

@@ -5,6 +5,7 @@ public interface DBConstants {
 	public String DATABASE_NAME = "MMAndroid";
 	public int    DATABASE_VERSION = 25;
 	public String DEFINICAO_PK = "ID INTEGER PRIMARY KEY AUTOINCREMENT";
+	public String DEFINICAO_PK_OLDER = "PK INTEGER PRIMARY KEY AUTOINCREMENT";
 	public String AUTHOR_TABLE = "AUTHOR";
 	public String AUTHOR_ID_COLUMN = "ID";
 	public String AUTHOR_NAME_COLUMN = "NAME";
@@ -19,6 +20,17 @@ public interface DBConstants {
 	public String MEDIA_ID_COLUMN = "ID";
 	public String MEDIA_URL_COLUMN = "URL";
 	public String MEDIA_ALBUM_ID_COLUMN = "FK_ALBUM_ID";
+	
+	public String VIDEO_TABLE = "VIDEO";
+	public String VIDEO_KEY_COLUMN = "PK";
+	public String VIDEO_TITLE_COLUMN = "TITLE";
+	public String VIDEO_URL_COLUMN = "URL";
+	
+	public String STREAMING_TABLE = "STREAMING";
+	public String STREAMING_COLUMN = "PK";
+	public String STREAMING_NAME_COLUMN = "NAME";
+	public String STREAMING_ADRESS_COLUMN = "ADRESS";
+	
 	
 	public String EH_TABLE = "EXECUTION_HISTORY";
 	public String EH_DATE_TIME_EXECUTION_COLUMN = "DATE_TIME_EXECUTION"; 
@@ -71,7 +83,14 @@ public interface DBConstants {
 					+ "URL VARCHAR(255) NOT NULL, "
 					+ "FK_ALBUM_ID INTEGER NOT NULL"
 					+ ");",
-
+					
+			"CREATE TABLE VIDEO ( " + DEFINICAO_PK_OLDER +", "
+					+ "TITLE VARCHAR(50) NOT NULL,"
+					+ "URL VARCHAR(255) NOT NULL);",
+			
+			"CREATE TABLE STREAMING ( " + DEFINICAO_PK_OLDER +", "
+					+ "NAME VARCHAR(50) NOT NULL,"
+					+ "ADRESS VARCHAR(255) NOT NULL);",			
 		
 					
 			"CREATE TABLE "+EH_TABLE+" ( "
@@ -153,5 +172,10 @@ public interface DBConstants {
 	public String SELECT_PLAYLIST_BY_ID = "SELECT ID, NAME FROM " + PLAYLIST_TABLE + " WHERE ID = ?";
 	public String COUNT_PLAYLISTS = "SELECT COUNT(ID) FROM " + PLAYLIST_TABLE + "";
 	
+	
+	public String SELECT_SIMPLE_ALL_AUDIOS = "SELECT * FROM AUDIO";
+	public String SELECT_SIMPLE_ALL_VIDEOS = "SELECT * FROM VIDEO";
+	public String SELECT_SIMPLE_ALL_STREAMING = "SELECT * FROM STREAMING";
+	public String SELECT_SIMPLE_ALL_STREAMING_BY_NAME = "SELECT ADRESS FROM STREAMING WHERE NAME = ?";
 	
 }

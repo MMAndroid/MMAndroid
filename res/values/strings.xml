@@ -34,6 +34,9 @@
     <string name="title_activity_select_activity">AudioSelectActivity</string>
     <string name="need_to_be_implemented">Need to be implemented.</string>
     <string name="name">Name:</string>
+    
+    <string name="edit_text_newNameRadio">Nome da Rádio</string>
+    <string name="edit_text_newAdressRadio">Endereço da Radio</string>
 
     <!-- Action Bar Strings MMUnBActivity -->
     <string name="play_list_ab">Play List</string>
@@ -76,6 +79,8 @@
         <item >Albums</item>
         <item >Playlist</item>
         <item >Musics</item>
+        <item >Videos</item>
+        <item >Streaming</item>
     </string-array>
     
     
@@ -88,6 +93,8 @@
         <item>@drawable/ic_album</item>
         <item>@drawable/ic_playlist</item>
         <item>@drawable/ic_music</item>
+        <item>@drawable/ic_video</item>
+        <item>@drawable/ic_streaming</item>
     </array>
     
     

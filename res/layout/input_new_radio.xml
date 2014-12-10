@@ -1,0 +1,59 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+          android:orientation="vertical"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+
+    <EditText
+	    android:id="@+id/nameRadio"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:hint="@string/edit_text_newNameRadio"
+	    android:inputType="text"
+	    android:background="#ffffff"
+	    android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:paddingBottom="10dp"
+        android:gravity="bottom" />
+    
+    
+    <EditText
+	    android:id="@+id/adressRadio"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:hint="@string/edit_text_newAdressRadio"
+	    android:inputType="text"
+	    android:background="#ffffff"
+	    android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:gravity="bottom" />
+	
+    <Button
+        android:id="@+id/buttonSubmitNewRadio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#cecece"
+	    android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:textColor="#ffffff"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:text="ADD" />
+
+</LinearLayout>
