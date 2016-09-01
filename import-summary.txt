@@ -1,0 +1,81 @@
+ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+======================================
+
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+* .DS_Store
+* .gitignore
+* README.md
+* docs\
+* docs\MMUnB.dia
+* docs\MMUnB.png
+* docs\MMUnB_arch.dia
+* docs\MMUnB_arch.png
+* docs\MMUnB_packages.dia
+* docs\README.md
+* docs\architecture\
+* docs\architecture\architecture.graffle
+* docs\architecture\architecture.pdf
+* docs\book\
+* docs\book\Makefile
+* docs\book\book.tex
+* docs\book\images\
+* docs\book\images\architecture.eps
+* docs\book\images\architecture.pdf
+* docs\book\images\playlist.tiff
+* docs\book\images\ui.eps
+* docs\book\images\ui.pdf
+* docs\book\images\ui.tiff
+* docs\screenshots\
+* docs\screenshots\MM_artists.png
+* docs\screenshots\MM_back_from_playlist.png
+* docs\screenshots\MM_menu.png
+* docs\screenshots\MM_playlists.png
+* docs\screenshots\artists_large_screen.png
+* ic_home-web.png
+* proguard.cfg
+* test.git
+
+Replaced Jars with Dependencies:
+--------------------------------
+The importer recognized the following .jar files as third party
+libraries and replaced them with Gradle dependencies instead. This has
+the advantage that more explicit version information is known, and the
+libraries can be updated automatically. However, it is possible that
+the .jar file in your project was of an older version than the
+dependency we picked, which could render the project not compileable.
+You can disable the jar replacement in the import wizard and try again:
+
+android-support-v4.jar => com.android.support:support-v4:18.0.0
+
+Moved Files:
+------------
+Android Gradle projects use a different directory structure than ADT
+Eclipse projects. Here's how the projects were restructured:
+
+* AndroidManifest.xml => app\src\main\AndroidManifest.xml
+* assets\ => app\src\main\assets\
+* libs\socialauth-4.0.jar => app\libs\socialauth-4.0.jar
+* libs\socialauth-android-2.0.jar => app\libs\socialauth-android-2.0.jar
+* lint.xml => app\lint.xml
+* res\ => app\src\main\res\
+* src\ => app\src\main\java\
+
+Next Steps:
+-----------
+You can now build the project. The Gradle project needs network
+connectivity to download dependencies.
+
+Bugs:
+-----
+If for some reason your project does not build, and you determine that
+it is due to a bug or limitation of the Eclipse to Gradle importer,
+please file a bug at http://b.android.com with category
+Component-Tools.
+
+(This import summary is for your information only, and can be deleted
+after import once you are satisfied with the results.)

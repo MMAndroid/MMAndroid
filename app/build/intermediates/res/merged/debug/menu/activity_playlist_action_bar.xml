@@ -1,0 +1,26 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/refreshActionBar"
+        android:name="android:background"
+        android:icon="@drawable/refresh_icon"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:title="@string/refresh_ab"/>
+    
+    <item
+        android:id="@+id/actionsPlayList"
+        android:name="android:background"
+        android:icon="@drawable/overflow"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:title="">
+        <menu>
+            <item
+                android:id="@+id/AddPlayListActionBar"
+                android:icon="@drawable/add_icon"
+                android:title="@string/add_play_list_ab"/>
+        </menu>
+    </item>
+
+</menu>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="extensions_accepteds">
+<!-- 	    <item>.mid</item> -->
+	    <item>.mp3</item>
+<!-- 	    <item>.png</item> -->
+<!-- 	    <item>.jpg</item> -->
+<!-- 	    <item>.gif</item> -->
+<!-- 	    <item>.txt</item> -->
+<!-- 	    <item>.3gp</item> -->
+<!-- 	    <item>.mp4</item> -->
+    </string-array>
+    <array name="menu_music">
+        <item name="remove_playlist">Remove this music from this playlist</item>
+    </array>
+    <array name="menu_playlist">
+        <item name="edit_playlist">Edit Playlist</item>
+        <item name="remove_playlist">Remove Playlist</item>
+        <item name="add_position">Add Geographical Position</item>
+    </array>
+    <array name="nav_drawer_icons">
+        <item>@drawable/ic_home</item>
+        <item>@drawable/ic_author</item>
+        <item>@drawable/ic_album</item>
+        <item>@drawable/ic_playlist</item>
+        <item>@drawable/ic_music</item>
+    </array>
+    <string-array name="nav_drawer_items">
+        <item>Home</item>
+        <item>Authors</item>
+        <item>Albums</item>
+        <item>Playlist</item>
+        <item>Musics</item>
+    </string-array>
+    <color name="accent_green">#97e08f</color>
+    <color name="bg_color">#FF8800</color>
+    <color name="counter_text_bg">#626262</color>
+    <color name="counter_text_color">#c5c4c4</color>
+    <color name="default_color">#ffffff</color>
+    <color name="gelo">#F5F5F5</color>
+    <color name="list_background">#303030</color>
+    <color name="list_background_pressed">#FF8800</color>
+    <color name="list_divider">#272727</color>
+    <color name="list_item_title">#fff</color>
+    <color name="list_text_color">#303030</color>
+    <color name="pressed_color">#4d90fe</color>
+    <color name="sa_green">#14a804</color>
+    <color name="stacked_green">#118504</color>
+    <string name="add_a_music">Add a music</string>
+    <string name="add_geographical_position">Add Position GPS</string>
+    <string name="add_music_in_play_list_ab">Add Music</string>
+    <string name="add_play_list_ab">New Play List</string>
+    <string name="app_name">MMAndroid</string>
+    <string name="btn_PlayPlaylist">Tocar Playlist</string>
+    <string name="btn_addMusiclist">Inserir Musica</string>
+    <string name="btn_addPlaylist">Add a new playlist</string>
+    <string name="btn_exit">Exit</string>
+    <string name="btn_list_authors">Artists</string>
+    <string name="btn_media">Media</string>
+    <string name="btn_open_music_player">Open Music Player</string>
+    <string name="btn_play_list">Playlists</string>
+    <string name="btn_share">Share</string>
+    <string name="btn_share_app">Share App</string>
+    <string name="btn_synchronize">Synchronize</string>
+    <string name="btn_top_artists">Top Artists</string>
+    <string name="btn_top_songs">Top Songs</string>
+    <string name="delete">Delete</string>
+    <string name="desc_list_item_icon">Item Icon</string>
+    <string name="drawer_close">Close Drawer</string>
+    <string name="drawer_open">Open Drawer</string>
+    <string name="edit">Edit</string>
+    <string name="execute_play_list">Play</string>
+    <string name="exit_ab">Exit</string>
+    <string name="facebook_ab">Facebook</string>
+    <string name="ff">FF</string>
+    <string name="hello">Hello World, MMUnBActivity!</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="instagram_ab">Instagram</string>
+    <string name="lb_instruction">Select a video for playing</string>
+    <string name="lb_select_media">Select a video</string>
+    <string name="manager_playlist">Manager Playlist</string>
+    <string name="manager_playlist_exec">play</string>
+    <string name="menu_settings">Settings</string>
+    <string name="message_synchronization_finished">The database content has been synchronized</string>
+    <string name="name">Name:</string>
+    <string name="need_to_be_implemented">Need to be implemented.</string>
+    <string name="noMediaFound">Nenhuma Musica Encontrada.</string>
+    <string name="play_list_ab">Play List</string>
+    <string name="re">RE</string>
+    <string name="refresh_ab">Refresh</string>
+    <string name="removeMedia">Delete</string>
+    <string name="saveMedia">Save</string>
+    <string name="title_activity_audio_player">AudioPlayerActivity</string>
+    <string name="title_activity_audio_table">AudioTableActivity</string>
+    <string name="title_activity_music_select">MusicSelectActivity</string>
+    <string name="title_activity_play_list">PlayListActivity</string>
+    <string name="title_activity_playlist_editor">PlaylistEditorActivity</string>
+    <string name="title_activity_select_activity">AudioSelectActivity</string>
+    <string name="title_activity_share_list">Share</string>
+    <string name="title_author_expandable_list">Albums of</string>
+    <string name="title_author_list_fragment">Authors</string>
+    <string name="twiiter_ab">Twiiter</string>
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+    <style name="Theme.MyAppTheme" parent="android:style/Theme.Holo.Light">
+         <item name="android:actionBarStyle">@style/Theme.MyAppTheme.ActionBar</item>
+   </style>
+    <style name="Theme.MyAppTheme.ActionBar" parent="android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">#F4F4F4</item>
+         <item name="android:titleTextStyle">@style/Theme.MyAppTheme.ActionBar.TitleTextStyle</item>
+    </style>
+    <style name="Theme.MyAppTheme.ActionBar.TitleTextStyle" parent="android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">#000000</item>
+    </style>
+</resources>

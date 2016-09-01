@@ -1,0 +1,40 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@+id/albumArt"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_margin="1sp"
+        android:src="@drawable/adele" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="70dp"
+        android:paddingTop="15dp"
+        android:gravity="center"
+        android:paddingLeft="10dp" >
+
+        <TextView
+            android:id="@+id/nameAlbum"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5sp"
+            android:textColor="#000000"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/numAudioInAlbum"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="3sp"
+            android:textColor="#000000"
+            android:textSize="9sp" />
+    </LinearLayout>
+
+</RelativeLayout>

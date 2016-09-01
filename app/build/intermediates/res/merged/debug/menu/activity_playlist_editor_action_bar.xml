@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/actionsPlayList"
+        android:name="android:background"
+        android:icon="@drawable/overflow"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:title="">
+        <menu>
+            <item
+                android:id="@+id/AddMisicInPlayListActionBar"
+                android:icon="@drawable/add_icon"
+                android:title="@string/add_music_in_play_list_ab"/>
+            <item
+                android:id="@+id/ExecutePlayList"
+                android:title="@string/execute_play_list"/>
+        </menu>
+    </item>
+</menu>

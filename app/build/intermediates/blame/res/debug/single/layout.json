@@ -1,0 +1,186 @@
+[
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_author_list.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\layout\\activity_author_list.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\playlist_row.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\layout\\playlist_row.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\group_row.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\layout\\group_row.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\copy_of_activity_audio_player.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\layout\\copy_of_activity_audio_player.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\sync_files_load.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\layout\\sync_files_load.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\playlist_row.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\layout\\playlist_row.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\copy_of_activity_audio_player.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\layout\\copy_of_activity_audio_player.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\child_row.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\layout\\child_row.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_audio_player.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\layout\\activity_audio_player.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\album_row.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\layout\\album_row.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\content.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\layout\\content.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_author_list.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\layout\\activity_author_list.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\author_row.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\layout\\author_row.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_audio_table.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\layout\\activity_audio_table.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\sync_files_load.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\layout\\sync_files_load.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\menu.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\layout\\menu.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_audio_table.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\layout\\activity_audio_table.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\footer.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\layout\\footer.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_playlist_editor.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\layout\\activity_playlist_editor.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\author_row.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\layout\\author_row.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_list_file_chooser.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\layout\\activity_list_file_chooser.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\example_fragment.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\layout\\example_fragment.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_share_list.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\layout\\activity_share_list.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\drawer_list_item.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\layout\\drawer_list_item.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\video_player_activity.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\layout\\video_player_activity.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\audio_row.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\layout\\audio_row.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_list_file_chooser.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\layout\\activity_list_file_chooser.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\main_playlist_fragment.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\layout\\main_playlist_fragment.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\main.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\layout\\main.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\video_list_activity.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\layout\\video_list_activity.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\child_row.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\layout\\child_row.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\album_row.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\layout\\album_row.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\menu.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\layout\\menu.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\group_row.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\layout\\group_row.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\drawer_list_item.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\layout\\drawer_list_item.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_audio_player.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\layout\\activity_audio_player.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\example_fragment.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\layout\\example_fragment.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\footer.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\layout\\footer.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\main_playlist_fragment.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\layout\\main_playlist_fragment.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_share_list.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\layout\\activity_share_list.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_playlist_editor.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\layout\\activity_playlist_editor.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\video_player_activity.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\layout\\video_player_activity.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\video_list_activity.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\layout\\video_list_activity.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\content.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\layout\\content.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\main.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\layout\\main.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\audio_row.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\layout\\audio_row.xml"
+    }
+]

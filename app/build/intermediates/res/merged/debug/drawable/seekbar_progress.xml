@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item android:id="@android:id/background">
+        <shape>
+            <solid android:color="#333333" />
+        </shape>
+    </item>
+    
+    
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape>
+                <solid android:color="#FF8800" />
+            </shape>
+        </clip>
+    </item>
+
+</layer-list>
+<!-- <?xml version="1.0" encoding="utf-8"?> -->
+<!-- <layer-list xmlns:android="http://schemas.android.com/apk/res/android" > -->
+
+
+<!-- <item android:id="@android:id/background"> -->
+<!-- <shape android:shape="line" > -->
+<!-- <stroke -->
+<!-- android:width="4dp" -->
+<!-- android:color="#333333" /> -->
+<!-- </shape> -->
+<!-- </item> -->
+
+
+<!-- <item android:id="@android:id/progress"> -->
+<!-- <shape android:shape="line" > -->
+<!-- <stroke -->
+<!-- android:width="4dp" -->
+<!-- android:color="#FF8800" /> -->
+<!-- </shape> -->
+<!-- </item> -->
+
+
+<!-- </layer-list> -->

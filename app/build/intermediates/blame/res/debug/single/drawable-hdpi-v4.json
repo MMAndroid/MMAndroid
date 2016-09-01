@@ -1,0 +1,458 @@
+[
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon_audio.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\icon_audio.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_btn_pause.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_btn_pause.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_btn_next_pressed.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_btn_next_pressed.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon_save.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\icon_save.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\share.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\share.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\refresh_icon.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\refresh_icon.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_author.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_author.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_drawer.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\ic_drawer.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_launcher.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_seekbar_bg.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_seekbar_bg.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_add_playlist.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\ic_add_playlist.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_sync.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\ic_sync.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_sync.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\ic_sync.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon_folder.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\icon_folder.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_btn_playlist_pressed.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_btn_playlist_pressed.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_btn_shuffle.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_btn_shuffle.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_action_search.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\ic_action_search.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\adele.jpg",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\adele.jpg"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_seekbar_progress_blue.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_seekbar_progress_blue.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_btn_previous.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_btn_previous.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_btn_previous_pressed.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_btn_previous_pressed.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\play_list_icon.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\play_list_icon.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_music.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\ic_music.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\icon.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_btn_shuffle.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_btn_shuffle.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\myspace.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\myspace.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_btn_playlist.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_btn_playlist.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_music.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\ic_music.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_album.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\ic_album.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\instagram_icon.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\instagram_icon.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_btn_shuffle_pressed.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_btn_shuffle_pressed.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\twitter.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\twitter.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon_folder.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\icon_folder.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_btn_next_pressed.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_btn_next_pressed.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_action_search.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\ic_action_search.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\refresh_icon.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\refresh_icon.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_exit.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\ic_exit.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_album.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\ic_album.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\share_icon.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\share_icon.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\twiiter_icon.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\twiiter_icon.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_btn_repeat.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_btn_repeat.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_btn_pause.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_btn_pause.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_launcher.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\player.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\player.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_exit.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\ic_exit.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_btn_repeat_pressed.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_btn_repeat_pressed.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_playlist.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\ic_playlist.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_btn_playlist.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_btn_playlist.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\twiiter_icon.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\twiiter_icon.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\exit_icon.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\exit_icon.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_database.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\ic_database.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_btn_play.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_btn_play.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\share_icon.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\share_icon.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_btn_playlist_pressed.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_btn_playlist_pressed.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_author.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\ic_author.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_btn_play_pressed.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_btn_play_pressed.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon_audio.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\icon_audio.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_btn_next.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_btn_next.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\loading.gif",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\loading.gif"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\adele.jpg",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\adele.jpg"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_btn_previous_pressed.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_btn_previous_pressed.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\icon.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_home.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\ic_home.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\loading.gif",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\loading.gif"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_multimedia.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\ic_multimedia.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\overflow.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\overflow.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_btn_pause_pressed.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_btn_pause_pressed.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\add_icon.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\add_icon.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_home.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\ic_home.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_btn_next.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_btn_next.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\photo.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\photo.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\facebook_icon.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\facebook_icon.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\add_icon.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\add_icon.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_communities.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\ic_communities.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\instagram_icon.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\instagram_icon.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_seekbar_bg.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_seekbar_bg.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon_back.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\icon_back.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\navigation_refresh.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\navigation_refresh.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\linkedin.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\linkedin.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_btn_play.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_btn_play.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\navigation_refresh.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\navigation_refresh.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_btn_shuffle_pressed.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_btn_shuffle_pressed.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon_back.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\icon_back.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\player.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\player.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_btn_play_pressed.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_btn_play_pressed.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon_save.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\icon_save.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\photo.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\photo.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\twitter.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\twitter.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\facebook.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\facebook.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_seekbar_progress_blue.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_seekbar_progress_blue.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\video.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\video.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_disc.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_disc.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\exit_icon.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\exit_icon.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_database.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\ic_database.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_add_playlist.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\ic_add_playlist.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_drawer.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\ic_drawer.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_btn_previous.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_btn_previous.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\play_list_icon.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\play_list_icon.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_btn_pause_pressed.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_btn_pause_pressed.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\facebook.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\facebook.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_playlist.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\ic_playlist.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_author.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_author.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_communities.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\ic_communities.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_disc.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_disc.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\video.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\video.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_btn_repeat_pressed.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_btn_repeat_pressed.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\linkedin.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\linkedin.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\share.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\share.png"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\img_btn_repeat.png",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\img_btn_repeat.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\myspace.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\myspace.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\overflow.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\overflow.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_multimedia.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\ic_multimedia.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\facebook_icon.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\facebook_icon.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_author.png",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable-hdpi\\ic_author.png"
+    }
+]

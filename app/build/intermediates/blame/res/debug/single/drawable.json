@@ -1,0 +1,138 @@
+[
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\list_selector.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable\\list_selector.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\list_item_bg_normal.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable\\list_item_bg_normal.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_shuffle.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable\\btn_shuffle.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_repeat.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable\\btn_repeat.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\thumb.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable\\thumb.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_repeat_focused.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable\\btn_repeat_focused.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_play.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable\\btn_play.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_repeat.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable\\btn_repeat.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\list_item_bg_normal.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable\\list_item_bg_normal.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\counter_bg.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable\\counter_bg.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_playlist.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable\\btn_playlist.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\list_item_bg_pressed.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable\\list_item_bg_pressed.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_shuffle_focused.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable\\btn_shuffle_focused.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_shuffle_focused.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable\\btn_shuffle_focused.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_repeat_focused.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable\\btn_repeat_focused.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\thumb.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable\\thumb.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_shuffle.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable\\btn_shuffle.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_pause.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable\\btn_pause.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_previous.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable\\btn_previous.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\seekbar_progress.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable\\seekbar_progress.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\list_selector.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable\\list_selector.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_play.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable\\btn_play.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\counter_bg.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable\\counter_bg.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_previous.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable\\btn_previous.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_next.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable\\btn_next.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\button_gradient.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable\\button_gradient.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_playlist.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable\\btn_playlist.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\seekbar_progress.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable\\seekbar_progress.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\layout_gradient.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable\\layout_gradient.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\layout_gradient.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable\\layout_gradient.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_pause.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable\\btn_pause.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_next.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable\\btn_next.xml"
+    },
+    {
+        "merged": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\button_gradient.xml",
+        "source": "C:\\Users\\Daniel\\AndroidStudioProjects\\MMAndroid-master\\app\\src\\main\\res\\drawable\\button_gradient.xml"
+    },
+    {
+        "merged": "G:\\MMAndroid-master\\MMAndroid-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\list_item_bg_pressed.xml",
+        "source": "G:\\MMAndroid-master\\MMAndroid-master\\app\\src\\main\\res\\drawable\\list_item_bg_pressed.xml"
+    }
+]

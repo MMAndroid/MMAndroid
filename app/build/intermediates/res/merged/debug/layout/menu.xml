@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/line1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="2dp" >
+
+        <ImageButton
+            android:id="@+id/btn_list_authors"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:padding="3dp"
+            android:src="@drawable/ic_author" />
+
+        <!-- <Button -->
+        <!-- android:id="@+id/btn_list_authors" -->
+        <!-- android:layout_width="match_parent" -->
+        <!-- android:layout_height="wrap_content" -->
+        <!-- android:drawableLeft="@drawable/ic_database" -->
+        <!-- android:text="@string/btn_list_authors" /> -->
+
+        <ImageButton
+            android:id="@+id/btn_open_music_player"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:padding="3dp"
+            android:src="@drawable/player" />
+        <!-- <Button -->
+        <!-- android:id="@+id/btn_open_music_player" -->
+        <!-- android:layout_width="match_parent" -->
+        <!-- android:layout_height="wrap_content" -->
+        <!-- android:drawableLeft="@drawable/video" -->
+        <!-- android:text="@string/btn_open_music_player" /> -->
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/line2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="2dp" >
+
+        <ImageButton
+            android:id="@+id/img_btn_view_audios"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:padding="3dp"
+            android:src="@drawable/ic_music" />
+
+        <ImageButton
+            android:id="@+id/img_btn_view_aubum"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:padding="3dp"
+            android:src="@drawable/ic_album" />
+
+        <!-- <Button -->
+        <!-- android:id="@+id/btn_synchronize" -->
+        <!-- android:layout_width="match_parent" -->
+        <!-- android:layout_height="wrap_content" -->
+        <!-- android:drawableLeft="@drawable/ic_sync" -->
+        <!-- android:text="@string/btn_synchronize" /> -->
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/line3"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="2dp" >
+
+<!--         <ImageButton -->
+<!--             android:id="@+id/img_btn_view_video" -->
+<!--             android:layout_width="128dp" -->
+<!--             android:layout_height="128dp" -->
+<!--             android:padding="3dp" -->
+<!--             android:src="@drawable/log" /> -->
+
+        <ImageButton
+            android:id="@+id/img_btn_view_picture"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:padding="3dp"
+            android:src="@drawable/photo" />
+    </LinearLayout>
+
+</LinearLayout>

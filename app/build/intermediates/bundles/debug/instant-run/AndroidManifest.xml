@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="br.unb.mobileMedia"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="16" />
+
+    <!-- Indicam que a aplicação tem acesso ao envio e leitura de SMS -->
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:name="com.android.tools.fd.runtime.BootstrapApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.MyAppTheme" >
+        <activity
+            android:name="br.unb.mobileMedia.MMUnBActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="br.unb.mobileMedia.view.video.VideoSelectionActivity" >
+        </activity>
+        <activity android:name="br.unb.mobileMedia.view.video.VideoListActivity" >
+        </activity>
+        <activity
+            android:name="br.unb.mobileMedia.playlist.MainPlaylistListActivity"
+            android:label="@string/title_activity_play_list" >
+        </activity>
+        <activity
+            android:name="br.unb.mobileMedia.core.view.AuthorListActivity"
+            android:label="@string/title_activity_author_list" >
+        </activity>
+        <activity
+            android:name="br.unb.mobileMedia.core.view.AudioExpandableListActivity"
+            android:label="@string/title_activity_audio_table" >
+        </activity>
+        <activity
+            android:name="br.unb.mobileMedia.core.view.AudioPlayerActivity"
+            android:label="@string/title_activity_audio_player" >
+        </activity>
+        <activity
+            android:name="br.unb.mobileMedia.core.view.AudioSelectActivity"
+            android:label="@string/title_activity_select_activity" >
+        </activity>
+        <activity
+            android:name="br.unb.mobileMedia.core.view.ShareListActivity"
+            android:label="@string/title_activity_share_list" >
+        </activity>
+        <activity
+            android:name="br.unb.mobileMedia.playlist.PlayListEditorActivity"
+            android:label="@string/title_activity_playlist_editor" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="br.unb.mobileMedia.playlist.MusicSelectActivity"
+            android:label="@string/title_activity_music_select" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
