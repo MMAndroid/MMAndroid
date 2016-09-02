@@ -44,7 +44,7 @@ tais fotos foram tiradas nesse evento, etc.
 Importando o projeto(Android Studio)
 ===========================
 * Faça o clone/download do repositório;
-* Utilizando o Androi Studio, utilize a opção "Import Project";
+* Utilizando o Android Studio, utilize a opção "Import Project";
 * Siga os passos que a IDE pede e a aplicação está pronta para funcionar.
  
 Recomendações
