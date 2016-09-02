@@ -1,9 +1,9 @@
-MMUnB
+MMAndroid
 ===========================
 
 Esse projeto tem como objetivo servir como base 
 para o ensino do desenvolvimento na plataforma Android.
-Consiste em uma nova versao do Mobile Media, 
+Consiste em uma nova versão do Mobile Media, 
 player multimidia para aplicacoes moveis e bem 
 disseminado como estudo de caso para avaliar 
 implementacoes de Linhas de Produtos de Software. 
@@ -41,6 +41,16 @@ tais fotos foram tiradas nesse evento, etc.
 
 * ...
 
+Importando o projeto(Android Studio)
+===========================
+* Faça o clone/download do repositório;
+* Utilizando o Androi Studio, utilize a opção "Import Project";
+* Siga os passos que a IDE pede e a aplicação está pronta para funcionar.
+ 
+Recomendações
+===========================
+* Utilizar a IDE oficial, Android Studio, já está bem robusta e é uma ótima ferramenta. O Android Studio é baseado na IDE Intellij IDEA da Jetbrains, umas das 3 grandes utilizadas no desenvolvimentos de softwares em Java.
+* Para virtualização de dispositivos android utilizar a ferramenta Genymotion, a licença para uso próprio é gratuita. Essa ferramenta utiliza a Oracle Virtual Box, o resultado final é muito bom e rápido.
 
 Para colaboradores
 ===========================
